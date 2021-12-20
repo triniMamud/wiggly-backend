@@ -1,9 +1,10 @@
 package app.service;
 
-import app.model.dto.PerroDtoResponse;
+import app.model.dto.MascotaDTO;
 
 import java.util.List;
 
 public interface IPerrosService {
-    List<PerroDtoResponse> getPerrosList();
+    List<MascotaDTO> getPerrosList();
+    MascotaDTO altaPerro(MascotaDTO mascota);
 }
