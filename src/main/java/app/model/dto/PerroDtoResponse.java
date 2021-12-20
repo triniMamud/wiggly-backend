@@ -1,5 +1,6 @@
 package app.model.dto;
 
+import app.model.Mascota;
 import app.model.entity.Perro;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +23,7 @@ public class PerroDtoResponse {
     private String aclaracionesGenerales;
 
     public PerroDtoResponse(Perro perro) {
-        this.nombrePerro = perro.getNombrePerro();
+        this.nombrePerro = perro.getNombre();
         this.edadAprox = perro.getEdadAprox();
         this.sexo = perro.getSexo();
         this.peso = perro.getPeso();

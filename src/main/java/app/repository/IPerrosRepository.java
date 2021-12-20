@@ -10,9 +10,6 @@ import java.util.List;
 @Repository
 public interface IPerrosRepository extends JpaRepository<Perro, Integer> {
 
-    @Query("FROM Perros WHERE barrio LIKE %barrio%")
-    List<Perro> getPerroByBarrio(String barrio);
-
     List<Perro> findByTamanio(String tamanio);
 
     List<Perro> findBySexo(String sexo);
