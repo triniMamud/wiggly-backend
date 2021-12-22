@@ -1,47 +1,32 @@
 package app.model;
 
-import app.model.dto.MascotaDTO;
+import app.model.dto.PerroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @Data
 @MappedSuperclass
 @AllArgsConstructor
 @NoArgsConstructor
-public class Mascota {
-    private String nombre;
-    private Float edadAprox;
-    private String sexo;
-    private Float peso;
-    private String tamanio;
-    private String barrio;
-    private Boolean castrado;
-    private String vacunas;
-    private String aclaracionesVacunas;
-    private String desparacitado;
+public abstract class Mascota {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    protected int id;
+    protected String nombre;
+    protected Float edadAprox;
+    protected String sexo;
+    protected Float peso;
+    protected String tamanio;
+    protected String barrio;
+    protected Boolean castrado;
+    protected String vacunas;
+    protected String aclaracionesVacunas;
+    protected String desparacitado;
     @Column(name = "enfermedades_y_tratamientos")
-    private String enfermedadesYTratamientos;
-    private String aclaracionesMedicas;
-    private String aclaracionesGenerales;
-
-    public Mascota(MascotaDTO mascota) {
-        this.setNombre(mascota.getNombre());
-        this.setEdadAprox(mascota.getEdadAprox());
-        this.setSexo(mascota.getSexo());
-        this.setPeso(mascota.getPeso());
-        this.setTamanio(mascota.getTamanio());
-        this.setBarrio(mascota.getBarrio());
-        this.setCastrado(mascota.getCastrado());
-        this.setVacunas(mascota.getVacunas());
-        this.setAclaracionesVacunas(mascota.getAclaracionesVacunas());
-        this.setDesparacitado(mascota.getDesparacitado());
-        this.setEnfermedadesYTratamientos(mascota.getEnfermedadesYTratamientos());
-        this.setAclaracionesMedicas(mascota.getAclaracionesMedicas());
-        this.setAclaracionesGenerales(mascota.getAclaracionesGenerales());
-    }
+    protected String enfermedadesYTratamientos;
+    protected String aclaracionesMedicas;
+    protected String aclaracionesGenerales;
 }

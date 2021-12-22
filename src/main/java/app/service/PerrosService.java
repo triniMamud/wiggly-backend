@@ -1,7 +1,9 @@
 package app.service;
 
-import app.model.Mascota;
+import app.model.MascotasEnum;
+import app.model.dto.MascotaBuilderDTO;
 import app.model.dto.MascotaDTO;
+import app.model.dto.PerroDTO;
 import app.model.entity.Perro;
 import app.repository.IPerrosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +19,18 @@ public class PerrosService implements IPerrosService {
     @Autowired
     IPerrosRepository perrosRepository;
 
-    @Override
-    public List<MascotaDTO> getPerrosList() {
+    public List<MascotaDTO> getPerrosList(MascotasEnum mascota) {
         List<MascotaDTO> mascotasList = new ArrayList<>();
         perrosRepository.findAll()
                 .stream()
-                .map(perro -> mascotasList.add(new MascotaDTO(perro)))
+                .map(perro -> mascotasList.add(MascotaBuilderDTO.create().setPerro(mascota.setDto(perro).build())))
                 .collect(Collectors.toList());
         return mascotasList;
     }
 
     @Override
-    public MascotaDTO altaPerro(MascotaDTO mascota) {
-        perrosRepository.save(new Perro(mascota));
-        return mascota;
+    public PerroDTO altaPerro(PerroDTO perro) {
+        perrosRepository.save(new Perro(perro));
+        return perro;
     }
 }
