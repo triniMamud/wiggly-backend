@@ -29,8 +29,7 @@ public enum MascotasEnum {
             List<MascotaDTO> mascotasList = new ArrayList<>();
             perrosRepository.findAll()
                     .stream()
-                    .map(perro -> mascotasList.add(new PerroDTO(perro)))
-                    .collect(Collectors.toList());
+                    .forEach(perro -> mascotasList.add(new PerroDTO(perro)));
             return mascotasList;
         }
     },
@@ -46,8 +45,7 @@ public enum MascotasEnum {
             List<MascotaDTO> mascotasList = new ArrayList<>();
             gatosRepository.findAll()
                     .stream()
-                    .map(gato -> mascotasList.add(new GatoDTO(gato)))
-                    .collect(Collectors.toList());
+                    .forEach(gato -> mascotasList.add(new GatoDTO(gato)));
             return mascotasList;
         }
     };
