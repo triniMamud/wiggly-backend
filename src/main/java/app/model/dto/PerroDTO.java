@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class PerroDTO extends MascotaDTO {
-
     public PerroDTO(Perro perro) {
         this.id = perro.getId();
         this.nombre = perro.getNombre();

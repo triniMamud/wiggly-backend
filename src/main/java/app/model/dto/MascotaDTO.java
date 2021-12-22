@@ -1,5 +1,8 @@
 package app.model.dto;
 
+import lombok.Data;
+
+@Data
 public class MascotaDTO {
     protected int id;
     protected String nombre;

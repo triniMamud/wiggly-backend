@@ -1,7 +1,8 @@
 package app.controller;
 
-import app.model.dto.PerroDTO;
-import app.service.IPerrosService;
+import app.model.dto.MascotaDTO;
+import app.model.MascotasEnum;
+import app.service.IMascotasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,15 @@ import java.util.List;
 public class PerrosController {
 
     @Autowired
-    IPerrosService perrosService;
+    IMascotasService mascotasService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<PerroDTO>> getPerrosList() {
-        return new ResponseEntity<>(perrosService.getPerrosList(), HttpStatus.OK);
+    public ResponseEntity<List<MascotaDTO>> getPerrosList() {
+        return new ResponseEntity<>(mascotasService.getList(MascotasEnum.PERRO), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<PerroDTO> postNewPerro(@RequestBody PerroDTO mascota) {
-        return new ResponseEntity<>(perrosService.altaPerro(mascota), HttpStatus.OK);
+    public ResponseEntity<MascotaDTO> postNewPerro(@RequestBody MascotaDTO mascota) {
+        return new ResponseEntity<>(mascotasService.altaMascota(mascota, MascotasEnum.PERRO), HttpStatus.OK);
     }
 }
