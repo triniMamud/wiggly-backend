@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class PerrosController {
     IMascotasService mascotasService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<MascotaDTO>> getPerrosList() {
+    public ResponseEntity<List<MascotaDTO>> getPerrosList() throws MessagingException {
         return new ResponseEntity<>(mascotasService.getList(MascotasEnum.PERRO), HttpStatus.OK);
     }
 
