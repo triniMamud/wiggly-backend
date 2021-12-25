@@ -1,5 +1,6 @@
 package app.model;
 
+import app.Mapper.MascotaMapper;
 import app.model.dto.GatoDTO;
 import app.model.dto.MascotaDTO;
 import app.model.dto.PerroDTO;
@@ -21,7 +22,7 @@ public enum MascotasEnum {
     PERRO {
         @Override
         public void altaMascota(MascotaDTO perro) {
-            perrosRepository.save(new Perro(perro));
+            perrosRepository.save(MascotaMapper.newPerro(perro));
         }
 
         @Override
@@ -29,7 +30,7 @@ public enum MascotasEnum {
             List<MascotaDTO> mascotasList = new ArrayList<>();
             perrosRepository.findAll()
                     .stream()
-                    .forEach(perro -> mascotasList.add(new PerroDTO(perro)));
+                    .forEach(perro -> mascotasList.add(MascotaMapper.newPerroDTO(perro)));
             return mascotasList;
         }
     },
@@ -37,7 +38,7 @@ public enum MascotasEnum {
     GATO {
         @Override
         public void altaMascota(MascotaDTO gato) {
-            gatosRepository.save(new Gato(gato));
+            gatosRepository.save(MascotaMapper.newGato(gato));
         }
 
         @Override
@@ -45,7 +46,7 @@ public enum MascotasEnum {
             List<MascotaDTO> mascotasList = new ArrayList<>();
             gatosRepository.findAll()
                     .stream()
-                    .forEach(gato -> mascotasList.add(new GatoDTO(gato)));
+                    .forEach(gato -> mascotasList.add(MascotaMapper.newGatoDTO(gato)));
             return mascotasList;
         }
     };

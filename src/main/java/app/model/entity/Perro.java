@@ -2,33 +2,22 @@ package app.model.entity;
 
 import app.model.Mascota;
 import app.model.dto.MascotaDTO;
-import app.model.dto.PerroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @NoArgsConstructor
+@SuperBuilder
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Perro extends Mascota {
-
-    public Perro(MascotaDTO perro) {
-        this.id = perro.getId();
-        this.nombre = perro.getNombre();
-        this.edadAprox = perro.getEdadAprox();
-        this.sexo = perro.getSexo();
-        this.peso = perro.getPeso();
-        this.tamanio = perro.getTamanio();
-        this.barrio = perro.getBarrio();
-        this.castrado = perro.getCastrado();
-        this.vacunas = perro.getVacunas();
-        this.aclaracionesVacunas = perro.getAclaracionesVacunas();
-        this.desparacitado = perro.getDesparacitado();
-        this.enfermedadesYTratamientos = perro.getEnfermedadesYTratamientos();
-        this.aclaracionesMedicas = perro.getAclaracionesMedicas();
-        this.aclaracionesGenerales = perro.getAclaracionesGenerales();
+    public Perro(int id, String nombre, Float edadAprox, String sexo, String tamanio, String barrio, Boolean castrado, String vacunas, String aclaracionesVacunas, String desparacitado, String enfermedadesYTratamientos, String aclaracionesMedicas, String aclaracionesGenerales) {
+        super(id,nombre,edadAprox,sexo,tamanio,barrio,castrado,vacunas,aclaracionesVacunas,desparacitado,enfermedadesYTratamientos,aclaracionesMedicas,aclaracionesGenerales);
     }
-
 }

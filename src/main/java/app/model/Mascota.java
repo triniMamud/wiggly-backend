@@ -4,11 +4,15 @@ import app.model.dto.PerroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Value;
+import lombok.experimental.NonFinal;
+import lombok.experimental.SuperBuilder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.*;
 
 @Data
-@MappedSuperclass
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class Mascota {
@@ -18,7 +22,6 @@ public abstract class Mascota {
     protected String nombre;
     protected Float edadAprox;
     protected String sexo;
-    protected Float peso;
     protected String tamanio;
     protected String barrio;
     protected Boolean castrado;
