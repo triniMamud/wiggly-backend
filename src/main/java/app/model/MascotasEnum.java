@@ -1,5 +1,6 @@
 package app.model;
 
+import app.Mapper.MascotaMapper;
 import app.model.dto.GatoDTO;
 import app.model.dto.MascotaDTO;
 import app.model.dto.PerroDTO;
@@ -14,26 +15,30 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum MascotasEnum {
 
     PERRO {
         @Override
         public void altaMascota(MascotaDTO perro) {
-
+            perrosRepository.save(MascotaMapper.newPerro(perro));
         }
 
         @Override
         public List<MascotaDTO> getListMascotas() {
-
-            return null;
+            List<MascotaDTO> mascotasList = new ArrayList<>();
+            perrosRepository.findAll()
+                    .stream()
+                    .forEach(perro -> mascotasList.add(MascotaMapper.newPerroDTO(perro)));
+            return mascotasList;
         }
     },
 
     GATO {
         @Override
         public void altaMascota(MascotaDTO gato) {
-            gatosRepository.save(new Gato(gato));
+            gatosRepository.save(MascotaMapper.newGato(gato));
         }
 
         @Override
@@ -41,7 +46,7 @@ public enum MascotasEnum {
             List<MascotaDTO> mascotasList = new ArrayList<>();
             gatosRepository.findAll()
                     .stream()
-                    .forEach(gato -> mascotasList.add(new GatoDTO(gato)));
+                    .forEach(gato -> mascotasList.add(MascotaMapper.newGatoDTO(gato)));
             return mascotasList;
         }
     };

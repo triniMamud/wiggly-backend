@@ -17,7 +17,7 @@ public class CommonService<S extends JpaRepository, T extends  MascotaDTO> {
         List<MascotaDTO> mascotasList = new ArrayList<>();
         repository.findAll()
                 .stream()
-                .forEach(gato -> mascotasList.add(T));
+                .forEach(gato -> mascotasList.add(new T()));
         return mascotasList;
     }
 }

@@ -1,14 +1,17 @@
 package app.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class MascotaDTO {
     protected int id;
     protected String nombre;
     protected Float edadAprox;
     protected String sexo;
-    protected Float peso;
     protected String tamanio;
     protected String barrio;
     protected Boolean castrado;
