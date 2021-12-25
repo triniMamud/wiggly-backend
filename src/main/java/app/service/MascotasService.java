@@ -1,42 +1,27 @@
 package app.service;
 
-import app.patterns.MascotaFactory;
 import app.model.dto.MascotaDTO;
 import app.model.MascotasEnum;
-import app.model.dto.PerroDTO;
-import app.model.entity.Perro;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.lang.Class;
 
-import java.util.ArrayList;
+import javax.mail.MessagingException;
 import java.util.List;
-
-
-import static app.patterns.ProviderPattern.PROVIDERS;
 
 @Service
 public class MascotasService implements IMascotasService {
 
-    
+    @Autowired
+    NotificationService notificationService;
 
-    @Override
-    public List<MascotaDTO> getList(MascotasEnum mascotasEnum, Class<?> type) {
-
-        MascotaFactory mascotaFactory = new MascotaFactory<>();
-        List<MascotaDTO> mascotasList = new ArrayList<>();
-
-        PROVIDERS.get(mascotasEnum.name()).get();
-
-        (mascotaFactory.getRepository(mascotasEnum, type));
-                perrosRepository.findAll()
-                .stream()
-                .forEach(perro -> mascotasList.add(new PerroDTO(perro)));
-        return mascotasList;
+    public List<MascotaDTO> getList(MascotasEnum tipoMascota) throws MessagingException {
+        notificationService.sendNotification();
+        return tipoMascota.getListMascotas();
     }
 
     @Override
     public MascotaDTO altaMascota(MascotaDTO mascota, MascotasEnum tipoMascota) {
-        perrosRepository.save(new Perro(perro));
+        tipoMascota.altaMascota(mascota);
         return mascota;
     }
 }
