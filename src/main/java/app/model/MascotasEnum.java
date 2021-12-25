@@ -14,23 +14,19 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public enum MascotasEnum {
 
     PERRO {
         @Override
         public void altaMascota(MascotaDTO perro) {
-            perrosRepository.save(new Perro(perro));
+
         }
 
         @Override
         public List<MascotaDTO> getListMascotas() {
-            List<MascotaDTO> mascotasList = new ArrayList<>();
-            perrosRepository.findAll()
-                    .stream()
-                    .forEach(perro -> mascotasList.add(new PerroDTO(perro)));
-            return mascotasList;
+
+            return null;
         }
     },
 

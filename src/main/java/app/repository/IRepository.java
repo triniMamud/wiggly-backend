@@ -1,2 +1,5 @@
-package app.repository;public interface IRepository {
+package app.repository;
+
+public interface IRepository {
+
 }

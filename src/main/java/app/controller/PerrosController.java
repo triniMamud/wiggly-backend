@@ -2,6 +2,7 @@ package app.controller;
 
 import app.model.dto.MascotaDTO;
 import app.model.MascotasEnum;
+import app.repository.IPerrosRepository;
 import app.service.IMascotasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class PerrosController {
 
     @GetMapping("/list")
     public ResponseEntity<List<MascotaDTO>> getPerrosList() {
-        return new ResponseEntity<>(mascotasService.getList(MascotasEnum.PERRO), HttpStatus.OK);
+        return new ResponseEntity<>(mascotasService.getList(MascotasEnum.PERRO, IPerrosRepository.class), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
