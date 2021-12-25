@@ -17,5 +17,6 @@ public class UsuariosService implements IUsuariosService {
     public UsuarioDTO altaUsuario(UsuarioDTO usuario) {
         usuariosRepository.save(UsuarioMapper.newUsuario(usuario));
         return usuario;
+
     }
 }
