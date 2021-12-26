@@ -1,4 +1,4 @@
-package app.Mapper;
+package app.mapper;
 
 import app.model.dto.UsuarioDTO;
 import app.model.entity.Usuario;

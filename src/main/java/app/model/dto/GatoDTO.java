@@ -1,9 +1,7 @@
 package app.model.dto;
 
-import app.model.entity.Gato;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
