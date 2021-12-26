@@ -33,16 +33,16 @@ public class NotificationService {
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication("eliaslamanna@gmail.com", "scrapycoco$");
+                        return new PasswordAuthentication("trinimamud@gmail.com", "FireFox110298");
                     }
                 });
         Message message = new MimeMessage(session);
 
-        message.setFrom(new InternetAddress("eliaslamanna@gmail.com"));
+        message.setFrom(new InternetAddress("trinimamud@gmail.com"));
 
         // Set To: header field of the header.
         message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse("trinimamud@gmail.com"));
+                InternetAddress.parse("eliaslamanna@gmail.com"));
 
         // Set Subject: header field
         message.setSubject("Testing Subject");
