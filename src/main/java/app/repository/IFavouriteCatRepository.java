@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IFavouriteCatRepository extends JpaRepository<FavouriteDog, Integer> {
 
-    List<FavouriteDog> getFavouriteCatByUsuario(String id_usuario);
+    List<FavouriteDog> getFavouriteByUsuario(String id_usuario);
 }

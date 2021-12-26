@@ -1,4 +1,4 @@
-package app.service;
+package app.service.common;
 
 import app.model.Mascota;
 import app.model.dto.MascotaDTO;

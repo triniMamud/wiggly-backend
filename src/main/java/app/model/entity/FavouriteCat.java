@@ -1,8 +1,10 @@
 package app.model.entity;
 
+import app.model.FavouritePet;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,16 +14,9 @@ import javax.persistence.Id;
 @Entity
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class FavouriteCat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    private String usuario;
-    private int gato;
+public class FavouriteCat extends FavouritePet {
 
     public FavouriteCat(String id_usuario, int id_gato) {
-        this.usuario = id_usuario;
-        this.gato = id_gato;
+        super(id_usuario,id_gato);
     }
 }

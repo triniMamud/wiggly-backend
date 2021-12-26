@@ -2,12 +2,9 @@ package app.service.implementations;
 
 import app.model.dto.GatoDTO;
 import app.model.dto.MascotaDTO;
-import app.model.dto.PerroDTO;
 import app.repository.IGatosRepository;
-import app.repository.IPerrosRepository;
-import app.service.CommonService;
+import app.service.common.CommonService;
 import app.service.intefaces.IGatoService;
-import app.service.intefaces.IPerroService;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
