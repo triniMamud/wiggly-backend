@@ -1,8 +1,7 @@
 package app.service;
 
-import app.Mapper.UsuarioMapper;
+import app.mapper.UsuarioMapper;
 import app.model.dto.UsuarioDTO;
-import app.model.entity.Usuario;
 import app.repository.IUsuariosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
