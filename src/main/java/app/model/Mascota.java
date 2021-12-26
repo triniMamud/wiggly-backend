@@ -1,20 +1,17 @@
 package app.model;
 
-import app.model.dto.PerroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-import lombok.experimental.NonFinal;
 import lombok.experimental.SuperBuilder;
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.*;
+import javax.persistence.Id;
 
 @Data
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class Mascota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

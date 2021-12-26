@@ -23,5 +23,5 @@ public class UsuarioDTO {
     private Boolean tieneRedContencion;
     private Boolean tieneOtrasMacotas;
     private String aclaracionOtrasMascotas;
-
+    private String usuario;
 }

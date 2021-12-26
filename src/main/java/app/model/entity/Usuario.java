@@ -33,5 +33,5 @@ public class Usuario {
     private Boolean tieneRedContencion;
     private Boolean tieneOtrasMacotas;
     private String aclaracionOtrasMascotas;
-
+    private String usuario;
 }
