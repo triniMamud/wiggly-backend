@@ -1,4 +1,4 @@
-package app.service;
+package app.service.implementations;
 
 import app.mapper.UsuarioMapper;
 import app.model.Encryption;
@@ -7,6 +7,7 @@ import app.model.dto.UsuarioDTO;
 import app.model.entity.Account;
 import app.repository.IAccountsRepository;
 import app.repository.IUsuariosRepository;
+import app.service.intefaces.IUsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package app.controller;
 
 import app.model.dto.AccountDTO;
 import app.model.dto.UsuarioDTO;
-import app.service.IUsuariosService;
+import app.service.intefaces.IUsuariosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemDogDTO {
+public class ItemDTO {
     private int id;
     private String nombre;
     private String barrio;

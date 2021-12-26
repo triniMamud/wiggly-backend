@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IPerrosRepository extends JpaRepository<Perro, Integer>, IRepository {
+public interface IPerrosRepository extends JpaRepository<Perro, Integer> {
 
     List<Perro> findByTamanio(String tamanio);
 

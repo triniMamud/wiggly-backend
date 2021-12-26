@@ -1,9 +1,10 @@
-package app.service;
+package app.service.implementations;
 
 import app.model.dto.MascotaDTO;
 import app.model.dto.PerroDTO;
 import app.repository.IPerrosRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import app.service.CommonService;
+import app.service.intefaces.IPerroService;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -12,12 +13,8 @@ import java.util.List;
 @Service
 public class PerroService extends CommonService<IPerrosRepository, PerroDTO> implements IPerroService {
 
-    @Autowired
-    NotificationService notificationService;
-
     @Override
     public List<MascotaDTO> getList() throws MessagingException {
-        notificationService.sendNotification();
         return getListMascotas(PerroDTO.class);
     }
 
