@@ -13,4 +13,6 @@ public interface IPerrosRepository extends JpaRepository<Perro, Integer>, IRepos
 
     List<Perro> findBySexo(String sexo);
 
+    Perro findById(int id);
+
 }
