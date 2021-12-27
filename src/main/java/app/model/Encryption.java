@@ -1,6 +1,5 @@
 package app.model;
 
-import app.model.dto.AccountDTO;
 import org.mindrot.jbcrypt.BCrypt;
 
 public class Encryption {
