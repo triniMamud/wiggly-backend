@@ -14,8 +14,12 @@ import java.util.List;
 @RequestMapping(path = "/gatos")
 public class GatosController {
 
+    private IGatoService gatoService;
+
     @Autowired
-    IGatoService gatoService;
+    public GatosController(IGatoService gatoService) {
+        this.gatoService = gatoService;
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<MascotaDTO>> getGatosList() throws MessagingException {

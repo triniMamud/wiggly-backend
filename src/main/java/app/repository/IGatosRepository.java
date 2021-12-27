@@ -1,7 +1,6 @@
 package app.repository;
 
 import app.model.entity.Gato;
-import app.model.entity.Perro;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class FavouriteGatoService extends CommonFavouriteService<IGatosRepository,IFavouriteCatRepository, FavouriteCat> implements IFavouriteGatoService {
 
+    public FavouriteGatoService(IGatosRepository repository, IFavouriteCatRepository favouriteRepository) {
+        super(repository, favouriteRepository);
+    }
+
     @Override
     public List<ItemDTO> getFavourites(String user) {
         return getFavouritesList(user);

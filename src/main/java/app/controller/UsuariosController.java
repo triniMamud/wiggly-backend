@@ -3,7 +3,6 @@ package app.controller;
 import app.model.dto.AccountDTO;
 import app.model.dto.UsuarioDTO;
 import app.service.intefaces.IUsuariosService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/usuarios")
 public class UsuariosController {
 
-    @Autowired
-    IUsuariosService usuariosService;
+    private IUsuariosService usuariosService;
+
+    public UsuariosController(IUsuariosService usuariosService) {
+        this.usuariosService = usuariosService;
+    }
 
     @PostMapping("/log_in")
     public ResponseEntity<Void> login(@RequestBody AccountDTO account) {

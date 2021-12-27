@@ -10,8 +10,12 @@ import java.util.List;
 
 public class CommonService<S extends JpaRepository, T extends  MascotaDTO> {
 
+    private S repository;
+
     @Autowired
-    S repository;
+    public CommonService(S repository) {
+        this.repository = repository;
+    }
 
     public void addMascota(MascotaDTO mascota, Class<T> mascotaType) {
         repository.save(mascotaType.cast(mascota));

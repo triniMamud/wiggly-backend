@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class GatoService extends CommonService<IGatosRepository, GatoDTO> implements IGatoService {
 
+    public GatoService(IGatosRepository repository) {
+        super(repository);
+    }
+
     @Override
     public List<MascotaDTO> getList() throws MessagingException {
         return getListMascotas(GatoDTO.class);

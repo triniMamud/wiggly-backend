@@ -14,10 +14,14 @@ import java.util.List;
 @RequestMapping("/favoritos")
 public class FavouritesController {
 
+    private IFavouritePerroService favouritePerroService;
+    private IFavouriteGatoService favouriteGatoService;
+
     @Autowired
-    IFavouritePerroService favouritePerroService;
-    @Autowired
-    IFavouriteGatoService favouriteGatoService;
+    public FavouritesController(IFavouritePerroService favouritePerroService, IFavouriteGatoService favouriteGatoService) {
+        this.favouritePerroService = favouritePerroService;
+        this.favouriteGatoService = favouriteGatoService;
+    }
 
     @GetMapping("/perros")
     public ResponseEntity<List<ItemDTO>> getFavouriteDogs(@RequestHeader("user") String user) {

@@ -13,6 +13,10 @@ import java.util.List;
 @Service
 public class PerroService extends CommonService<IPerrosRepository, PerroDTO> implements IPerroService {
 
+    public PerroService(IPerrosRepository repository) {
+        super(repository);
+    }
+
     @Override
     public List<MascotaDTO> getList() throws MessagingException {
         return getListMascotas(PerroDTO.class);
