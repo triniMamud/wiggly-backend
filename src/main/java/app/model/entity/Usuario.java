@@ -18,8 +18,7 @@ import javax.persistence.Id;
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String usuario;
     private String nombre;
     private String apellido;
     private int edad;
@@ -33,5 +32,4 @@ public class Usuario {
     private Boolean tieneRedContencion;
     private Boolean tieneOtrasMacotas;
     private String aclaracionOtrasMascotas;
-    private String usuario;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UsuarioDTO {
 
-    private int id;
+    private String usuario;
     private String nombre;
     private String apellido;
     private int edad;
@@ -23,5 +23,5 @@ public class UsuarioDTO {
     private Boolean tieneRedContencion;
     private Boolean tieneOtrasMacotas;
     private String aclaracionOtrasMascotas;
-    private String usuario;
+
 }
