@@ -28,10 +28,8 @@ public class TodoController {
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Todo> saveTodo(@RequestParam("title") String title,
-                                         @RequestParam("description") String description,
-                                         @RequestParam("image") MultipartFile file) {
-        return new ResponseEntity<>(service.saveTodo(title, description, file), HttpStatus.OK);
+    public ResponseEntity<Todo> saveTodo(@RequestParam("image") MultipartFile file) {
+        return new ResponseEntity<>(service.saveTodo(file), HttpStatus.OK);
     }
 
     @GetMapping(value = "{id}/image/download")

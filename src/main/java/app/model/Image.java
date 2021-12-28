@@ -13,16 +13,10 @@ import javax.persistence.MappedSuperclass;
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
-public abstract class FavouritePet {
+public abstract class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    protected String usuario;
-    protected int id_mascota;
-
-    public FavouritePet(String id_usuario, int id_mascota) {
-        this.usuario = id_usuario;
-        this.id_mascota = id_mascota;
-    }
-
+    protected int id_pet;
+    protected int id_image;
 }

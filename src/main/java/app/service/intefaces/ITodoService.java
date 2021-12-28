@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface ITodoService {
-    Todo saveTodo(String title, String description, MultipartFile file);
+    Todo saveTodo(MultipartFile file);
 
     byte[] downloadTodoImage(Long id);
 

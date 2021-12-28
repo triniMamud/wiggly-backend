@@ -21,7 +21,7 @@ public class TodoService implements ITodoService {
     private final ITodoRepository repository;
 
     @Override
-    public Todo saveTodo(String title, String description, MultipartFile file) {
+    public Todo saveTodo(MultipartFile file) {
         //check if the file is empty
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
