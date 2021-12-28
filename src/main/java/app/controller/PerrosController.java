@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.dto.MascotaDTO;
+import app.service.intefaces.IMyDogsService;
 import app.service.intefaces.IPerroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,19 +16,22 @@ import java.util.List;
 public class PerrosController {
 
     private IPerroService perroService;
+    private IMyDogsService myDogsService;
 
     @Autowired
-    public PerrosController(IPerroService perroService) {
+    public PerrosController(IPerroService perroService, IMyDogsService myDogsService) {
         this.perroService = perroService;
+        this.myDogsService = myDogsService;
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<MascotaDTO>> getPerrosList() throws MessagingException {
-        return new ResponseEntity<>(perroService.getList(), HttpStatus.OK);
+        return new ResponseEntity<>(perroService.getPerrosList(), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<MascotaDTO> postNewPerro(@RequestBody MascotaDTO mascota) {
-        return new ResponseEntity<>(perroService.altaMascota(mascota), HttpStatus.OK);
+    public ResponseEntity<MascotaDTO> postNewPerro(@RequestBody MascotaDTO mascota, @RequestHeader("username") String username) throws Exception {
+        myDogsService.addToMyDogs(mascota.getId(), username);
+        return new ResponseEntity<>(perroService.altaPerro(mascota), HttpStatus.OK);
     }
 }

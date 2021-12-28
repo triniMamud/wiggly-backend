@@ -23,12 +23,12 @@ public class GatosController {
 
     @GetMapping("/list")
     public ResponseEntity<List<MascotaDTO>> getGatosList() throws MessagingException {
-        return new ResponseEntity<>(gatoService.getList(), HttpStatus.OK);
+        return new ResponseEntity<>(gatoService.getGatosList(), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<MascotaDTO> postNewGato(@RequestBody MascotaDTO mascota) {
-        return new ResponseEntity<>(gatoService.altaMascota(mascota), HttpStatus.OK);
+    public ResponseEntity<MascotaDTO> postNewGato(@RequestBody MascotaDTO mascota) throws Exception {
+        return new ResponseEntity<>(gatoService.altaGato(mascota), HttpStatus.OK);
     }
 
 }

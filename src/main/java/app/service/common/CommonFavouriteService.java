@@ -23,7 +23,7 @@ public class CommonFavouriteService<S extends JpaRepository, T extends JpaReposi
         List<ItemDTO> favourites = new ArrayList<>();
         favouriteRepository.findAll()
                 .stream().filter(item -> ((FavouritePet) item).getUsuario().equalsIgnoreCase(user))
-                .forEach(fav -> favourites.add(ItemMapper.newItemDTO((Mascota) repository.findById(((FavouritePet) fav).getId()).get())
+                .forEach(fav -> favourites.add(ItemMapper.newItemPetDTO((Mascota) repository.findById(((FavouritePet) fav).getId()).get())
                 ));
         return favourites;
     }

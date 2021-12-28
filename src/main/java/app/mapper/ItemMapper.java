@@ -4,7 +4,7 @@ import app.model.Mascota;
 import app.model.dto.ItemDTO;
 
 public class ItemMapper {
-    public static ItemDTO newItemDTO(Mascota mascota) {
-        return new ItemDTO(mascota.getId(),mascota.getNombre(),mascota.getBarrio(),mascota.getSexo());
+    public static ItemDTO newItemPetDTO(Mascota pet) {
+        return new ItemDTO(pet.getId(),pet.getNombre(),pet.getBarrio(),pet.getSexo());
     }
 }
