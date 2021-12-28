@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.model.dto.MascotaDTO;
-import app.service.IMyDogsService;
-import app.service.IPerroService;
+import app.service.intefaces.IMyDogsService;
+import app.service.intefaces.IPerroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,14 @@ import java.util.List;
 @RequestMapping(path = "/perros")
 public class PerrosController {
 
+    private IPerroService perroService;
+    private IMyDogsService myDogsService;
+
     @Autowired
-    IPerroService perroService;
-    @Autowired
-    IMyDogsService myDogsService;
+    public PerrosController(IPerroService perroService, IMyDogsService myDogsService) {
+        this.perroService = perroService;
+        this.myDogsService = myDogsService;
+    }
 
     @GetMapping("/list")
     public ResponseEntity<List<MascotaDTO>> getPerrosList() throws MessagingException {

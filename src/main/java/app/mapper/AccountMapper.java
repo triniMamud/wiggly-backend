@@ -1,4 +1,4 @@
-package app.Mapper;
+package app.mapper;
 
 import app.model.dto.AccountDTO;
 import app.model.entity.Account;

@@ -1,15 +1,18 @@
 package app.repository;
 
 import app.model.entity.Gato;
-import app.model.entity.Perro;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface IGatosRepository extends JpaRepository<Gato, Integer> {
+@Repository
+public interface IGatosRepository extends JpaRepository<Gato, Integer>  {
 
-    List<Perro> findByTamanio(String tamanio);
+    List<Gato> findByTamanio(String tamanio);
 
-    List<Perro> findBySexo(String sexo);
+    List<Gato> findBySexo(String sexo);
+
+    Gato findById(int id);
 
 }
