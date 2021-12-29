@@ -24,5 +24,4 @@ public class MascotaDTO {
     protected String enfermedadesYTratamientos;
     protected String aclaracionesMedicas;
     protected String aclaracionesGenerales;
-    protected List<MultipartFile> images;
 }

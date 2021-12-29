@@ -1,6 +1,7 @@
 package app.service.implementations;
 
-import app.model.dto.MascotaDTO;
+import app.model.dto.MascotaDTORequest;
+import app.model.dto.MascotaDTOResponse;
 import app.model.dto.PerroDTO;
 import app.model.entity.ImageDog;
 import app.repository.IImageDogRepository;
@@ -8,10 +9,8 @@ import app.repository.IPerrosRepository;
 import app.service.common.CommonService;
 import app.service.intefaces.IPerroService;
 import app.service.intefaces.ITodoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
@@ -22,13 +21,12 @@ public class PerroService extends CommonService<IPerrosRepository, PerroDTO, IIm
     }
 
     @Override
-    public List<MascotaDTO> getList() {
+    public List<MascotaDTOResponse> getList() {
         return getListMascotas(PerroDTO.class);
     }
 
     @Override
-    public MascotaDTO altaMascota(MascotaDTO mascota) {
-        addMascota(mascota, PerroDTO.class, ImageDog.class);
-        return mascota;
+    public MascotaDTOResponse altaMascota(MascotaDTORequest mascota) {
+        return addMascota(mascota, PerroDTO.class, ImageDog.class);
     }
 }

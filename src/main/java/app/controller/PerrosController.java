@@ -1,6 +1,8 @@
 package app.controller;
 
 import app.model.dto.MascotaDTO;
+import app.model.dto.MascotaDTORequest;
+import app.model.dto.MascotaDTOResponse;
 import app.service.intefaces.IPerroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,12 +24,12 @@ public class PerrosController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<MascotaDTO>> getPerrosList() throws MessagingException {
+    public ResponseEntity<List<MascotaDTOResponse>> getPerrosList() throws MessagingException {
         return new ResponseEntity<>(perroService.getList(), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<MascotaDTO> postNewPerro(@RequestBody MascotaDTO mascota) {
+    public ResponseEntity<MascotaDTOResponse> postNewPerro(@RequestBody MascotaDTORequest mascota) {
         return new ResponseEntity<>(perroService.altaMascota(mascota), HttpStatus.OK);
     }
 }

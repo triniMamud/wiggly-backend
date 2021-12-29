@@ -3,13 +3,17 @@ package app.service.common;
 import app.model.Image;
 import app.model.Mascota;
 import app.model.dto.MascotaDTO;
+import app.model.dto.MascotaDTORequest;
+import app.model.dto.MascotaDTOResponse;
 import app.model.entity.Todo;
 import app.service.intefaces.ITodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CommonService<S extends JpaRepository, T extends MascotaDTO, R extends JpaRepository, K extends Image> {
 
@@ -24,7 +28,7 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
         this.todoService = todoService;
     }
 
-    public void addMascota(MascotaDTO mascota, Class<T> mascotaType, Class<K> imageType) {
+    public MascotaDTOResponse addMascota(MascotaDTORequest mascota, Class<T> mascotaType, Class<K> imageType) {
         repository.save(mascotaType.cast(mascota));
         mascota.getImages().stream()
                 .forEach(img -> {
@@ -34,10 +38,22 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
                         e.printStackTrace();
                     }
                 });
+        MascotaDTOResponse mascotaDTOResponse = new MascotaDTOResponse();
+        mascotaDTOResponse.setMascota(mascota.getMascota());
+        mascota.getImages().stream()
+                .forEach(img -> {
+                    try {
+                        mascotaDTOResponse.getImages().add(img.getBytes());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+        return mascotaDTOResponse;
     }
 
-    public List<MascotaDTO> getListMascotas(Class<T> mascotaType) {
+    public List<MascotaDTOResponse> getListMascotas(Class<T> mascotaType) {
         List<MascotaDTO> mascotasList = new ArrayList<>();
+        List<MascotaDTOResponse> mascotasResponse = new ArrayList<>();
         repository.findAll()
                 .stream()
                 .forEach(mascota -> {
@@ -47,7 +63,9 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
                         e.printStackTrace();
                     }
                 });
-        return mascotasList;
+        mascotasList.stream()
+                .forEach(pet ->  mascotasResponse.add(new MascotaDTOResponse(pet, (List<byte[]>) imageRepository.findAll().stream().filter(img -> ((Image) img).getId_pet() == pet.getId()).collect(Collectors.toList()))));
+        return mascotasResponse;
     }
 
     public T cast (Mascota mascota, Class<T> type) throws Exception {
@@ -62,9 +80,9 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
                         mascota.getAclaracionesMedicas(), mascota.getAclaracionesGenerales());
     }
 
-    public K createImage(MascotaDTO mascotaDTO,Todo todo, Class<K> type) throws Exception {
+    public K createImage(MascotaDTORequest mascotaDTO,Todo todo, Class<K> type) throws Exception {
         return type
                 .getConstructor(int.class,int.class)
-                .newInstance(mascotaDTO.getId(),todo.getId());
+                .newInstance(mascotaDTO.getMascota().getId(),todo.getId());
     }
 }

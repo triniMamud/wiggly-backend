@@ -2,6 +2,8 @@ package app.service.implementations;
 
 import app.model.dto.GatoDTO;
 import app.model.dto.MascotaDTO;
+import app.model.dto.MascotaDTORequest;
+import app.model.dto.MascotaDTOResponse;
 import app.model.entity.ImageCat;
 import app.repository.IGatosRepository;
 import app.repository.IImageCatRepository;
@@ -22,13 +24,12 @@ public class GatoService extends CommonService<IGatosRepository, GatoDTO, IImage
     }
 
     @Override
-    public List<MascotaDTO> getList() {
+    public List<MascotaDTOResponse> getList() {
         return getListMascotas(GatoDTO.class);
     }
 
     @Override
-    public MascotaDTO altaMascota(MascotaDTO mascota) {
-        addMascota(mascota, GatoDTO.class, ImageCat.class);
-        return mascota;
+    public MascotaDTOResponse altaMascota(MascotaDTORequest mascota) {
+        return addMascota(mascota, GatoDTO.class, ImageCat.class);
     }
 }
