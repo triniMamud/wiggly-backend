@@ -1,13 +1,12 @@
 package app.service.common;
 
-import app.mapper.ItemMapper;
 import app.model.Adoptant;
 import app.model.MyPets;
-import app.model.Pet;
 import app.model.dto.AdoptantDTO;
 import app.model.dto.ItemDTO;
 import app.model.entity.User;
 import app.repository.IUsersRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -20,6 +19,9 @@ public class MyPetsCommonService <S extends JpaRepository, T extends JpaReposito
     private final T petRepository;
     private final V adoptantsRepository;
     private final IUsersRepository usersRepository;
+
+    private ModelMapper mapper;
+
 
     @Autowired
     public MyPetsCommonService (S myPetsRepository, T petRepository, V adoptantsRepository, IUsersRepository usersRepository) {
@@ -34,7 +36,8 @@ public class MyPetsCommonService <S extends JpaRepository, T extends JpaReposito
 
         myPetsRepository.findAll().stream()
                 .filter(myPet -> username.equalsIgnoreCase(MyPets.class.cast(myPet).getUsername()))
-                .forEach(myPet -> itemPetList.add(ItemMapper.newItemPetDTO((Pet) petRepository.findById(MyPets.class.cast(myPet).getPet()).get())));
+                .forEach(pet -> itemPetList.add(mapper.map(petRepository.findById(MyPets.class.cast(pet).getPet()).get(), ItemDTO.class))
+                );
         return itemPetList;
     }
 

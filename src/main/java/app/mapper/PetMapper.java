@@ -5,7 +5,7 @@ import app.model.dto.PetDTO;
 
 public class PetMapper <T extends PetDTO, S extends Pet>{
 
-    public T castToPetDTO (Pet pet, Class<T> type) throws Exception {
+    /*public T castToPetDTO (Pet pet, Class<T> type) throws Exception {
         return type
                 .getConstructor(int.class, String.class, Float.class, String.class,
                         String.class, String.class, Boolean.class, String.class,
@@ -27,5 +27,5 @@ public class PetMapper <T extends PetDTO, S extends Pet>{
                         petDto.getSex(), petDto.getNeighbourhood(), petDto.getCastrated(), petDto.getVaccines(),
                         petDto.getVaccinesInfo(), petDto.getDewormed(), petDto.getIllnessesAndTreatments(),
                         petDto.getMedicalInfo(), petDto.getGeneralInfo());
-    }
+    }*/
 }
