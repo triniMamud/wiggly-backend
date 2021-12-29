@@ -5,6 +5,6 @@ import app.model.dto.ItemDTO;
 import java.util.List;
 
 public interface IFavouriteDogService {
-    List<ItemDTO> getFavourites(String user);
-    Boolean addNewFavourite(String id_usuario, int id_mascota) throws Exception;
+    List<ItemDTO> getFavouriteDogs(String username);
+    Boolean addNewFavouriteDog(String username, int idPet) throws Exception;
 }

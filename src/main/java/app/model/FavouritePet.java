@@ -17,12 +17,12 @@ public abstract class FavouritePet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    protected String usuario;
-    protected int id_mascota;
+    protected String username;
+    protected int idPet;
 
-    public FavouritePet(String id_usuario, int id_mascota) {
-        this.usuario = id_usuario;
-        this.id_mascota = id_mascota;
+    public FavouritePet(String username, int idPet) {
+        this.username = username;
+        this.idPet = idPet;
     }
 
 }

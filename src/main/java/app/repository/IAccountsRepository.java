@@ -8,8 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IAccountsRepository extends JpaRepository<Account, Integer> {
 
-    boolean existsAccountByUsuario(String usuario);
+    boolean existsAccountByUsername(String username);
 
-    @Query("SELECT password FROM Account WHERE usuario = :user")
-    String getUserPssw(String user);
+    @Query("SELECT password FROM Account WHERE username = :username:")
+    String getUserPassword(String username);
 }

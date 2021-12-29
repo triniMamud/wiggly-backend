@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PetDTOResponse {
 
-    protected PetDTO mascota;
+    protected PetDTO pet;
     protected List<byte[]> images;
 
 }

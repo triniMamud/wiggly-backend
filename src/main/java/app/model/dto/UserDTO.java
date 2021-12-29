@@ -9,19 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-    private String usuario;
-    private String nombre;
-    private String apellido;
-    private int edad;
-    private String barrio;
-    private String mailContacto;
-    private long numeroContacto;
-
-    private Boolean adopta;
-    private String tipoDomicilio;
-    private Boolean tienePatioOBalcon;
-    private Boolean tieneRedContencion;
-    private Boolean tieneOtrasMacotas;
-    private String aclaracionOtrasMascotas;
+    private String username;
+    private String name;
+    private String lastName;
+    private int age;
+    private String neighbourhood;
+    private String mail;
+    private long phone;
+    private Boolean adopts;
+    private String houseType;
+    private Boolean hasGardenOrBalcony;
+    private Boolean hasContentionNet;
+    private Boolean hasAnotherPets;
+    private String otherPetsInfo;
 
 }

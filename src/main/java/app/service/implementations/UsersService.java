@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsersService implements IUsersService {
 
-    private IUsersRepository usuariosRepository;
-    private IAccountsRepository accountsRepository;
+    private final IUsersRepository usuariosRepository;
+    private final IAccountsRepository accountsRepository;
 
     @Autowired
     public UsersService(IUsersRepository usuariosRepository, IAccountsRepository accountsRepository) {
@@ -24,18 +24,18 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public UserDTO altaUsuario(UserDTO usuario, String password) {
-        if(!accountsRepository.existsAccountByUsuario(usuario.getUsuario())) {
-            accountsRepository.save(new Account(usuario.getUsuario(), Encryption.encryptPssw(password)));
-            usuariosRepository.save(UserMapper.newUsuario(usuario));
+    public UserDTO signUpUser(UserDTO userDTO, String password) {
+        if(!accountsRepository.existsAccountByUsername(userDTO.getUsername())) {
+            accountsRepository.save(new Account(userDTO.getUsername(), Encryption.encryptPssw(password)));
+            usuariosRepository.save(UserMapper.castToUser(userDTO));
         }
-        return usuario;
+        return userDTO;
     }
 
     @Override
     public Void logIn(AccountDTO accountDTO) {
-        if(accountsRepository.existsAccountByUsuario(accountDTO.getUsuario())) {
-            Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPssw(accountDTO.getUsuario()));
+        if(accountsRepository.existsAccountByUsername(accountDTO.getUser())) {
+            Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPassword(accountDTO.getUser()));
         }
         return null;
     }

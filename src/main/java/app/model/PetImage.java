@@ -17,6 +17,6 @@ public abstract class PetImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    protected int id_pet;
-    protected int id_image;
+    protected int idPet;
+    protected int idImage;
 }

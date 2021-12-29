@@ -10,18 +10,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
-import static org.apache.http.entity.ContentType.*;
+import static org.apache.http.entity.ContentType.IMAGE_BMP;
+import static org.apache.http.entity.ContentType.IMAGE_GIF;
+import static org.apache.http.entity.ContentType.IMAGE_JPEG;
+import static org.apache.http.entity.ContentType.IMAGE_PNG;
 
 @Service
 @AllArgsConstructor
 public class ImageService implements IImageService {
+
     private final FileStore fileStore;
     private final IImageRepository repository;
 
     @Override
-    public Image saveTodo(MultipartFile file) {
+    public Image saveImage(MultipartFile file) {
         //check if the file is empty
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
@@ -49,18 +59,18 @@ public class ImageService implements IImageService {
                 .imagePath(path)
                 .imageFileName(fileName)
                 .build();
-        repository.save(image);
-        return repository.findById(image.getId()).get();
+
+        return repository.save(image);
     }
 
     @Override
-    public byte[] downloadTodoImage(Long id) {
+    public byte[] downloadImage(Long id) {
         Image image = repository.findById(id).get();
         return fileStore.download(image.getImagePath(), image.getImageFileName());
     }
 
     @Override
-    public List<Image> getAllTodos() {
+    public List<Image> getAllImages() {
         List<Image> images = new ArrayList<>();
         repository.findAll().forEach(images::add);
         return images;

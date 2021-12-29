@@ -3,25 +3,22 @@ package app.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetDTO {
     protected int id;
-    protected String nombre;
-    protected Float edadAprox;
-    protected String sexo;
-    protected String tamanio;
-    protected String barrio;
-    protected Boolean castrado;
-    protected String vacunas;
-    protected String aclaracionesVacunas;
-    protected String desparacitado;
-    protected String enfermedadesYTratamientos;
-    protected String aclaracionesMedicas;
-    protected String aclaracionesGenerales;
+    protected String name;
+    protected Float age;
+    protected String sex;
+    protected String size;
+    protected String neighbourhood;
+    protected Boolean castrated;
+    protected String vaccines;
+    protected String vaccinesInfo;
+    protected String dewormed;
+    protected String illnessesAndTreatments;
+    protected String medicalInfo;
+    protected String generalInfo;
 }

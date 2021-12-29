@@ -2,8 +2,8 @@ package app.service.implementations;
 
 import app.model.dto.ItemDTO;
 import app.model.entity.FavouriteCat;
-import app.repository.IFavouriteCatRepository;
 import app.repository.ICatsRepository;
+import app.repository.IFavouriteCatRepository;
 import app.service.common.CommonFavouriteService;
 import app.service.intefaces.IFavouriteCatService;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,12 @@ public class FavouriteCatService extends CommonFavouriteService<ICatsRepository,
     }
 
     @Override
-    public List<ItemDTO> getFavourites(String user) {
-        return getFavouritesList(user);
+    public List<ItemDTO> getFavouriteCats(String username) {
+        return getFavouritesList(username);
     }
 
     @Override
-    public Boolean addNewFavourite(String id_usuario, int id_mascota) throws Exception {
-        return addNewFavouritePet(id_usuario, id_mascota, FavouriteCat.class);
+    public Boolean addNewFavouriteCat(String username, int idPet) throws Exception {
+        return addNewFavouritePet(username, idPet, FavouriteCat.class);
     }
 }

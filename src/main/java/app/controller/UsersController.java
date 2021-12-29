@@ -5,25 +5,29 @@ import app.model.dto.UserDTO;
 import app.service.intefaces.IUsersService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/usuarios")
 public class UsersController {
 
-    private IUsersService usuariosService;
+    private IUsersService usersService;
 
-    public UsersController(IUsersService usuariosService) {
-        this.usuariosService = usuariosService;
+    public UsersController(IUsersService usersService) {
+        this.usersService = usersService;
     }
 
     @PostMapping("/log_in")
     public ResponseEntity<Void> login(@RequestBody AccountDTO account) {
-        return new ResponseEntity<>(usuariosService.logIn(account),HttpStatus.OK);
+        return new ResponseEntity<>(usersService.logIn(account),HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<UserDTO> altaUsuario(@RequestBody UserDTO usuario, @RequestHeader("password") String password) {
-        return new ResponseEntity<>(usuariosService.altaUsuario(usuario, password), HttpStatus.OK);
+    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) {
+        return new ResponseEntity<>(usersService.signUpUser(user, password), HttpStatus.OK);
     }
 }

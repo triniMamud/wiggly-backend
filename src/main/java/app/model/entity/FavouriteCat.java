@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 public class FavouriteCat extends FavouritePet {
 
-    public FavouriteCat(String id_usuario, int id_gato) {
-        super(id_usuario,id_gato);
+    public FavouriteCat(String username, int idCat) {
+        super(username, idCat);
     }
 }

@@ -6,9 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface IImageService {
-    Image saveTodo(MultipartFile file);
 
-    byte[] downloadTodoImage(Long id);
-
-    List<Image> getAllTodos();
+    Image saveImage(MultipartFile file);
+    byte[] downloadImage(Long id);
+    List<Image> getAllImages();
 }

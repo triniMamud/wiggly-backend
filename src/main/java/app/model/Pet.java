@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 @Data
 @AllArgsConstructor
@@ -15,17 +18,17 @@ public abstract class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected int id;
-    protected String nombre;
-    protected Float edadAprox;
-    protected String sexo;
-    protected String tamanio;
-    protected String barrio;
-    protected Boolean castrado;
-    protected String vacunas;
-    protected String aclaracionesVacunas;
-    protected String desparacitado;
-    @Column(name = "enfermedades_y_tratamientos")
-    protected String enfermedadesYTratamientos;
-    protected String aclaracionesMedicas;
-    protected String aclaracionesGenerales;
+    protected String name;
+    protected Float age;
+    protected String sex;
+    protected String size;
+    protected String neighbourhood;
+    protected Boolean castrated;
+    protected String vaccines;
+    protected String vaccinesInfo;
+    protected String dewormed;
+    @Column(name = "illnesses_and_treatments")
+    protected String illnessesAndTreatments;
+    protected String medicalInfo;
+    protected String generalInfo;
 }

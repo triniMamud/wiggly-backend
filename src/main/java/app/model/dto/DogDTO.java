@@ -7,7 +7,19 @@ import lombok.Data;
 @AllArgsConstructor
 public class DogDTO extends PetDTO {
 
-    public DogDTO(int id, String nombre, Float edadAprox, String sexo, String tamanio, String barrio, Boolean castrado, String vacunas, String aclaracionesVacunas, String desparacitado, String enfermedadesYTratamientos, String aclaracionesMedicas, String aclaracionesGenerales) {
-        super(id,nombre,edadAprox,sexo,tamanio,barrio,castrado,vacunas,aclaracionesVacunas,desparacitado,enfermedadesYTratamientos,aclaracionesMedicas,aclaracionesGenerales);
+    public DogDTO(int id,
+                  String name,
+                  Float age,
+                  String sex,
+                  String size,
+                  String neighbourhood,
+                  Boolean castrated,
+                  String vaccines,
+                  String vaccinesInfo,
+                  String dewormed,
+                  String illnessesAndTreatments,
+                  String medicalInfo,
+                  String generalInfo) {
+        super(id, name, age, sex, size, neighbourhood, castrated, vaccines, vaccinesInfo, dewormed, illnessesAndTreatments, medicalInfo, generalInfo);
     }
 }

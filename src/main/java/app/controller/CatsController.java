@@ -3,12 +3,17 @@ package app.controller;
 import app.model.dto.PetDTORequest;
 import app.model.dto.PetDTOResponse;
 import app.service.intefaces.ICatService;
+import app.service.intefaces.IMyCatsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.MessagingException;
 import java.util.List;
 
 @RestController
@@ -16,19 +21,22 @@ import java.util.List;
 public class CatsController {
 
     private ICatService catService;
+    private IMyCatsService myCatsService;
 
     @Autowired
-    public CatsController(ICatService catService) {
+    public CatsController(ICatService catService, IMyCatsService myCatsService) {
         this.catService = catService;
+        this.myCatsService = myCatsService;
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<PetDTOResponse>> getCatList() throws MessagingException {
+    public ResponseEntity<List<PetDTOResponse>> getCatList() throws Exception {
         return new ResponseEntity<>(catService.getCatsList(), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<PetDTOResponse> postNewCat(@RequestBody PetDTORequest pet) throws Exception {
+    public ResponseEntity<PetDTOResponse> postNewCat(@RequestBody PetDTORequest pet, @RequestHeader("username") String username) throws Exception {
+        myCatsService.addToMyCats(pet.getPet().getId(), username);
         return new ResponseEntity<>(catService.addNewCat(pet), HttpStatus.OK);
     }
 }

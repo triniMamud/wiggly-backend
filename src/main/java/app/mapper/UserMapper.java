@@ -5,17 +5,17 @@ import app.model.entity.User;
 
 public class UserMapper {
 
-    public static User newUsuario(UserDTO userDTO) {
+    public static User castToUser(UserDTO userDTO) {
         return new User(
-                userDTO.getUsuario(), userDTO.getNombre(), userDTO.getApellido(), userDTO.getEdad(), userDTO.getBarrio(),
-                userDTO.getMailContacto(), userDTO.getNumeroContacto(), userDTO.getAdopta(), userDTO.getTipoDomicilio(),
-                userDTO.getTienePatioOBalcon(), userDTO.getTieneRedContencion(), userDTO.getTieneOtrasMacotas(), userDTO.getAclaracionOtrasMascotas());
+                userDTO.getUsername(), userDTO.getName(), userDTO.getLastName(), userDTO.getAge(), userDTO.getNeighbourhood(),
+                userDTO.getMail(), userDTO.getPhone(), userDTO.getAdopts(), userDTO.getHouseType(),
+                userDTO.getHasGardenOrBalcony(), userDTO.getHasContentionNet(), userDTO.getHasAnotherPets(), userDTO.getOtherPetsInfo());
     }
 
-    public static UserDTO newUsuarioDTO(User user) {
+    public static UserDTO castToUserDTO(User user) {
         return new UserDTO(
-                user.getUsuario(), user.getNombre(), user.getApellido(), user.getEdad(), user.getBarrio(),
-                user.getMailContacto(), user.getNumeroContacto(), user.getAdopta(), user.getTipoDomicilio(),
-                user.getTienePatioOBalcon(), user.getTieneRedContencion(), user.getTieneOtrasMacotas(), user.getAclaracionOtrasMascotas());
+                user.getUsername(), user.getName(), user.getLastName(), user.getAge(), user.getNeighbourhood(),
+                user.getMail(), user.getPhone(), user.getAdopts(), user.getHouseType(),
+                user.getHasGardenOrBalcony(), user.getHasContentionNet(), user.getHasAnotherPets(), user.getOtherPetsInfo());
     }
 }

@@ -4,8 +4,8 @@ import app.model.dto.CatDTO;
 import app.model.dto.PetDTO;
 import app.model.dto.PetDTORequest;
 import app.model.dto.PetDTOResponse;
-import app.model.entity.PetImageCat;
 import app.model.entity.Cat;
+import app.model.entity.PetImageCat;
 import app.repository.ICatsRepository;
 import app.repository.IImageCatRepository;
 import app.service.common.CommonService;
@@ -24,16 +24,16 @@ public class CatService extends CommonService<ICatsRepository, CatDTO, Cat, IIma
 
     @Override
     public List<PetDTOResponse> getCatsList() {
-        return getListMascotas(CatDTO.class);
+        return getListPets(CatDTO.class);
     }
 
     @Override
-    public PetDTOResponse addNewCat(PetDTORequest mascota) throws Exception {
-        return addMascota(mascota, Cat.class, PetImageCat.class);
+    public PetDTOResponse addNewCat(PetDTORequest petRequest) throws Exception {
+        return addNewPet(petRequest, Cat.class, PetImageCat.class);
     }
 
     @Override
     public PetDTO editCat(int idCat, PetDTO petDTO) throws Exception {
-        return editMascota(idCat, petDTO, CatDTO.class);
+        return editPet(idCat, petDTO, CatDTO.class);
     }
 }

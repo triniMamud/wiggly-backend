@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PetDTORequest {
 
-    protected PetDTO mascota;
+    protected PetDTO pet;
     protected List<MultipartFile> images;
 }

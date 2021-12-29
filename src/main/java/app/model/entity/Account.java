@@ -13,6 +13,6 @@ import javax.persistence.Id;
 @NoArgsConstructor
 public class Account {
     @Id
-    private String usuario;
+    private String username;
     private String password;
 }

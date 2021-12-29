@@ -18,11 +18,11 @@ public abstract class MyPets {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String user;
+    private String username;
     private int pet;
 
     public MyPets(String username, int idPet) {
-        this.user = username;
+        this.username = username;
         this.pet = idPet;
     }
 }
