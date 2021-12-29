@@ -1,11 +1,11 @@
 package app.service.implementations;
 
 import app.model.dto.ItemDTO;
-import app.model.dto.PostulantesDTO;
+import app.model.dto.AdoptantDTO;
 import app.model.entity.MyDogs;
 import app.repository.IAdoptantsDogRepository;
 import app.repository.IMyDogsRepository;
-import app.repository.IPerrosRepository;
+import app.repository.IDogsRepository;
 import app.service.common.MyPetsCommonService;
 import app.service.intefaces.IMyDogsService;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class MyDogsService extends MyPetsCommonService<IMyDogsRepository, IPerrosRepository, IAdoptantsDogRepository, MyDogs> implements IMyDogsService {
+public class MyDogsService extends MyPetsCommonService<IMyDogsRepository, IDogsRepository, IAdoptantsDogRepository, MyDogs> implements IMyDogsService {
 
     @Override
     public List<ItemDTO> getMyDogs(String username) {
@@ -26,7 +26,7 @@ public class MyDogsService extends MyPetsCommonService<IMyDogsRepository, IPerro
     }
 
     @Override
-    public List<PostulantesDTO> getAdoptantsDog(int idDog) {
+    public List<AdoptantDTO> getAdoptantsDog(int idDog) {
         return getPostulantesPet(idDog);
     }
 }

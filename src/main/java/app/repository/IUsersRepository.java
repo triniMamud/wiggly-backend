@@ -1,9 +1,9 @@
 package app.repository;
 
-import app.model.entity.PetImageCat;
+import app.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface IImageCatRepository extends JpaRepository<PetImageCat, Integer> {
+public interface IUsersRepository extends JpaRepository<User, String> {
 }

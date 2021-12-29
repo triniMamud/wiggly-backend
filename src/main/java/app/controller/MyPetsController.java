@@ -1,12 +1,12 @@
 package app.controller;
 
 import app.model.dto.ItemDTO;
-import app.model.dto.MascotaDTO;
-import app.model.dto.PostulantesDTO;
-import app.service.intefaces.IGatoService;
+import app.model.dto.PetDTO;
+import app.model.dto.AdoptantDTO;
+import app.service.intefaces.ICatService;
 import app.service.intefaces.IMyCatsService;
 import app.service.intefaces.IMyDogsService;
-import app.service.intefaces.IPerroService;
+import app.service.intefaces.IDogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +21,18 @@ import java.util.List;
 @RestController
 public class MyPetsController {
 
+    private IMyDogsService myDogsService;
+    private IDogService perroService;
+    private IMyCatsService myCatsService;
+    private ICatService gatosService;
+
     @Autowired
-    IMyDogsService myDogsService;
-    @Autowired
-    IPerroService perroService;
-    @Autowired
-    IMyCatsService myCatsService;
-    @Autowired
-    IGatoService gatosService;
+    public MyPetsController (IMyDogsService myDogsService, IDogService perroService, IMyCatsService myCatsService, ICatService gatosService) {
+        this.myDogsService = myDogsService;
+        this.perroService = perroService;
+        this.myCatsService = myCatsService;
+        this.gatosService = gatosService;
+    }
 
     @PostMapping("/misPerros")
     public ResponseEntity<List<ItemDTO>> getMyDogs(@RequestHeader("username") String username) {
@@ -36,12 +40,12 @@ public class MyPetsController {
     }
 
     @PostMapping("/misPerros/editar/{idPerro}")
-    public ResponseEntity<MascotaDTO> editMyDogs(@PathVariable("idPerro") int idPerro, @RequestBody MascotaDTO mascota) throws Exception {
+    public ResponseEntity<PetDTO> editMyDogs(@PathVariable("idPerro") int idPerro, @RequestBody PetDTO mascota) throws Exception {
         return new ResponseEntity<>(perroService.editPerro(idPerro, mascota), HttpStatus.OK);
     }
 
     @PostMapping("/misPerros/postulantes/{idPerro}")
-    public ResponseEntity<List<PostulantesDTO>> getAdoptantsDog(@PathVariable("idPerro") int idPerro) {
+    public ResponseEntity<List<AdoptantDTO>> getAdoptantsDog(@PathVariable("idPerro") int idPerro) {
         return new ResponseEntity<>(myDogsService.getAdoptantsDog(idPerro), HttpStatus.OK);
     }
 
@@ -51,12 +55,12 @@ public class MyPetsController {
     }
 
     @PostMapping("/misGatos/editar/{idCat}")
-    public ResponseEntity<MascotaDTO> editMyCats(@PathVariable("idCat") int idCat, @RequestBody MascotaDTO mascota) throws Exception {
+    public ResponseEntity<PetDTO> editMyCats(@PathVariable("idCat") int idCat, @RequestBody PetDTO mascota) throws Exception {
         return new ResponseEntity<>(gatosService.editCat(idCat, mascota), HttpStatus.OK);
     }
 
     @PostMapping("/misGatos/postulantes/{idCat}")
-    public ResponseEntity<List<PostulantesDTO>> getAdoptantsCat(@PathVariable("idCat") int idCat) {
+    public ResponseEntity<List<AdoptantDTO>> getAdoptantsCat(@PathVariable("idCat") int idCat) {
         return new ResponseEntity<>(myCatsService.getAdoptantsCat(idCat), HttpStatus.OK);
     }
 }

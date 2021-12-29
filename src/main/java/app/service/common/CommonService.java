@@ -1,12 +1,12 @@
 package app.service.common;
 
-import app.model.Image;
-import app.model.Mascota;
-import app.model.dto.MascotaDTO;
-import app.model.dto.MascotaDTORequest;
-import app.model.dto.MascotaDTOResponse;
-import app.model.entity.Todo;
-import app.service.intefaces.ITodoService;
+import app.model.PetImage;
+import app.model.Pet;
+import app.model.dto.PetDTO;
+import app.model.dto.PetDTORequest;
+import app.model.dto.PetDTOResponse;
+import app.model.entity.Image;
+import app.service.intefaces.IImageService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,20 +19,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Set;
 
-public class CommonService<S extends JpaRepository, T extends MascotaDTO, Q extends Mascota, R extends JpaRepository, K extends Image> {
+public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends Pet, R extends JpaRepository, K extends PetImage> {
 
     private S repository;
     private R imageRepository;
-    private ITodoService todoService;
+    private IImageService todoService;
 
     @Autowired
-    public CommonService(S repository, ITodoService todoService, R imageRepository) {
+    public CommonService(S repository, IImageService todoService, R imageRepository) {
         this.repository = repository;
         this.imageRepository = imageRepository;
         this.todoService = todoService;
     }
 
-    public MascotaDTOResponse addMascota(MascotaDTORequest mascota, Class<Q> mascotaType, Class<K> imageType) throws Exception {
+    public PetDTOResponse addMascota(PetDTORequest mascota, Class<Q> mascotaType, Class<K> imageType) throws Exception {
         repository.save(castToMascota(mascota.getMascota(), mascotaType));
         mascota.getImages().stream()
                 .forEach(img -> {
@@ -42,41 +42,41 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, Q exte
                         e.printStackTrace();
                     }
                 });
-        MascotaDTOResponse mascotaDTOResponse = new MascotaDTOResponse();
-        mascotaDTOResponse.setMascota(mascota.getMascota());
+        PetDTOResponse petDTOResponse = new PetDTOResponse();
+        petDTOResponse.setMascota(mascota.getMascota());
         mascota.getImages().stream()
                 .forEach(img -> {
                     try {
-                        mascotaDTOResponse.getImages().add(img.getBytes());
+                        petDTOResponse.getImages().add(img.getBytes());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
-        return mascotaDTOResponse;
+        return petDTOResponse;
     }
 
-    public List<MascotaDTOResponse> getListMascotas(Class<T> mascotaType) {
-        List<MascotaDTO> mascotasList = new ArrayList<>();
-        List<MascotaDTOResponse> mascotasResponse = new ArrayList<>();
+    public List<PetDTOResponse> getListMascotas(Class<T> mascotaType) {
+        List<PetDTO> mascotasList = new ArrayList<>();
+        List<PetDTOResponse> mascotasResponse = new ArrayList<>();
         repository.findAll()
                 .stream()
                 .forEach(mascota -> {
                     try {
-                        mascotasList.add(castToDTO((Mascota) mascota, mascotaType));
+                        mascotasList.add(castToDTO((Pet) mascota, mascotaType));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });
         mascotasList.stream()
-                .forEach(pet ->  mascotasResponse.add(new MascotaDTOResponse(pet, (List<byte[]>) imageRepository.findAll().stream().filter(img -> ((Image) img).getId_pet() == pet.getId()).collect(Collectors.toList()))));
+                .forEach(pet ->  mascotasResponse.add(new PetDTOResponse(pet, (List<byte[]>) imageRepository.findAll().stream().filter(img -> ((PetImage) img).getId_pet() == pet.getId()).collect(Collectors.toList()))));
         return mascotasResponse;
     }
 
-    public MascotaDTO editMascota( int idMascota, MascotaDTO mascota, Class<T> mascotaType) throws Exception {
-        Mascota mascotaDB = (Mascota) repository.findById(idMascota).get();
+    public PetDTO editMascota(int idMascota, PetDTO mascota, Class<T> mascotaType) throws Exception {
+        Pet petDB = (Pet) repository.findById(idMascota).get();
         Set<String> nullProperties = new HashSet<>();
 
-        Arrays.stream(MascotaDTO.class.getFields()).forEach(field -> {
+        Arrays.stream(PetDTO.class.getFields()).forEach(field -> {
             try {
                 if (field.get(mascota) == null) {
                     nullProperties.add(field.getName());
@@ -84,36 +84,36 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, Q exte
             } catch (IllegalAccessException e) { e.printStackTrace(); }
         });
 
-        BeanUtils.copyProperties(mascotaDB, mascota, new String[nullProperties.size()]);
-        return castToDTO((Mascota)repository.save(mascotaDB), mascotaType);
+        BeanUtils.copyProperties(petDB, mascota, new String[nullProperties.size()]);
+        return castToDTO((Pet)repository.save(petDB), mascotaType);
     }
 
-    public T castToDTO (Mascota mascota, Class<T> type) throws Exception {
+    public T castToDTO (Pet pet, Class<T> type) throws Exception {
         return type
                 .getConstructor(int.class, String.class, Float.class, String.class,
                 String.class, String.class, Boolean.class, String.class,
                 String.class, String.class, String.class,
                 String.class, String.class)
-                .newInstance(mascota.getId(), mascota.getNombre(), mascota.getEdadAprox(), mascota.getSexo(),
-                        mascota.getTamanio(), mascota.getBarrio(), mascota.getCastrado(), mascota.getVacunas(),
-                        mascota.getAclaracionesVacunas(), mascota.getDesparacitado(), mascota.getEnfermedadesYTratamientos(),
-                        mascota.getAclaracionesMedicas(), mascota.getAclaracionesGenerales());
+                .newInstance(pet.getId(), pet.getNombre(), pet.getEdadAprox(), pet.getSexo(),
+                        pet.getTamanio(), pet.getBarrio(), pet.getCastrado(), pet.getVacunas(),
+                        pet.getAclaracionesVacunas(), pet.getDesparacitado(), pet.getEnfermedadesYTratamientos(),
+                        pet.getAclaracionesMedicas(), pet.getAclaracionesGenerales());
     }
 
-    public K createImage(MascotaDTORequest mascotaDTO,Todo todo, Class<K> type) throws Exception {
+    public K createImage(PetDTORequest mascotaDTO, Image image, Class<K> type) throws Exception {
         return type
                 .getConstructor(int.class,int.class)
-                .newInstance(mascotaDTO.getMascota().getId(),todo.getId());
+                .newInstance(mascotaDTO.getMascota().getId(), image.getId());
     }
-    public Mascota castToMascota (MascotaDTO mascotaDto, Class<Q> type) throws Exception {
+    public Pet castToMascota (PetDTO petDto, Class<Q> type) throws Exception {
         return type
                 .getConstructor(int.class, String.class, Float.class, String.class,
                         String.class, String.class, Boolean.class, String.class,
                         String.class, String.class, String.class,
                         String.class, String.class)
-                .newInstance(mascotaDto.getId(), mascotaDto.getNombre(), mascotaDto.getEdadAprox(), mascotaDto.getSexo(),
-                        mascotaDto.getTamanio(), mascotaDto.getBarrio(), mascotaDto.getCastrado(), mascotaDto.getVacunas(),
-                        mascotaDto.getAclaracionesVacunas(), mascotaDto.getDesparacitado(), mascotaDto.getEnfermedadesYTratamientos(),
-                        mascotaDto.getAclaracionesMedicas(), mascotaDto.getAclaracionesGenerales());
+                .newInstance(petDto.getId(), petDto.getNombre(), petDto.getEdadAprox(), petDto.getSexo(),
+                        petDto.getTamanio(), petDto.getBarrio(), petDto.getCastrado(), petDto.getVacunas(),
+                        petDto.getAclaracionesVacunas(), petDto.getDesparacitado(), petDto.getEnfermedadesYTratamientos(),
+                        petDto.getAclaracionesMedicas(), petDto.getAclaracionesGenerales());
     }
 }

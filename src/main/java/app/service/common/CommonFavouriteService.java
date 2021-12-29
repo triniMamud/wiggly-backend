@@ -1,7 +1,7 @@
 package app.service.common;
 
 import app.mapper.ItemMapper;
-import app.model.Mascota;
+import app.model.Pet;
 import app.model.dto.ItemDTO;
 import app.model.FavouritePet;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -23,7 +23,7 @@ public class CommonFavouriteService<S extends JpaRepository, T extends JpaReposi
         List<ItemDTO> favourites = new ArrayList<>();
         favouriteRepository.findAll()
                 .stream().filter(item -> ((FavouritePet) item).getUsuario().equalsIgnoreCase(user))
-                .forEach(fav -> favourites.add(ItemMapper.newItemPetDTO((Mascota) repository.findById(((FavouritePet) fav).getId()).get())
+                .forEach(fav -> favourites.add(ItemMapper.newItemPetDTO((Pet) repository.findById(((FavouritePet) fav).getId()).get())
                 ));
         return favourites;
     }
