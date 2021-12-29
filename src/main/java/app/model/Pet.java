@@ -26,7 +26,7 @@ public abstract class Pet {
     protected Boolean castrated;
     protected String vaccines;
     protected String vaccinesInfo;
-    protected String dewormed;
+    protected String deparasited;
     @Column(name = "illnesses_and_treatments")
     protected String illnessesAndTreatments;
     protected String medicalInfo;

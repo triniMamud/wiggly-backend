@@ -17,10 +17,10 @@ public class CatDTO extends PetDTO {
                   Boolean castrated, 
                   String vaccines, 
                   String vaccinesInfo, 
-                  String dewormed,
+                  String deparasited,
                   String illnessesAndTreatments,
                   String medicalInfo,
                   String generalInfo) {
-        super(id, name, age, sex, size, neighbourhood, castrated, vaccines, vaccinesInfo, dewormed, illnessesAndTreatments, medicalInfo, generalInfo);
+        super(id, name, age, sex, size, neighbourhood, castrated, vaccines, vaccinesInfo, deparasited, illnessesAndTreatments, medicalInfo, generalInfo);
     }
 }

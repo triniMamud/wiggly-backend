@@ -14,4 +14,5 @@ public class FavouriteDog extends FavouritePet {
     public FavouriteDog(String username, int idDog) {
         super(username, idDog);
     }
+
 }

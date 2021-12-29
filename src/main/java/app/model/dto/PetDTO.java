@@ -17,7 +17,7 @@ public class PetDTO {
     protected Boolean castrated;
     protected String vaccines;
     protected String vaccinesInfo;
-    protected String dewormed;
+    protected String deparasited;
     protected String illnessesAndTreatments;
     protected String medicalInfo;
     protected String generalInfo;
