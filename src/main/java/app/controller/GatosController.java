@@ -29,7 +29,7 @@ public class GatosController {
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<MascotaDTOResponse> postNewGato(@RequestBody MascotaDTORequest mascota) {
+    public ResponseEntity<MascotaDTOResponse> postNewGato(@RequestBody MascotaDTORequest mascota) throws Exception {
         return new ResponseEntity<>(gatoService.altaMascota(mascota), HttpStatus.OK);
     }
 

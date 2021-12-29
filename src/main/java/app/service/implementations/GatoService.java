@@ -5,6 +5,7 @@ import app.model.dto.MascotaDTO;
 import app.model.dto.MascotaDTORequest;
 import app.model.dto.MascotaDTOResponse;
 import app.model.entity.ImageCat;
+import app.model.entity.Gato;
 import app.repository.IGatosRepository;
 import app.repository.IImageCatRepository;
 import app.repository.IImageDogRepository;
@@ -17,7 +18,7 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 @Service
-public class GatoService extends CommonService<IGatosRepository, GatoDTO, IImageCatRepository, ImageCat> implements IGatoService {
+public class GatoService extends CommonService<IGatosRepository, GatoDTO, Gato, IImageCatRepository, ImageCat> implements IGatoService {
 
     public GatoService(IGatosRepository repository, ITodoService todoService, IImageCatRepository imageCatRepository) {
         super(repository, todoService,imageCatRepository);
@@ -29,7 +30,12 @@ public class GatoService extends CommonService<IGatosRepository, GatoDTO, IImage
     }
 
     @Override
-    public MascotaDTOResponse altaMascota(MascotaDTORequest mascota) {
-        return addMascota(mascota, GatoDTO.class, ImageCat.class);
+    public MascotaDTOResponse altaMascota(MascotaDTORequest mascota) throws Exception {
+        return addMascota(mascota, Gato.class, ImageCat.class);
+    }
+
+    @Override
+    public MascotaDTO editCat(int idCat, MascotaDTO mascotaDTO) throws Exception {
+        return editMascota(idCat, mascotaDTO, GatoDTO.class);
     }
 }

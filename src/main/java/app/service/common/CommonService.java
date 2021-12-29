@@ -7,15 +7,19 @@ import app.model.dto.MascotaDTORequest;
 import app.model.dto.MascotaDTOResponse;
 import app.model.entity.Todo;
 import app.service.intefaces.ITodoService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Set;
 
-public class CommonService<S extends JpaRepository, T extends MascotaDTO, R extends JpaRepository, K extends Image> {
+public class CommonService<S extends JpaRepository, T extends MascotaDTO, Q extends Mascota, R extends JpaRepository, K extends Image> {
 
     private S repository;
     private R imageRepository;
@@ -28,8 +32,8 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
         this.todoService = todoService;
     }
 
-    public MascotaDTOResponse addMascota(MascotaDTORequest mascota, Class<T> mascotaType, Class<K> imageType) {
-        repository.save(mascotaType.cast(mascota));
+    public MascotaDTOResponse addMascota(MascotaDTORequest mascota, Class<Q> mascotaType, Class<K> imageType) throws Exception {
+        repository.save(castToMascota(mascota.getMascota(), mascotaType));
         mascota.getImages().stream()
                 .forEach(img -> {
                     try {
@@ -58,7 +62,7 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
                 .stream()
                 .forEach(mascota -> {
                     try {
-                        mascotasList.add(cast((Mascota) mascota, mascotaType));
+                        mascotasList.add(castToDTO((Mascota) mascota, mascotaType));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -68,7 +72,23 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
         return mascotasResponse;
     }
 
-    public T cast (Mascota mascota, Class<T> type) throws Exception {
+    public MascotaDTO editMascota( int idMascota, MascotaDTO mascota, Class<T> mascotaType) throws Exception {
+        Mascota mascotaDB = (Mascota) repository.findById(idMascota).get();
+        Set<String> nullProperties = new HashSet<>();
+
+        Arrays.stream(MascotaDTO.class.getFields()).forEach(field -> {
+            try {
+                if (field.get(mascota) == null) {
+                    nullProperties.add(field.getName());
+                }
+            } catch (IllegalAccessException e) { e.printStackTrace(); }
+        });
+
+        BeanUtils.copyProperties(mascotaDB, mascota, new String[nullProperties.size()]);
+        return castToDTO((Mascota)repository.save(mascotaDB), mascotaType);
+    }
+
+    public T castToDTO (Mascota mascota, Class<T> type) throws Exception {
         return type
                 .getConstructor(int.class, String.class, Float.class, String.class,
                 String.class, String.class, Boolean.class, String.class,
@@ -84,5 +104,16 @@ public class CommonService<S extends JpaRepository, T extends MascotaDTO, R exte
         return type
                 .getConstructor(int.class,int.class)
                 .newInstance(mascotaDTO.getMascota().getId(),todo.getId());
+    }
+    public Mascota castToMascota (MascotaDTO mascotaDto, Class<Q> type) throws Exception {
+        return type
+                .getConstructor(int.class, String.class, Float.class, String.class,
+                        String.class, String.class, Boolean.class, String.class,
+                        String.class, String.class, String.class,
+                        String.class, String.class)
+                .newInstance(mascotaDto.getId(), mascotaDto.getNombre(), mascotaDto.getEdadAprox(), mascotaDto.getSexo(),
+                        mascotaDto.getTamanio(), mascotaDto.getBarrio(), mascotaDto.getCastrado(), mascotaDto.getVacunas(),
+                        mascotaDto.getAclaracionesVacunas(), mascotaDto.getDesparacitado(), mascotaDto.getEnfermedadesYTratamientos(),
+                        mascotaDto.getAclaracionesMedicas(), mascotaDto.getAclaracionesGenerales());
     }
 }
