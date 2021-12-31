@@ -33,7 +33,7 @@ public class CatService extends CommonService<ICatsRepository, CatDTO, Cat, IIma
     }
 
     @Override
-    public PetDTO editCat(int idCat, PetDTO petDTO) throws Exception {
-        return editPet(idCat, petDTO, CatDTO.class);
+    public void editCat(int idCat, PetDTORequest petRequest) throws Exception {
+        editPet(idCat, petRequest, CatDTO.class, PetImageCat.class);
     }
 }

@@ -3,6 +3,8 @@ package app.controller;
 import app.model.dto.AdoptantDTO;
 import app.model.dto.ItemDTO;
 import app.model.dto.PetDTO;
+import app.model.dto.PetDTORequest;
+import app.model.dto.PetDTOResponse;
 import app.service.intefaces.ICatService;
 import app.service.intefaces.IDogService;
 import app.service.intefaces.IMyCatsService;
@@ -40,8 +42,8 @@ public class MyPetsController {
     }
 
     @PostMapping("/misPerros/editar/{idDog}")
-    public ResponseEntity<PetDTO> editMyDogs(@PathVariable("idDog") int idDog, @RequestBody PetDTO pet) throws Exception {
-        return new ResponseEntity<>(dogService.editDog(idDog, pet), HttpStatus.OK);
+    public ResponseEntity<PetDTOResponse> editMyDogs(@PathVariable("idDog") int idDog, @RequestBody PetDTORequest petRequest) throws Exception {
+        return new ResponseEntity<>(dogService.editDog(idDog, petRequest), HttpStatus.OK);
     }
 
     @PostMapping("/misPerros/postulantes/{idDog}")
@@ -55,8 +57,8 @@ public class MyPetsController {
     }
 
     @PostMapping("/misGatos/editar/{idCat}")
-    public ResponseEntity<PetDTO> editMyCats(@PathVariable("idCat") int idCat, @RequestBody PetDTO mascota) throws Exception {
-        return new ResponseEntity<>(catService.editCat(idCat, mascota), HttpStatus.OK);
+    public ResponseEntity<PetDTOResponse> editMyCats(@PathVariable("idCat") int idCat, @RequestBody PetDTORequest petRequest) throws Exception {
+        return new ResponseEntity<>(catService.editCat(idCat, petRequest), HttpStatus.OK);
     }
 
     @PostMapping("/misGatos/postulantes/{idCat}")

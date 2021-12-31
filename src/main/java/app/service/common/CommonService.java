@@ -7,6 +7,7 @@ import app.model.dto.PetDTORequest;
 import app.model.dto.PetDTOResponse;
 import app.model.entity.Image;
 import app.service.intefaces.IImageService;
+import com.sun.xml.bind.v2.TODO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static app.config.Utils.safeIsNotEmpty;
 
 public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends Pet, R extends JpaRepository, K extends PetImage> {
 
@@ -33,19 +36,14 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
         this.imageService = imageService;
     }
 
-    public PetDTOResponse addNewPet(PetDTORequest pet, Class<Q> petType, Class<K> imageType) {
-        petRepository.save(mapper.map(pet.getPet(), petType));
+    public PetDTOResponse addNewPet(PetDTORequest petRequest, Class<Q> petType, Class<K> imageType) {
+        petRepository.save(mapper.map(petRequest.getPet(), petType));
 
-        PetDTOResponse petDTOResponse = new PetDTOResponse();
-        petDTOResponse.setPet(pet.getPet());
-        pet.getImages().forEach(img -> {
-                    try {
-                        imageRepository.save(createImage(pet,this.imageService.saveImage(img), imageType));
-                        petDTOResponse.getImages().add(img.getBytes());
-                    } catch (Exception e) { e.printStackTrace(); }
-                });
+        PetDTOResponse petResponse = new PetDTOResponse();
+        petResponse.setPet(petRequest.getPet());
+        saveImages(petRequest, petResponse, imageType);
 
-        return petDTOResponse;
+        return petResponse;
     }
 
     public List<PetDTOResponse> getListPets(Class<T> petType) {
@@ -66,20 +64,35 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
         return petResponseList;
     }
 
-    public PetDTO editPet(int idPet, PetDTO petDTO, Class<T> petType) {
+    public void editPet(int idPet, PetDTORequest petRequest, Class<T> petType, Class<K> imageType) {
         Pet petDB = (Pet) petRepository.findById(idPet).get();
         Set<String> nullProperties = new HashSet<>();
+        PetDTOResponse petResponse = new PetDTOResponse();
+        petResponse.setPet(petRequest.getPet());
+
+        if (safeIsNotEmpty(petRequest.getImages())){
+            saveImages(petRequest, petResponse, imageType);
+        }
 
         Arrays.stream(PetDTO.class.getFields()).forEach(field -> {
             try {
-                if (field.get(petDTO) == null) {
+                if (field.get(petRequest) == null) {
                     nullProperties.add(field.getName());
                 }
             } catch (IllegalAccessException e) { e.printStackTrace(); }
         });
 
-        BeanUtils.copyProperties(petDB, petDTO, new String[nullProperties.size()]);
-        return mapper.map(petRepository.save(petDB), petType);
+        BeanUtils.copyProperties(petDB, petRequest, new String[nullProperties.size()]);
+        mapper.map(petRepository.save(petDB), petType);
+    }
+
+    public void saveImages(PetDTORequest petRequest, PetDTOResponse petResponse, Class<K> imageType) {
+        petRequest.getImages().forEach(img -> {
+            try {
+                imageRepository.save(createImage(petRequest,this.imageService.saveImage(img), imageType));
+                petResponse.getImages().add(img.getBytes());
+            } catch (Exception e) { e.printStackTrace(); }
+        });
     }
 
     public K createImage(PetDTORequest petDTORequest, Image image, Class<K> type) throws Exception {

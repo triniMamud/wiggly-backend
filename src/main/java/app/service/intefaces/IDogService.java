@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface IDogService {
     List<PetDTOResponse> getDogsList() throws Exception;
-    PetDTOResponse addNewDog(PetDTORequest mascota) throws Exception;
-    PetDTO editDog(int idPerro, PetDTO petDTO) throws Exception;
+    PetDTOResponse addNewDog(PetDTORequest petRequest) throws Exception;
+    void editDog(int idPerro, PetDTORequest petRequest) throws Exception;
 }
