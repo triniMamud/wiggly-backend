@@ -27,12 +27,12 @@ public class DogService extends CommonService<IDogsRepository, DogDTO, Dog, IIma
         return getListPets(DogDTO.class);
     }
     @Override
-    public PetDTOResponse addNewDog(PetDTORequest petRequest) throws Exception {
+    public PetDTOResponse addNewDog(PetDTORequest petRequest) {
         return addNewPet(petRequest, Dog.class, PetImageDog.class);
     }
 
     @Override
-    public PetDTO editDog(int idDog, PetDTO petDTO) throws Exception {
-        return editPet(idDog, petDTO, DogDTO.class);
+    public void editDog(int idDog, PetDTORequest petRequest) {
+        editPet(idDog, petRequest, DogDTO.class, PetImageDog.class);
     }
 }

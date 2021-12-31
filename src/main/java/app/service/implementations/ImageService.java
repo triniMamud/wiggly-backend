@@ -29,7 +29,7 @@ import static org.apache.http.entity.ContentType.IMAGE_PNG;
 public class ImageService implements IImageService {
 
     private final FileStore fileStore;
-    private final IImageRepository repository;
+    private final IImageRepository imageRepository;
 
     @Override
     public Image saveImage(MultipartFile file) {
@@ -61,19 +61,19 @@ public class ImageService implements IImageService {
                 .imageFileName(fileName)
                 .build();
 
-        return repository.save(image);
+        return imageRepository.save(image);
     }
 
     @Override
     public byte[] downloadImage(Long id) {
-        Image image = repository.findById(id).get();
+        Image image = imageRepository.findById(id).get();
         return fileStore.download(image.getImagePath(), image.getImageFileName());
     }
 
     @Override
     public List<Image> getAllImages() {
         List<Image> images = new ArrayList<>();
-        repository.findAll().forEach(images::add);
+        imageRepository.findAll().forEach(images::add);
         return images;
     }
 }

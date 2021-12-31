@@ -9,5 +9,5 @@ import java.util.List;
 public interface ICatService {
     List<PetDTOResponse> getCatsList() throws Exception;
     PetDTOResponse addNewCat(PetDTORequest petRequest) throws Exception;
-    PetDTO editCat(int idDog, PetDTO petDTO) throws Exception;
+    void editCat(int idDog, PetDTORequest petRequest) throws Exception;
 }
