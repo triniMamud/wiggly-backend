@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 @Data
@@ -27,5 +28,5 @@ public class User {
     private Boolean hasContentionNet;
     private Boolean hasAnotherPets;
     private String otherPetsInfo;
-
+    private int accountId;
 }
