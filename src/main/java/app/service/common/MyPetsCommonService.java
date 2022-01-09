@@ -20,7 +20,7 @@ public class MyPetsCommonService <S extends JpaRepository, T extends JpaReposito
     private final V adoptantsRepository;
     private final IUsersRepository usersRepository;
 
-    private ModelMapper mapper;
+    private ModelMapper mapper = new ModelMapper();
 
 
     @Autowired

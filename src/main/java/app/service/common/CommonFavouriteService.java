@@ -14,7 +14,7 @@ public class CommonFavouriteService<S extends JpaRepository, T extends JpaReposi
     private final S repository;
     private final T favouriteRepository;
 
-    private ModelMapper mapper;
+    private ModelMapper mapper = new ModelMapper();
 
     @Autowired
     public CommonFavouriteService(S repository, T favouriteRepository) {
