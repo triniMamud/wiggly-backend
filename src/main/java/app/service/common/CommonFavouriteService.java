@@ -1,11 +1,17 @@
 package app.service.common;
 
+import app.config.Utils;
 import app.model.FavouritePet;
 import app.model.dto.ItemDTO;
+import app.model.entity.User;
+import com.amazonaws.services.dynamodbv2.xspec.NULL;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +37,14 @@ public class CommonFavouriteService<S extends JpaRepository, T extends JpaReposi
         return favourites;
     }
 
-    public Boolean addNewFavouritePet(String username, int idDog, Class<R> petType) throws Exception {
-        return (favouriteRepository.save(petType.getConstructor(String.class,int.class).newInstance(username, idDog)) != null);
+    public Boolean addNewFavouritePet(String username, int idPet, Class<R> petType) throws Exception {
+        FavouritePet favPet = petType.getConstructor(String.class,int.class).newInstance(username,idPet);
+
+        if (Utils.safeIsEmpty(favouriteRepository.findAll(Example.of(favPet)))){
+            return (favouriteRepository.save(petType.getConstructor(String.class,int.class).newInstance(username, idPet)) != null);
+        }
+
+        return false;
     }
 
 }
