@@ -22,11 +22,11 @@ public class UsersController {
     }
 
     @PostMapping("/log_in")
-    public ResponseEntity<Void> login(@RequestBody AccountDTO account) {
+    public ResponseEntity<Boolean> login(@RequestBody AccountDTO account) {
         return new ResponseEntity<>(usersService.logIn(account),HttpStatus.OK);
     }
 
-    @PostMapping("/alta")
+    @PostMapping("/sing_up")
     public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) {
         return new ResponseEntity<>(usersService.signUpUser(user, password), HttpStatus.OK);
     }

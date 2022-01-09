@@ -4,7 +4,6 @@ import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
 
 public interface IUsersService {
-
     UserDTO signUpUser(UserDTO user, String password);
-    Void logIn(AccountDTO accountDTO);
+    Boolean logIn(AccountDTO accountDTO);
 }
