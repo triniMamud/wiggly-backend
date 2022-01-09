@@ -27,7 +27,7 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
     private final S petRepository;
     private final R imageRepository;
     private final IImageService imageService;
-    private ModelMapper mapper;
+    private ModelMapper mapper = new ModelMapper();
 
     @Autowired
     public CommonService(S petRepository, IImageService imageService, R imageRepository) {
@@ -37,10 +37,9 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
     }
 
     public PetDTOResponse addNewPet(PetDTORequest petRequest, Class<Q> petType, Class<K> imageType) {
-        petRepository.save(mapper.map(petRequest.getPet(), petType));
 
         PetDTOResponse petResponse = new PetDTOResponse();
-        petResponse.setPet(petRequest.getPet());
+        petResponse.setPet(mapper.map(petRepository.save(mapper.map(petRequest.getPet(), petType)), PetDTO.class));
         saveImages(petRequest, petResponse, imageType);
 
         return petResponse;

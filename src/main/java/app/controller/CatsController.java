@@ -36,7 +36,8 @@ public class CatsController {
 
     @PostMapping("/alta")
     public ResponseEntity<PetDTOResponse> postNewCat(@RequestBody PetDTORequest pet, @RequestHeader("username") String username) throws Exception {
-        myCatsService.addToMyCats(pet.getPet().getId(), username);
-        return new ResponseEntity<>(catService.addNewCat(pet), HttpStatus.OK);
+        PetDTOResponse petDTOResponse = catService.addNewCat(pet);
+        myCatsService.addToMyCats(petDTOResponse.getPet().getId(), username);
+        return new ResponseEntity<>(petDTOResponse, HttpStatus.OK);
     }
 }
