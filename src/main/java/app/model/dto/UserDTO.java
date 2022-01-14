@@ -22,5 +22,5 @@ public class UserDTO {
     private Boolean hasContentionNet;
     private Boolean hasAnotherPets;
     private String otherPetsInfo;
-
+    private int accountId;
 }

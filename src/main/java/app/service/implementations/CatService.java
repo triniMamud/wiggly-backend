@@ -11,6 +11,7 @@ import app.repository.IImageCatRepository;
 import app.service.common.CommonService;
 import app.service.intefaces.ICatService;
 import app.service.intefaces.IImageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -20,7 +20,7 @@ public class MyPetsCommonService <S extends JpaRepository, T extends JpaReposito
     private final V adoptantsRepository;
     private final IUsersRepository usersRepository;
 
-    private ModelMapper mapper;
+    private ModelMapper mapper = new ModelMapper();
 
 
     @Autowired
@@ -42,7 +42,7 @@ public class MyPetsCommonService <S extends JpaRepository, T extends JpaReposito
     }
 
     public boolean addToMyPets(int idPet, String username, Class<R> myPetsType) throws Exception {
-        return (myPetsRepository.save(myPetsType.getConstructor(String.class, int.class).newInstance(idPet, username)) != null);
+        return (myPetsRepository.save(myPetsType.getConstructor(String.class, int.class).newInstance(username, idPet)) != null);
     }
 
     public List<AdoptantDTO> getAdoptantsPet(int idPet) {

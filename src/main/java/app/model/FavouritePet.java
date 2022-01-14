@@ -10,13 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 public abstract class FavouritePet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected int id;
+    protected Integer id;
     protected String username;
     protected int idPet;
 

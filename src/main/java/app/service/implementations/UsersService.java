@@ -17,8 +17,7 @@ public class UsersService implements IUsersService {
 
     private final IUsersRepository usuariosRepository;
     private final IAccountsRepository accountsRepository;
-
-    private ModelMapper mapper;
+    private ModelMapper mapper = new ModelMapper();
 
     @Autowired
     public UsersService(IUsersRepository usuariosRepository, IAccountsRepository accountsRepository) {
@@ -29,18 +28,18 @@ public class UsersService implements IUsersService {
     @Override
     public UserDTO signUpUser(UserDTO userDTO, String password) {
         if(!accountsRepository.existsAccountByUsername(userDTO.getUsername())) {
-            accountsRepository.save(new Account(userDTO.getUsername(), Encryption.encryptPssw(password)));
+            userDTO.setAccountId(accountsRepository.save(new Account(userDTO.getUsername(), Encryption.encryptPssw(password))).getId());
             usuariosRepository.save(mapper.map(userDTO, User.class));
         }
         return userDTO;
     }
 
     @Override
-    public Void logIn(AccountDTO accountDTO) {
+    public Boolean logIn(AccountDTO accountDTO) {
         if(accountsRepository.existsAccountByUsername(accountDTO.getUser())) {
-            Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPassword(accountDTO.getUser()));
+            return Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPassword(accountDTO.getUser()));
         }
-        return null;
+        return false;
     }
 
 

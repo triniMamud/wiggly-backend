@@ -41,10 +41,10 @@ public class MyPetsController {
         return new ResponseEntity<>(myDogsService.getMyDogs(username), HttpStatus.OK);
     }
 
-    @PostMapping("/misPerros/editar/{idDog}")
+    /*@PostMapping("/misPerros/editar/{idDog}")
     public ResponseEntity<PetDTOResponse> editMyDogs(@PathVariable("idDog") int idDog, @RequestBody PetDTORequest petRequest) throws Exception {
         return new ResponseEntity<>(dogService.editDog(idDog, petRequest), HttpStatus.OK);
-    }
+    }*/
 
     @PostMapping("/misPerros/postulantes/{idDog}")
     public ResponseEntity<List<AdoptantDTO>> getAdoptantsDog(@PathVariable("idDog") int idDog) {
@@ -56,10 +56,10 @@ public class MyPetsController {
         return new ResponseEntity<>(myCatsService.getMyCats(username), HttpStatus.OK);
     }
 
-    @PostMapping("/misGatos/editar/{idCat}")
+    /*@PostMapping("/misGatos/editar/{idCat}")
     public ResponseEntity<PetDTOResponse> editMyCats(@PathVariable("idCat") int idCat, @RequestBody PetDTORequest petRequest) throws Exception {
         return new ResponseEntity<>(catService.editCat(idCat, petRequest), HttpStatus.OK);
-    }
+    }*/
 
     @PostMapping("/misGatos/postulantes/{idCat}")
     public ResponseEntity<List<AdoptantDTO>> getAdoptantsCat(@PathVariable("idCat") int idCat) {
