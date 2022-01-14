@@ -64,7 +64,7 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
         return petResponseList;
     }
 
-    public void editPet(int idPet, PetDTORequest petRequest, Class<T> petType, Class<K> imageType) {
+    public PetDTOResponse editPet(int idPet, PetDTORequest petRequest, Class<T> petType, Class<K> imageType) {
         Pet petDB = (Pet) petRepository.findById(idPet).get();
         Set<String> nullProperties = new HashSet<>();
         PetDTOResponse petResponse = new PetDTOResponse();
@@ -84,6 +84,8 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
 
         BeanUtils.copyProperties(petDB, petRequest, new String[nullProperties.size()]);
         mapper.map(petRepository.save(petDB), petType);
+
+        return petResponse;
     }
 
     public void saveImages(PetDTORequest petRequest, PetDTOResponse petResponse, Class<K> imageType) {

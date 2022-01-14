@@ -10,4 +10,5 @@ public interface IImageService {
     Image saveImage(MultipartFile file);
     byte[] downloadImage(Long id);
     List<Image> getAllImages();
+    void deleteImage(Long id);
 }

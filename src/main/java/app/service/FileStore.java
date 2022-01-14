@@ -1,5 +1,6 @@
 package app.service;
 
+import app.config.BucketName;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -14,11 +15,18 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.amazonaws.services.s3control.model.JobManifestFieldName.Bucket;
+import static org.yaml.snakeyaml.tokens.Token.ID.Key;
+
 @AllArgsConstructor
 @Service
 public class FileStore {
 
     private final AmazonS3 amazonS3;
+
+    public void delete(String path, String key){
+        amazonS3.deleteObject(path, key);
+    }
 
     public void upload(String path,
                        String fileName,

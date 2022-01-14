@@ -71,6 +71,12 @@ public class ImageService implements IImageService {
     }
 
     @Override
+    public void deleteImage (Long id) {
+        Image image = imageRepository.findById(id).get();
+        fileStore.delete(image.getImagePath(), image.getImageFileName());
+    }
+
+    @Override
     public List<Image> getAllImages() {
         List<Image> images = new ArrayList<>();
         imageRepository.findAll().forEach(images::add);

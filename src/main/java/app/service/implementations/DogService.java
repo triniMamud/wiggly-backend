@@ -32,7 +32,7 @@ public class DogService extends CommonService<IDogsRepository, DogDTO, Dog, IIma
     }
 
     @Override
-    public void editDog(int idDog, PetDTORequest petRequest) {
-        editPet(idDog, petRequest, DogDTO.class, PetImageDog.class);
+    public PetDTOResponse editDog(int idDog, PetDTORequest petRequest) {
+        return editPet(idDog, petRequest, DogDTO.class, PetImageDog.class);
     }
 }
