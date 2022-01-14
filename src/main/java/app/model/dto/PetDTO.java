@@ -8,17 +8,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetDTO {
-    protected int id;
-    protected String name;
-    protected Float age;
-    protected String sex;
-    protected String size;
-    protected String neighbourhood;
-    protected Boolean castrated;
-    protected String vaccines;
-    protected String vaccinesInfo;
-    protected String deparasited;
-    protected String illnessesAndTreatments;
-    protected String medicalInfo;
-    protected String generalInfo;
+    private Integer id;
+    private String name;
+    private Float age;
+    private String sex;
+    private String size;
+    private String neighbourhood;
+    private Boolean castrated;
+    private String vaccines;
+    private String vaccinesInfo;
+    private String deparasited;
+    private String illnessesAndTreatments;
+    private String medicalInfo;
+    private String generalInfo;
 }

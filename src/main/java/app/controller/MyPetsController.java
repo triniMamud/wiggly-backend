@@ -12,11 +12,7 @@ import app.service.intefaces.IMyDogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,7 +32,7 @@ public class MyPetsController {
         this.catService = catService;
     }
 
-    @PostMapping("/misPerros")
+    @GetMapping("/misPerros")
     public ResponseEntity<List<ItemDTO>> getMyDogs(@RequestHeader("username") String username) {
         return new ResponseEntity<>(myDogsService.getMyDogs(username), HttpStatus.OK);
     }
@@ -46,12 +42,12 @@ public class MyPetsController {
         return new ResponseEntity<>(dogService.editDog(idDog, petRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/misPerros/postulantes/{idDog}")
+    @GetMapping("/misPerros/postulantes/{idDog}")
     public ResponseEntity<List<AdoptantDTO>> getAdoptantsDog(@PathVariable("idDog") int idDog) {
         return new ResponseEntity<>(myDogsService.getAdoptantsDog(idDog), HttpStatus.OK);
     }
 
-    @PostMapping("/misGatos")
+    @GetMapping("/misGatos")
     public ResponseEntity<List<ItemDTO>> getMyCats(@RequestHeader("username") String username) {
         return new ResponseEntity<>(myCatsService.getMyCats(username), HttpStatus.OK);
     }
@@ -61,7 +57,7 @@ public class MyPetsController {
         return new ResponseEntity<>(catService.editCat(idCat, petRequest), HttpStatus.OK);
     }
 
-    @PostMapping("/misGatos/postulantes/{idCat}")
+    @GetMapping("/misGatos/postulantes/{idCat}")
     public ResponseEntity<List<AdoptantDTO>> getAdoptantsCat(@PathVariable("idCat") int idCat) {
         return new ResponseEntity<>(myCatsService.getAdoptantsCat(idCat), HttpStatus.OK);
     }

@@ -73,9 +73,10 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
             saveImages(petRequest, petResponse, imageType);
         }
 
-        Arrays.stream(PetDTO.class.getFields()).forEach(field -> {
+        Arrays.stream(PetDTO.class.getDeclaredFields()).forEach(field -> {
             try {
-                if (field.get(petRequest) == null) {
+                field.setAccessible(true);
+                if (field.get(petRequest.getPet()) == null) {
                     nullProperties.add(field.getName());
                 }
             } catch (IllegalAccessException e) { e.printStackTrace(); }
