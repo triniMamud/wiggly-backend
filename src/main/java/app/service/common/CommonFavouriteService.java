@@ -41,7 +41,7 @@ public class CommonFavouriteService<S extends JpaRepository, T extends JpaReposi
         FavouritePet favPet = petType.getConstructor(String.class,int.class).newInstance(username,idPet);
 
         if (Utils.safeIsEmpty(favouriteRepository.findAll(Example.of(favPet)))){
-            return (favouriteRepository.save(petType.getConstructor(String.class,int.class).newInstance(username, idPet)) != null);
+            return (favouriteRepository.save(favPet) != null);
         }
 
         return false;
