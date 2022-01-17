@@ -7,12 +7,7 @@ import app.service.intefaces.IMyDogsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,14 +25,19 @@ public class DogsController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<PetDTOResponse>> getPerrosList() throws Exception {
+    public ResponseEntity<List<PetDTOResponse>> getDogList() throws Exception {
         return new ResponseEntity<>(dogService.getDogsList(), HttpStatus.OK);
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<PetDTOResponse> postNewPerro(@RequestBody PetDTORequest pet, @RequestHeader("username") String username) throws Exception {
+    public ResponseEntity<PetDTOResponse> postNewDog(@RequestBody PetDTORequest pet, @RequestHeader("username") String username) throws Exception {
         PetDTOResponse petDTOResponse = dogService.addNewDog(pet);
         myDogsService.addToMyDogs(petDTOResponse.getPet().getId(), username);
         return new ResponseEntity<>(petDTOResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/list/{idPerro}")
+    public ResponseEntity<PetDTOResponse> getDog(@PathVariable int idDog) {
+        return new ResponseEntity<>(dogService.getDog(idDog), HttpStatus.OK);
     }
 }

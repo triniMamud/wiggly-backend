@@ -9,5 +9,6 @@ import java.util.List;
 public interface IDogService {
     List<PetDTOResponse> getDogsList() throws Exception;
     PetDTOResponse addNewDog(PetDTORequest petRequest) throws Exception;
-    PetDTOResponse editDog(int idPerro, PetDTORequest petRequest) throws Exception;
+    PetDTOResponse editDog(int idDog, PetDTORequest petRequest) throws Exception;
+    PetDTOResponse getDog(int idDog);
 }

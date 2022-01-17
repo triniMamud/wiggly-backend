@@ -88,6 +88,20 @@ public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends 
         return petResponse;
     }
 
+    public PetDTOResponse getPet(int idPet, Class<T> petType) {
+        PetDTOResponse petResponse = new PetDTOResponse();
+        petResponse.setPet(mapper.map(petRepository.findById(idPet).get(), petType));
+
+        List<byte[]> petBytesImages = (List<byte[]>) imageRepository.findAll()
+                .stream()
+                .filter(img -> ((PetImage) img).getIdPet() == (idPet))
+                .collect(Collectors.toList());
+
+        petResponse.setImages(petBytesImages);
+
+        return petResponse;
+    }
+
     public void saveImages(PetDTORequest petRequest, PetDTOResponse petResponse, Class<K> imageType) {
         petRequest.getImages().forEach(img -> {
             try {

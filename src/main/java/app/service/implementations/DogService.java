@@ -36,4 +36,9 @@ public class DogService extends CommonService<IDogsRepository, DogDTO, Dog, IIma
     public PetDTOResponse editDog(int idDog, PetDTORequest petRequest) {
         return editPet(idDog, petRequest, DogDTO.class, PetImageDog.class);
     }
+
+    @Override
+    public PetDTOResponse getDog(int idDog) {
+        return getPet(idDog, DogDTO.class);
+    }
 }
