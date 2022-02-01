@@ -1,6 +1,5 @@
 package app.service;
 
-import app.config.BucketName;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
@@ -14,9 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
-
-import static com.amazonaws.services.s3control.model.JobManifestFieldName.Bucket;
-import static org.yaml.snakeyaml.tokens.Token.ID.Key;
 
 @AllArgsConstructor
 @Service

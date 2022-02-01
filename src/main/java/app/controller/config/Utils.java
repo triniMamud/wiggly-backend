@@ -1,4 +1,4 @@
-package app.config;
+package app.controller.config;
 
 import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
