@@ -1,5 +1,8 @@
 package app.controller;
 
+import app.exception.types.UserAlreadyTakenException;
+import app.exception.types.UserDoesntExistException;
+import app.exception.types.WrongUserOrPasswordException;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
 import app.service.intefaces.IUsersService;
@@ -22,12 +25,12 @@ public class UsersController {
     }
 
     @PostMapping("/log_in")
-    public ResponseEntity<Boolean> login(@RequestBody AccountDTO account) {
+    public ResponseEntity<Void> login(@RequestBody AccountDTO account) throws WrongUserOrPasswordException, UserDoesntExistException {
         return new ResponseEntity<>(usersService.logIn(account),HttpStatus.OK);
     }
 
     @PostMapping("/sing_up")
-    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) {
+    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) throws UserAlreadyTakenException {
         return new ResponseEntity<>(usersService.signUpUser(user, password), HttpStatus.OK);
     }
 }
