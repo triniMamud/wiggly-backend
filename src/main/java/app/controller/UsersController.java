@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongUserOrPasswordException;
@@ -30,7 +31,7 @@ public class UsersController {
     }
 
     @PostMapping("/sing_up")
-    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) throws UserAlreadyTakenException {
+    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) throws UserAlreadyTakenException, UnderAgeException {
         return new ResponseEntity<>(usersService.signUpUser(user, password), HttpStatus.OK);
     }
 }

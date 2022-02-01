@@ -1,5 +1,6 @@
 package app.service.implementations;
 
+import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongUserOrPasswordException;
@@ -29,7 +30,10 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public UserDTO signUpUser(UserDTO userDTO, String password) throws UserAlreadyTakenException {
+    public UserDTO signUpUser(UserDTO userDTO, String password) throws UserAlreadyTakenException, UnderAgeException {
+        if(userDTO.getAge() < 13) {
+            throw new UnderAgeException();
+        }
         if(!accountsRepository.existsAccountByUsername(userDTO.getUsername())) {
             userDTO.setAccountId(accountsRepository.save(new Account(userDTO.getUsername(), Encryption.encryptPssw(password))).getId());
             usuariosRepository.save(mapper.map(userDTO, User.class));

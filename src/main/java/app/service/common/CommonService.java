@@ -7,7 +7,6 @@ import app.model.dto.PetDTORequest;
 import app.model.dto.PetDTOResponse;
 import app.model.entity.Image;
 import app.service.intefaces.IImageService;
-import com.sun.xml.bind.v2.TODO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static app.config.Utils.safeIsNotEmpty;
+import static app.controller.config.Utils.safeIsNotEmpty;
 
 public class CommonService<S extends JpaRepository, T extends PetDTO, Q extends Pet, R extends JpaRepository, K extends PetImage> {
 

@@ -1,17 +1,13 @@
 package app.service.common;
 
-import app.config.Utils;
+import app.controller.config.Utils;
 import app.model.FavouritePet;
 import app.model.dto.ItemDTO;
-import app.model.entity.User;
-import com.amazonaws.services.dynamodbv2.xspec.NULL;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.lang.model.type.NullType;
 import java.util.ArrayList;
 import java.util.List;
 

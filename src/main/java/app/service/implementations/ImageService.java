@@ -1,7 +1,6 @@
 package app.service.implementations;
 
-import app.config.BucketName;
-import app.model.dto.PetDTOResponse;
+import app.controller.config.BucketName;
 import app.model.entity.Image;
 import app.repository.IImageRepository;
 import app.service.FileStore;
