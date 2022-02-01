@@ -4,6 +4,7 @@ import app.model.dto.PetDTORequest;
 import app.model.dto.PetDTOResponse;
 import app.service.intefaces.IDogService;
 import app.service.intefaces.IMyDogsService;
+import app.service.intefaces.IMyPostulationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,13 @@ public class DogsController {
 
     private IDogService dogService;
     private IMyDogsService myDogsService;
+    private IMyPostulationsService myPostulationsService;
 
     @Autowired
-    public DogsController(IDogService dogService, IMyDogsService myDogsService) {
+    public DogsController(IDogService dogService, IMyDogsService myDogsService, IMyPostulationsService myPostulationsService) {
         this.dogService = dogService;
         this.myDogsService = myDogsService;
+        this.myPostulationsService = myPostulationsService;
     }
 
     @GetMapping("/list")
@@ -39,5 +42,10 @@ public class DogsController {
     @GetMapping("/list/{idPerro}")
     public ResponseEntity<PetDTOResponse> getDog(@PathVariable int idDog) {
         return new ResponseEntity<>(dogService.getDog(idDog), HttpStatus.OK);
+    }
+
+    @PostMapping("/list/{idPerro}/postular")
+    public ResponseEntity<PetDTOResponse> postulateDog(@PathVariable int idDog) {
+        return new ResponseEntity<>(myPostulationsService.postulate(idDog), HttpStatus.OK);
     }
 }

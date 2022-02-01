@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/mis-postulaciones")
+@RequestMapping(path = "/misPostulaciones")
 public class MyPostulationsController {
 
     private IMyPostulationsService myPostulationsService;

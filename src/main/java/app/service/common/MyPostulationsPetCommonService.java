@@ -2,6 +2,7 @@ package app.service.common;
 
 import app.model.MyPets;
 import app.model.dto.ItemDTO;
+import app.model.dto.PetDTOResponse;
 import app.model.entity.MyPostulations;
 import app.repository.IMyPostulationsRepository;
 import app.repository.IUsersRepository;
@@ -37,4 +38,10 @@ public class MyPostulationsPetCommonService <T extends JpaRepository> implements
                 );
         return itemPetList;
     }
+
+    @Override
+    public PetDTOResponse postulate(int idPet) {
+        return null;
+    }
+    
 }
