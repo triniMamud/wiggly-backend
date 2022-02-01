@@ -3,7 +3,7 @@ package app.service.implementations;
 import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
-import app.exception.types.WrongUserOrPasswordException;
+import app.exception.types.WrongPasswordException;
 import app.model.Encryption;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
@@ -45,10 +45,10 @@ public class UsersService implements IUsersService {
     }
 
     @Override
-    public Void logIn(AccountDTO accountDTO) throws WrongUserOrPasswordException, UserDoesntExistException {
+    public Void logIn(AccountDTO accountDTO) throws WrongPasswordException, UserDoesntExistException {
         if(accountsRepository.existsAccountByUsername(accountDTO.getUser())) {
             if(!Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPassword(accountDTO.getUser()))) {
-                throw new WrongUserOrPasswordException();
+                throw new WrongPasswordException();
             }
         }
         else {

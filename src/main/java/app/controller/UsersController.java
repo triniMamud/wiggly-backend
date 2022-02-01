@@ -3,7 +3,7 @@ package app.controller;
 import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
-import app.exception.types.WrongUserOrPasswordException;
+import app.exception.types.WrongPasswordException;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
 import app.service.intefaces.IUsersService;
@@ -26,7 +26,7 @@ public class UsersController {
     }
 
     @PostMapping("/log_in")
-    public ResponseEntity<Void> login(@RequestBody AccountDTO account) throws WrongUserOrPasswordException, UserDoesntExistException {
+    public ResponseEntity<Void> login(@RequestBody AccountDTO account) throws WrongPasswordException, UserDoesntExistException {
         return new ResponseEntity<>(usersService.logIn(account),HttpStatus.OK);
     }
 
