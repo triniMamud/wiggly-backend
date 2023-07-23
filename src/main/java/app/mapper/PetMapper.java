@@ -1,6 +1,6 @@
 package app.mapper;
 
-import app.model.Pet;
+import app.model.entity.Pet;
 import app.model.dto.PetDTO;
 
 public class PetMapper <T extends PetDTO, S extends Pet>{

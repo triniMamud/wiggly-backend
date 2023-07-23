@@ -1,21 +1,18 @@
 package app.model.entity;
 
-import lombok.*;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-@Data
-@RequiredArgsConstructor
+@Table(name = "account")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @NonNull
-    private String username;
-    @NonNull
+    private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "email", nullable = false)
+    private String userEmail;
+
+    @Column(nullable = false)
     private String password;
 }

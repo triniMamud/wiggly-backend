@@ -1,50 +1,37 @@
 package app.controller;
 
-import app.model.dto.ItemDTO;
-import app.service.intefaces.IFavouriteCatService;
-import app.service.intefaces.IFavouriteDogService;
-import org.springframework.beans.factory.annotation.Autowired;
+import app.service.common.FavouritePetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/favoritos")
 public class FavouritesController {
 
-    private IFavouriteDogService favouriteDogService;
-    private IFavouriteCatService favouriteCatService;
+    private final FavouritePetService favouritePetService;
 
-    @Autowired
-    public FavouritesController(IFavouriteDogService favouriteDogService, IFavouriteCatService favouriteCatService) {
-        this.favouriteDogService = favouriteDogService;
-        this.favouriteCatService = favouriteCatService;
-    }
-
-    @GetMapping("/perros")
+    /*@GetMapping("/perros")
     public ResponseEntity<List<ItemDTO>> getFavouriteDogs(@RequestHeader("user") String user) {
-        return new ResponseEntity<>(favouriteDogService.getFavouriteDogs(user),HttpStatus.OK);
+        return new ResponseEntity<>(favouritePetService.getFavouriteItemsByUsername(user),HttpStatus.OK);
+    }*/
+
+    @PostMapping("/{idPet}")
+    public ResponseEntity<Boolean> addFavouritePet(@RequestHeader("email") String email, @PathVariable long idPet) {
+        return new ResponseEntity<>(favouritePetService.addFavouritePet(email, idPet), OK);
     }
 
-    @PostMapping("/perros/{idDog}")
-    public ResponseEntity<Boolean> addFavouriteDog(@RequestHeader("user") String user, @PathVariable int idDog) throws Exception {
-        return new ResponseEntity<>(favouriteDogService.addNewFavouriteDog(user, idDog), HttpStatus.OK);
-    }
-
-    @GetMapping("/gatos")
-    public ResponseEntity<List<ItemDTO>> getFavouriteCats(@RequestHeader("user") String user) {
-        return new ResponseEntity<>(favouriteCatService.getFavouriteCats(user),HttpStatus.OK);
-    }
-
-    @PostMapping("/gatos/{idCat}")
-    public ResponseEntity<Boolean> addFavouriteCat(@RequestHeader("user") String user, @PathVariable int idCat) throws Exception {
-        return new ResponseEntity<>(favouriteCatService.addNewFavouriteCat(user, idCat), HttpStatus.OK);
+    @PostMapping("/{idPet}")
+    public ResponseEntity<Void> deleteFavouritePet(@RequestHeader("email") String email, @PathVariable long idPet) {
+        favouritePetService.deleteFavouritePet(email, idPet);
+        return new ResponseEntity<>(OK);
     }
 }

@@ -1,32 +1,45 @@
 package app.model.entity;
 
+import app.model.enums.AdoptionTypeEnum;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "user")
 public class User {
 
     @Id
-    private String username;
+    @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false)
+    private String dni;
+
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String lastName;
+
+    @Column(nullable = false)
     private int age;
-    private String neighbourhood;
-    private String mail;
+
+    @Column(nullable = false)
     private long phone;
-    private Boolean adopts;
-    private String houseType;
-    private Boolean hasGardenOrBalcony;
-    private Boolean hasContentionNet;
-    private Boolean hasAnotherPets;
-    private String otherPetsInfo;
-    private int accountId;
+
+    @Column(nullable = false)
+    private String location;
+
+    @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
+    private AdoptionTypeEnum adoptionType;
+
+    @OneToOne
+    @JoinColumn(name = "accountId", nullable = false)
+    private Long accountId;
 }
