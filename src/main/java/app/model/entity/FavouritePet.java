@@ -20,12 +20,11 @@ public class FavouritePet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected long id;
 
-    @OneToOne
-    @JoinColumn(name = "email", nullable = false)
-    private String userEmail;
+    @Column(nullable = false)
+    private String email;
 
-    @OneToMany
-    @JoinColumn(name = "favouritePetId", nullable = false)
+    @Column(nullable = false, name = "pet_id")
+    @ElementCollection
     @Builder.Default
     private Set<Long> petIds = new HashSet<>();
 }

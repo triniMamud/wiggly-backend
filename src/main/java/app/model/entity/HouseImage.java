@@ -10,9 +10,9 @@ public class HouseImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_path")
     private String imagePath;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_filename")
     private String imageFilename;
 }

@@ -1,7 +1,6 @@
 package app.service.common;
 
-import app.model.entity.MyPostulation;
-import app.model.entity.Pet;
+import app.model.entity.MyPostulations;
 import app.model.enums.PostulationStatusEnum;
 import app.repository.IMyPostulationsRepository;
 import app.repository.IPetRepository;
@@ -33,10 +32,10 @@ public class MyPostulationsService {
     }*/
 
     public boolean postulate(String email, long idPet) {
-        MyPostulation myPostulation = myPostulationsRepository.findByUser(email).orElse(MyPostulation.builder().userEmail(email).build());
-        myPostulation.getPetIds().add(idPet);
-        myPostulation.setStatus(PostulationStatusEnum.SENT);
-        return isNotEmpty(myPostulationsRepository.save(myPostulation));
+        MyPostulations myPostulations = myPostulationsRepository.findByEmail(email).orElse(MyPostulations.builder().email(email).build());
+        myPostulations.getPetIds().add(idPet);
+        myPostulations.setStatus(PostulationStatusEnum.SENT);
+        return isNotEmpty(myPostulationsRepository.save(myPostulations));
     }
 
     public void deletePetFromPostulations(String email, long petId) {

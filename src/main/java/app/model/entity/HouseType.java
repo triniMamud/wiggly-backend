@@ -18,20 +18,20 @@ public class HouseType {
     @Enumerated(EnumType.ORDINAL)
     private HouseTypeEnum type;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "open_spaces")
     @Enumerated(EnumType.ORDINAL)
-    private OpenSpaceEnum openSpace;
+    private OpenSpaceEnum openSpaces;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "has_contention_net")
     private boolean hasContentionNet;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "is_owner")
     private boolean isOwner;
 
-    @Column(nullable = false)
-    private boolean allowsPet;
+    @Column(nullable = false, name = "allows_pets")
+    private boolean allowsPets;
 
-    @OneToMany
-    @JoinColumn(name = "houseImageId", nullable = false)
+    @Column(name = "house_image_id")
+    @ElementCollection
     private Set<Long> houseImageIds;
 }

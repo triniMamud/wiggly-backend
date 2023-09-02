@@ -16,67 +16,65 @@ public class UserAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
-    @OneToOne
-    @JoinColumn(name = "email", nullable = false)
-    private String userEmail;
 
     @Column(nullable = false)
+    private String email;
+
+    @Column(nullable = false, name = "has_other_pets")
     private boolean hasOtherPets;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "other_pets_info")
     private String otherPetsInfo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "family_members")
     private int familyMembers;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "has_children")
     private boolean hasChildren;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "children_info")
     private String childrenInfo;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "costs_awareness")
     private boolean costsAwareness;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "job_situation")
     private String jobSituation;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "time_alone_pet")
     private float timeAlonePet;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "times_walk_pet")
     private int timesWalkPet;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "sleeping_place")
     private String sleepingPlace;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "can_afford_trainee")
     private boolean canAffordTrainee;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "can_afford_walker")
     private boolean canAffordWalker;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "castration_compromise")
     private boolean castrationCompromise;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "follow_up")
     private boolean followUp;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "travel_asignee")
     private String travelAsignee;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "transit_preferences")
     private TransitEnum transitPreferences;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "max_time_transit")
     private String maxTimeTransit;
 
-    @OneToOne
-    @JoinColumn(name = "houseTypeId", nullable = false)
+    @Column(nullable = false, name = "house_type_id")
     private Long houseTypeId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "last_transits_info")
     private String lastTransitsInfo;
 }

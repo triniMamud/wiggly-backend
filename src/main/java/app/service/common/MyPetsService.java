@@ -45,7 +45,7 @@ public class MyPetsService {
     }*/
 
     public boolean addToMyPets(long idPet, String email) {
-        MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().userEmail(email).build());
+        MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().email(email).build());
         myPet.getPetIds().add(idPet);
         return isNotEmpty(myPetRepository.save(myPet));
     }

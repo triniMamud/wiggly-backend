@@ -8,27 +8,28 @@ import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
 import app.service.common.UsersService;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/usuarios")
+@RequestMapping("/signin")
 public class UsersController {
 
     private final UsersService usersService;
 
-    @PostMapping("/log_in")
-    public ResponseEntity<Void> login(@RequestBody AccountDTO account) throws WrongPasswordException, UserDoesntExistException {
-        return ResponseEntity.ok(usersService.logIn(account));
+    @PostMapping
+    public ResponseEntity<UserDTO> login(@RequestHeader("email") String email, @RequestHeader("password") String password) throws WrongPasswordException, UserDoesntExistException {
+        return ok(usersService.logIn(new AccountDTO(email, password)));
     }
 
-    @PostMapping("/sing_up")
-    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) throws UserAlreadyTakenException, UnderAgeException {
-        return ResponseEntity.ok(usersService.signUpUser(user, password));
+    @PostMapping("/reset-password")
+    public ResponseEntity<Boolean> resetPassword(@RequestHeader("email") String email) throws UserDoesntExistException {
+        return ok(usersService.resetPassword(email));
     }
+
 }

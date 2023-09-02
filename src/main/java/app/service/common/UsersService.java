@@ -4,25 +4,25 @@ import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongPasswordException;
-import app.model.Encryption;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
-//import app.model.entity.Account;
-import app.model.entity.User;
-//import app.repository.IAccountRepository;
+import app.model.entity.Account;
+import app.repository.IAccountRepository;
 import app.repository.IUserRepository;
 import lombok.AllArgsConstructor;
+import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Service
 @AllArgsConstructor
 public class UsersService {
 
-    private final IUserRepository usuariosRepository;
-  //  private final IAccountRepository accountsRepository;
-    private final ModelMapper modelMapper;
+    private final IUserRepository userRepository;
+    private final IAccountRepository accountRepository;
+    private final ModelMapper mapper;
 
 
     public UserDTO signUpUser(UserDTO userDTO, String password) throws UserAlreadyTakenException, UnderAgeException {
@@ -39,15 +39,18 @@ public class UsersService {
   //      return userDTO;
     }
 
-    public Void logIn(AccountDTO accountDTO) throws WrongPasswordException, UserDoesntExistException {
-//        if(accountsRepository.existsAccountByUsername(accountDTO.getUser())) {
-//            if(!Encryption.checkPassw(accountDTO.getPassword(), accountsRepository.getUserPassword(accountDTO.getUser()))) {
-//                throw new WrongPasswordException();
-//            }
-//        }
-//        else {
-//            throw new UserDoesntExistException();
-//        }
-        return null;
+    public UserDTO logIn(AccountDTO accountDTO) throws WrongPasswordException, UserDoesntExistException {
+        Account accountDB = accountRepository.findByEmail(accountDTO.getEmail());
+        if (isEmpty(accountDB)) throw new UserDoesntExistException();
+        else if (!BCrypt.checkpw(accountDTO.getPassword(), accountDB.getEncryptedPassword()))
+            throw new WrongPasswordException();
+        else
+            return mapper.map(userRepository.findByEmail(accountDTO.getEmail()), UserDTO.class);
+    }
+
+    public boolean resetPassword(String email) throws UserDoesntExistException {
+        Account accountDB = accountRepository.findByEmail(email);
+        if (isEmpty(accountDB)) throw new UserDoesntExistException();
+        return true; //HACER LOGICA
     }
 }

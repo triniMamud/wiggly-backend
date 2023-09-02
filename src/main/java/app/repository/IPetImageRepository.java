@@ -10,5 +10,4 @@ import java.util.List;
 public interface IPetImageRepository extends JpaRepository<PetImage, Long> {
 
     List<PetImage> findByid(long id);
-    void deleteByidPet(int id);
 }

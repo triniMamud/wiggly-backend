@@ -15,18 +15,17 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPostulation {
+public class MyPostulations {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "email", nullable = false)
-    private String userEmail;
+    @Column(nullable = false)
+    private String email;
 
-    @OneToMany
-    @JoinColumn(name = "myPostulationPetId", nullable = false)
+    @Column(nullable = false, name = "pet_id")
+    @ElementCollection
     private Set<Long> petIds;
 
     @Column(nullable = false)

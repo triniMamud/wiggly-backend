@@ -1,7 +1,6 @@
 package app.service.common;
 
 import app.model.entity.FavouritePet;
-import app.model.entity.Pet;
 import app.repository.IFavouritePetRepository;
 import app.repository.IPetRepository;
 import app.repository.IUserRepository;
@@ -31,7 +30,7 @@ public class FavouritePetService {
     }*/
 
     public Boolean addFavouritePet(String email, long idPet) {
-        FavouritePet favouritePet = favouriteRepository.findByUser(email).orElse(FavouritePet.builder().userEmail(email).build());
+        FavouritePet favouritePet = favouriteRepository.findByEmail(email).orElse(FavouritePet.builder().email(email).build());
         favouritePet.getPetIds().add(idPet);
         return isNotEmpty(favouriteRepository.save(favouritePet));
     }

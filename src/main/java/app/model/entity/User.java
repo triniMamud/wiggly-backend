@@ -23,7 +23,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "last_name")
     private String lastName;
 
     @Column(nullable = false)
@@ -36,10 +36,6 @@ public class User {
     private String location;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "adoption_type")
     private AdoptionTypeEnum adoptionType;
-
-    @OneToOne
-    @JoinColumn(name = "accountId", nullable = false)
-    private Long accountId;
 }

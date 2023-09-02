@@ -14,7 +14,7 @@ public class UserDTO {
     private String lastName;
     private int age;
     private String neighbourhood;
-    private String mail;
+    private String email;
     private long phone;
     private Boolean adopts;
     private String houseType;

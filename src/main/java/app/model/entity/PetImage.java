@@ -17,9 +17,9 @@ public class PetImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_path")
     private String imagePath;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "image_filename")
     private String imageFilename;
 }

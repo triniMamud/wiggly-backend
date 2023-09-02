@@ -7,6 +7,5 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class PetDTO extends Pet {
 }
