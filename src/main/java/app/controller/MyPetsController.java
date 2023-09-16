@@ -23,10 +23,10 @@ public class MyPetsController {
     private final MyPetsService myPetsService;
     private final PetService petService;
 
-    /*@GetMapping("/misPerros")
-    public ResponseEntity<List<ItemDTO>> getMyPets(@RequestHeader("username") String username) {
-        return ok(myPetsService.getMyPets(username));
-    }*/
+    @GetMapping("/misMascotas")
+    public ResponseEntity<List<PetDTOResponse>> getMyPets(@RequestHeader("email") String email) {
+        return ok(myPetsService.getMyPets(email));
+    }
 
     @PostMapping("/{idPet}/editar")
     public ResponseEntity<PetDTOResponse> editMyPet(@PathVariable("idPet") long idPet, @RequestBody PetDTORequest petRequest) throws ImagesNotSavedException, EntityNotFoundException, SavePetException {

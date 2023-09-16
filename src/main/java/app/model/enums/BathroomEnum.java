@@ -2,7 +2,7 @@ package app.model.enums;
 
 public enum BathroomEnum {
     YES,
-    TRAINING_MAT,
+    SOMETIMES,
     BEGIN_LEARNING,
     NO
 }

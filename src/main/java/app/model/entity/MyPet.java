@@ -24,7 +24,6 @@ public class MyPet {
     private String email;
 
     @Column(nullable = false, name = "pet_id")
-    @ElementCollection
-    private Set<Long> petIds;
+    private Long petId;
 
 }

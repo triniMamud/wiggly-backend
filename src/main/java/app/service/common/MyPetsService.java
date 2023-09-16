@@ -3,7 +3,7 @@ package app.service.common;
 import app.exception.types.DeleteEntityException;
 import app.model.dto.MyPetsSearchRequestParameters;
 import app.model.dto.ItemDTO;
-import app.model.entity.FavouritePet;
+import app.model.dto.PetDTOResponse;
 import app.model.entity.MyPet;
 import app.model.entity.Pet;
 import app.repository.IAdoptantRepository;
@@ -45,9 +45,9 @@ public class MyPetsService {
     }*/
 
     public boolean addToMyPets(long idPet, String email) {
-        MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().email(email).build());
-        myPet.getPetIds().add(idPet);
-        return isNotEmpty(myPetRepository.save(myPet));
+        /*MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().email(email).build());
+        myPet.getPetId().add(idPet);*/
+        return isNotEmpty(myPetRepository.save(MyPet.builder().petId(idPet).email(email).build()));
     }
 
     /*public List<AdoptantDTO> getAdoptantsPet(int idPet) {
@@ -92,6 +92,10 @@ public class MyPetsService {
 
     public void deleteFromMyPets(String email, long petId) throws DeleteEntityException {
         myPetRepository.deleteByEmailAndIdPet(email, petId);
+    }
+
+    public List<PetDTOResponse> getMyPets(String email) {
+        return myPetRepository.getMyPetsByEmail(email).stream().map(myPet -> modelMapper.map(petRepository.getPetById(myPet.getPetId()), PetDTOResponse.class)).toList();
     }
 
 

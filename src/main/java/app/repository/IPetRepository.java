@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPetRepository extends JpaRepository<Pet, Long>, JpaSpecificationExecutor {
 
-    /*Pet findByState();*/
+    Pet getPetById(Long petId);
 }

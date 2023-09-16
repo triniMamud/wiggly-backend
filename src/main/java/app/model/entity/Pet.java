@@ -38,17 +38,14 @@ public class Pet {
     @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false, name = "")
-    private Boolean is_castrated;
+    @Column(nullable = false, name = "is_castrated")
+    private Boolean isCastrated;
 
     @Column(nullable = false)
     private String vaccines;
 
     @Column(nullable = false)
     private String deparasited;
-
-    @Column(name = "illnesses_and_treatments", nullable = false)
-    private String illnessesAndTreatments;
 
     @Column(nullable = false, name = "medical_info")
     private String medicalInfo;

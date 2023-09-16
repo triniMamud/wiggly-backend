@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -15,8 +16,10 @@ public interface IMyPetRepository extends JpaRepository<MyPet, Long>, JpaSpecifi
     Optional<MyPet> findByEmail(String email);
 
     @Modifying
-    @Query("DELETE FROM MyPet mp WHERE mp.email = ?1 AND ?2 MEMBER OF mp.petIds")
+    @Query("DELETE FROM MyPet mp WHERE mp.email = ?1 AND mp.petId = ?2")
     void deleteByEmailAndIdPet(String email, long petId);
+
+    List<MyPet> getMyPetsByEmail(String email);
 
     /* void deleteBypet(int petId);*/
 }
