@@ -1,9 +1,11 @@
 package app.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "houseimage")
+@Data
 public class HouseImage {
 
     @Id
@@ -15,4 +17,7 @@ public class HouseImage {
 
     @Column(nullable = false, name = "image_filename")
     private String imageFilename;
+
+    @Column(nullable = false, name = "email")
+    private String email;
 }

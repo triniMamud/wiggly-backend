@@ -25,8 +25,7 @@ public class MyPostulations {
     private String email;
 
     @Column(nullable = false, name = "pet_id")
-    @ElementCollection
-    private Set<Long> petIds;
+    private Long petId;
 
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)

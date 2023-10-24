@@ -4,9 +4,11 @@ import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongPasswordException;
+import app.model.Encryption;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
 import app.model.entity.Account;
+import app.model.entity.User;
 import app.repository.IAccountRepository;
 import app.repository.IUserRepository;
 import lombok.AllArgsConstructor;
@@ -14,6 +16,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import static app.model.Encryption.encryptPssw;
+import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Service
@@ -24,20 +28,6 @@ public class UsersService {
     private final IAccountRepository accountRepository;
     private final ModelMapper mapper;
 
-
-    public UserDTO signUpUser(UserDTO userDTO, String password) throws UserAlreadyTakenException, UnderAgeException {
-        if(userDTO.getAge() < 13) {
-            throw new UnderAgeException();
-        }
-//        if(!accountsRepository.existsAccountByUsername(userDTO.getUsername())) {
-//           // userDTO.setAccountId(accountsRepository.save(new Account(userDTO.getUsername(), Encryption.encryptPssw(password))).getId());
-//            usuariosRepository.save(mapper.map(userDTO, User.class));
-//        }
-        else {
-            throw new UserAlreadyTakenException();
-        }
-  //      return userDTO;
-    }
 
     public UserDTO logIn(AccountDTO accountDTO) throws WrongPasswordException, UserDoesntExistException {
         Account accountDB = accountRepository.findByEmail(accountDTO.getEmail());
@@ -52,5 +42,14 @@ public class UsersService {
         Account accountDB = accountRepository.findByEmail(email);
         if (isEmpty(accountDB)) throw new UserDoesntExistException();
         return true; //HACER LOGICA
+    }
+
+    public UserDTO registerUser(User user, String password) throws UserAlreadyTakenException {
+        if (userRepository.findByEmail(user.getEmail()).isPresent())
+            throw new UserAlreadyTakenException();
+
+        userRepository.save(user);
+        accountRepository.save(Account.builder().email(user.getEmail()).encryptedPassword(encryptPssw(password)).build());
+        return new UserDTO(user.getName(), user.getEmail());
     }
 }

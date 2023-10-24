@@ -9,18 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-    private String username;
     private String name;
-    private String lastName;
-    private int age;
-    private String neighbourhood;
     private String email;
-    private long phone;
-    private Boolean adopts;
-    private String houseType;
-    private Boolean hasGardenOrBalcony;
-    private Boolean hasContentionNet;
-    private Boolean hasAnotherPets;
-    private String otherPetsInfo;
-    private int accountId;
 }

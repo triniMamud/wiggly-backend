@@ -1,7 +1,7 @@
-package app.model.dto;
+package app.model.dto.response;
 
+import app.model.dto.ItemDTO;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,10 +9,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-@Builder
-public class PetDTOResponse {
+@NoArgsConstructor
+public class MyPetResponseDTO {
 
-    protected PetDTO pet;
+    protected ItemDTO pet;
     protected List<byte[]> images;
-
 }

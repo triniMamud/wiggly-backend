@@ -34,4 +34,8 @@ public class HouseType {
     @Column(name = "house_image_id")
     @ElementCollection
     private Set<Long> houseImageIds;
+
+    @Column(nullable = false)
+    private String email;
+
 }

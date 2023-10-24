@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class ItemDTO {
     private int id;
     private String name;
-    private String neighbourhood;
-    private String sex;
+    private String location;
+    private String gender;
 }

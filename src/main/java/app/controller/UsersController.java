@@ -6,6 +6,7 @@ import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongPasswordException;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
+import app.model.entity.User;
 import app.service.common.UsersService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.protocol.HTTP;
@@ -13,7 +14,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +34,17 @@ public class UsersController {
     @PostMapping("/reset-password")
     public ResponseEntity<Boolean> resetPassword(@RequestHeader("email") String email) throws UserDoesntExistException {
         return ok(usersService.resetPassword(email));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDTO> register(@RequestBody User user, @RequestHeader("password") String password) throws UserDoesntExistException {
+        try {
+            return ok(usersService.registerUser(user, password));
+        } catch (UserAlreadyTakenException uatE) {
+            return status(BAD_REQUEST).build();
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).build();
+        }
     }
 
 }

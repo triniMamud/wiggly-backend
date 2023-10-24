@@ -1,21 +1,20 @@
 package app.service.common;
 
 import app.exception.types.DeleteEntityException;
-import app.model.dto.MyPetsSearchRequestParameters;
-import app.model.dto.ItemDTO;
-import app.model.dto.PetDTOResponse;
+import app.model.dto.*;
+import app.model.dto.request.MyPetsSearchRequestParameters;
+import app.model.dto.response.MyPetResponseDTO;
+import app.model.dto.response.PetDTOResponse;
 import app.model.entity.MyPet;
 import app.model.entity.Pet;
-import app.repository.IAdoptantRepository;
-import app.repository.IMyPetRepository;
-import app.repository.IPetRepository;
-import app.repository.IUserRepository;
+import app.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -31,6 +30,8 @@ public class MyPetsService {
     private final IPetRepository petRepository;
     private final IAdoptantRepository adoptantRepository;
     private final IUserRepository usersRepository;
+    private final PetImageService petImageService;
+    private final ImageService imageService;
     private final ModelMapper modelMapper;
 
 
@@ -45,8 +46,6 @@ public class MyPetsService {
     }*/
 
     public boolean addToMyPets(long idPet, String email) {
-        /*MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().email(email).build());
-        myPet.getPetId().add(idPet);*/
         return isNotEmpty(myPetRepository.save(MyPet.builder().petId(idPet).email(email).build()));
     }
 
@@ -94,8 +93,16 @@ public class MyPetsService {
         myPetRepository.deleteByEmailAndIdPet(email, petId);
     }
 
-    public List<PetDTOResponse> getMyPets(String email) {
-        return myPetRepository.getMyPetsByEmail(email).stream().map(myPet -> modelMapper.map(petRepository.getPetById(myPet.getPetId()), PetDTOResponse.class)).toList();
+    public List<MyPetResponseDTO> getMyPets(String email) {
+        List<MyPetResponseDTO> petResponseList = new ArrayList<>();
+        myPetRepository.getMyPetsByEmail(email).forEach(myPet -> {
+            List<byte[]> petBytesImages = new ArrayList<>();
+            petImageService.getAllByIdPet(myPet.getPetId()).forEach(petImage -> {
+                petBytesImages.add(imageService.downloadImage(petImage.getImagePath(), petImage.getImageFilename()));
+            });
+            petResponseList.add(new MyPetResponseDTO(modelMapper.map(petRepository.findById(myPet.getPetId()), ItemDTO.class), petBytesImages));
+        });
+        return petResponseList;
     }
 
 

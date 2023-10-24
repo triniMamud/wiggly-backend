@@ -1,5 +1,6 @@
-package app.model.dto;
+package app.model.dto.request;
 
+import app.model.dto.PetDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,5 @@ import java.util.List;
 public class PetDTORequest {
 
     protected PetDTO pet;
-    protected List<MultipartFile> images;
+    protected List<String> images;
 }

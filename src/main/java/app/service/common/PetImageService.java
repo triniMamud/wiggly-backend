@@ -18,11 +18,11 @@ public class PetImageService {
     private final ImageService imageService;
 
     public List<PetImage> getAllByIdPet(long petId) {
-        return petImageRepository.findByid(petId);
+        return petImageRepository.findBypetId(petId);
     }
 
-    public PetImage savePetImage(String imagePath, String imageFilename) {
-        return petImageRepository.save(PetImage.builder().imagePath(imagePath).imageFilename(imageFilename).build());
+    public PetImage savePetImage(String imagePath, String imageFilename, long petId) {
+        return petImageRepository.save(PetImage.builder().imagePath(imagePath).imageFilename(imageFilename).petId(petId).build());
     }
 
     @Transactional

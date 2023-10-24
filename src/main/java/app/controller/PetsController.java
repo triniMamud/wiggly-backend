@@ -1,8 +1,8 @@
 package app.controller;
 
 import app.exception.types.DeleteEntityException;
-import app.model.dto.PetDTORequest;
-import app.model.dto.PetDTOResponse;
+import app.model.dto.request.PetDTORequest;
+import app.model.dto.response.PetDTOResponse;
 import app.service.common.MyPetsService;
 import app.service.common.MyPostulationsService;
 import app.service.common.PetService;
@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
@@ -29,8 +30,13 @@ public class PetsController {
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<PetDTOResponse> postNewPet(@RequestBody PetDTORequest pet, @RequestHeader("email") String email) {
-        return ok(petService.addNewPet(pet, email));
+    public ResponseEntity<Boolean> postNewPet(@RequestBody PetDTORequest pet, @RequestHeader("email") String email) {
+        try {
+            return ok(petService.addNewPet(pet, email));
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).build();
+        }
+
     }
 
     /*@GetMapping("/list/{idPerro}")

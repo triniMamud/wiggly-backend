@@ -5,6 +5,8 @@ import app.exception.types.EntityNotFoundException;
 import app.exception.types.ImagesNotSavedException;
 import app.exception.types.SavePetException;
 import app.model.dto.*;
+import app.model.dto.request.PetDTORequest;
+import app.model.dto.response.PetDTOResponse;
 import app.model.entity.Pet;
 import app.model.entity.PetImage;
 import app.repository.IPetRepository;
@@ -15,9 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static app.config.Utils.safeIsNotEmpty;
-import static java.util.stream.Collectors.toList;
+import static app.service.Base64DecodedMultipartFile.base64ToMultipart;
 
 @AllArgsConstructor
 @Service
@@ -34,10 +36,16 @@ public class PetService {
 
 
     @Transactional
-    public PetDTOResponse addNewPet(PetDTORequest petRequest, String email) {
-        petRepository.save(modelMapper.map(petRequest.getPet(), Pet.class));
-        myPetsService.addToMyPets(petRequest.getPet().getId(), email);
-        return PetDTOResponse.builder().pet(petRequest.getPet()).images(saveImages(petRequest)).build();
+    public boolean addNewPet(PetDTORequest petRequest, String email) throws Exception {
+        try {
+            Pet pet = modelMapper.map(petRequest.getPet(), Pet.class);
+            long petId = petRepository.save(modelMapper.map(petRequest.getPet(), Pet.class)).getId();
+            pet.setPetImageIds(saveImages(petRequest.getImages(), petId).stream().map(PetImage::getId).collect(Collectors.toSet()));
+            myPetsService.addToMyPets(petId, email);
+            return true;
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta la mascota");
+        }
     }
 
     public List<PetDTOResponse> getListPets() {
@@ -83,12 +91,13 @@ public class PetService {
         return PetDTOResponse.builder().pet(mapper.map(petRepository.findById(idPet), PetDTO.class)).images(petBytesImages).build();
     }*/
 
-    public List<byte[]> saveImages(PetDTORequest petRequest) {
-        return petRequest.getImages().stream().map(multiparFileImg -> {
+    public List<PetImage> saveImages(List<String> images, long petId) {
+        return images.stream().map(imgString64 -> {
             try {
-                PetImage image  = imageService.saveImageS3(multiparFileImg);
-                petImageService.savePetImage(image.getImagePath(), image.getImageFilename());
-                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
+                PetImage image  = imageService.saveImageS3(base64ToMultipart(imgString64));
+                var pet = petImageService.savePetImage(image.getImagePath(), image.getImageFilename(), petId);
+                return pet;
+//                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
             } catch (Exception e) {
                 throw new RuntimeException();
             }

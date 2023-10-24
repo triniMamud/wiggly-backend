@@ -10,16 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity
-@Table(name = "petimage")
+@Entity(name = "petimage")
 public class PetImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(nullable = false, name = "image_path")
     private String imagePath;
 
     @Column(nullable = false, name = "image_filename")
     private String imageFilename;
+
+    @Column(nullable = false, name = "pet_id")
+    private Long petId;
 }
