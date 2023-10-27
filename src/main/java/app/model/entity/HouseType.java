@@ -5,6 +5,7 @@ import app.model.enums.OpenSpaceEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -14,7 +15,7 @@ public class HouseType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id ;
+    private Long id;
 
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
@@ -35,7 +36,7 @@ public class HouseType {
 
     @Column(name = "house_image_id")
     @ElementCollection
-    private Set<Long> houseImageIds;
+    private List<Long> houseImageIds;
 
     @Column(nullable = false)
     private String email;

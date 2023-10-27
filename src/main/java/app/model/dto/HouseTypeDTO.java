@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class HouseTypeDTO {
 
+    private Long id;
     private String type;
     private String openSpaces;
     private boolean hasContentionNet;

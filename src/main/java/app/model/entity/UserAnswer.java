@@ -15,7 +15,7 @@ public class UserAnswer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String email;
@@ -27,7 +27,7 @@ public class UserAnswer {
     private String otherPetsInfo;
 
     @Column(nullable = false, name = "family_members")
-    private int familyMembers;
+    private Integer familyMembers;
 
     @Column(nullable = false, name = "has_children")
     private boolean hasChildren;
@@ -42,10 +42,10 @@ public class UserAnswer {
     private String jobSituation;
 
     @Column(nullable = false, name = "time_alone_pet")
-    private float timeAlonePet;
+    private Float timeAlonePet;
 
     @Column(nullable = false, name = "times_walk_pet")
-    private int timesWalkPet;
+    private Integer timesWalkPet;
 
     @Column(nullable = false, name = "sleeping_place")
     private String sleepingPlace;
