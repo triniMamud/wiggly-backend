@@ -1,5 +1,6 @@
 package app.service.common;
 
+import app.model.dto.HouseTypeDTO;
 import app.model.dto.ItemDTO;
 import app.model.dto.UserFullDTO;
 import app.model.dto.response.MyPetResponseDTO;
@@ -65,13 +66,15 @@ public class MyPostulationsService {
             UserFullDTO userResponse = new UserFullDTO();
             modelMapper.map(userRepository.findByEmail(postulation.getEmail()).orElse(new User()), userResponse);
             modelMapper.map(userAnswersRepository.findByEmail(postulation.getEmail()).orElse(new UserAnswer()), userResponse);
-            modelMapper.map(houseTypeRepository.findByEmail(postulation.getEmail()).orElse(new HouseType()), userResponse);
 
+            HouseTypeDTO houseType = modelMapper.map(houseTypeRepository.findByEmail(postulation.getEmail()).orElse(new HouseType()), HouseTypeDTO.class);
             List<byte[]> houseBytesImages = new ArrayList<>();
             houseImageService.getAllByEmail(postulation.getEmail()).forEach(houseImage -> {
                 houseBytesImages.add(imageService.downloadImage(houseImage.getImagePath(), houseImage.getImageFilename()));
             });
-            userResponse.setHouseImages(houseBytesImages);
+            houseType.setHouseImages(houseBytesImages);
+            userResponse.setHouse(houseType);
+
             return userResponse;
         }).toList();
     }

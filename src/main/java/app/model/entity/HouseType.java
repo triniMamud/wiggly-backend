@@ -3,11 +3,13 @@ package app.model.entity;
 import app.model.enums.HouseTypeEnum;
 import app.model.enums.OpenSpaceEnum;
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "housetype")
+@Data
 public class HouseType {
 
     @Id

@@ -1,16 +1,8 @@
 package app.model.dto;
 
-import app.model.enums.AdoptionTypeEnum;
-import app.model.enums.HouseTypeEnum;
-import app.model.enums.OpenSpaceEnum;
-import app.model.enums.TransitEnum;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -40,12 +32,6 @@ public class UserFullDTO extends UserDTO {
     private String travelAsignee;
     private String transitPreferences;
     private String maxTimeTransit;
-    private Long houseTypeId;
     private String lastTransitsInfo;
-    private String houseType;
-    private String openSpaces;
-    private boolean hasContentionNet;
-    private boolean isOwner;
-    private boolean allowsPets;
-    private List<byte[]> houseImages;
+    private HouseTypeDTO house;
 }
