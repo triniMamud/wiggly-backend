@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AdoptantDTO {
+public class FavouritePetDTO {
 
     private Long id;
 

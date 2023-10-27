@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import java.util.HashSet;
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,14 +19,12 @@ import java.util.Set;
 @Table(name = "favouritepet")
 public class FavouritePet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false, name = "pet_id")
-    @ElementCollection
-    @Builder.Default
-    private Set<Long> petIds = new HashSet<>();
+    private Long petId;
 }

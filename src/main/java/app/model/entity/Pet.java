@@ -4,10 +4,15 @@ import app.model.enums.BathroomEnum;
 import app.model.enums.PetTypeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import static jakarta.persistence.EnumType.ORDINAL;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Data
 @AllArgsConstructor
@@ -16,14 +21,14 @@ import java.util.Set;
 @Table(name = "pet")
 public class Pet {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(ORDINAL)
     private PetTypeEnum type;
 
     @Column(nullable = false)
@@ -63,10 +68,11 @@ public class Pet {
     private boolean beOnItsOwn;
 
     @Column(nullable = false, name = "bathroom_outside")
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(ORDINAL)
     private BathroomEnum bathroomOutside;
 
     @Column(nullable = false, name = "pet_image_id")
     @ElementCollection
-    private Set<Long> petImageIds;
+    @Builder.Default
+    private Set<Long> petImageIds = new HashSet<>();
 }

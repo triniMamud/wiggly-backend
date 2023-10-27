@@ -6,6 +6,7 @@ import app.exception.types.ImagesNotSavedException;
 import app.exception.types.SavePetException;
 import app.model.dto.*;
 import app.model.dto.request.PetDTORequest;
+import app.model.dto.request.UpdatePetRequest;
 import app.model.dto.response.PetDTOResponse;
 import app.model.entity.Pet;
 import app.model.entity.PetImage;
@@ -46,6 +47,20 @@ public class PetService {
         } catch (Exception e) {
             throw new Exception("No se pudo dar de alta la mascota");
         }
+    }
+
+    @Transactional
+    public PetDTO update(Long id, UpdatePetRequest updatePetRequest) {
+        Pet petToUpdate = petRepository.findById(id).orElseThrow(RuntimeException::new);
+        modelMapper.map(updatePetRequest, petToUpdate);
+
+        if(!updatePetRequest.getImages().isEmpty()) {
+            List<PetImage> newPetImages = saveImages(updatePetRequest.getImages(), id);
+            petToUpdate.getPetImageIds().addAll(newPetImages.stream().map(PetImage::getId).toList());
+        }
+
+        // TODO mappear correctamente a la response que quieras, igual se guarda
+        return modelMapper.map(petRepository.save(petToUpdate), PetDTO.class);
     }
 
     public List<PetDTOResponse> getListPets() {
