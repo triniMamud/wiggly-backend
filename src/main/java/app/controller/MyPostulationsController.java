@@ -2,8 +2,14 @@ package app.controller;
 
 import app.model.dto.ItemDTO;
 import app.model.dto.UserFullDTO;
+import app.model.dto.request.CreateMyPostulationsRequest;
+import app.model.dto.request.UpdateMyPostulationsRequest;
+import app.model.dto.response.MyPostulationsDTO;
 import app.service.common.MyPostulationsService;
+import com.amazonaws.services.globalaccelerator.model.CreateAcceleratorRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.ResponseEntity.ok;
-import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,8 +41,21 @@ public class MyPostulationsController {
         }
     }
 
-    @PostMapping("/{idPet}")
-    public ResponseEntity<Boolean> addPostulation(@RequestHeader("email") String email, @PathVariable long idPet) {
-        return new ResponseEntity<>(myPostulationsService.postulate(email, idPet), HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<MyPostulationsDTO> addPostulation(@RequestHeader("email") String email, @RequestBody @Valid CreateMyPostulationsRequest request) {
+        return ok(myPostulationsService.postulate(email, request));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MyPostulationsDTO> updatePostulationStatus(@PathVariable("id") Long id, @RequestBody @Valid UpdateMyPostulationsRequest request) {
+        return ok(myPostulationsService.updateStatus(id, request.getStatus()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
+        myPostulationsService.delete(id);
+
+        return noContent().build();
+    }
+
 }

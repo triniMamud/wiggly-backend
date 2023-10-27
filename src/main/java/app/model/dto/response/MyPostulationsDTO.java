@@ -1,4 +1,4 @@
-package app.model.entity;
+package app.model.dto.response;
 
 import app.model.enums.PostulationStatusEnum;
 import jakarta.persistence.*;
@@ -7,27 +7,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
-@Entity
 @Data
-@Table(name = "mypostulations")
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MyPostulations {
+public class MyPostulationsDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, name = "pet_id")
     private Long petId;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.ORDINAL)
     private PostulationStatusEnum status;
 }
