@@ -21,7 +21,7 @@ public class NotificationService {
 
     private final JavaMailSender javaMailSender;
 
-    public void sendNotification() throws MailException, MessagingException {
+    public void sendNotification(String email) throws MailException, MessagingException {
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -41,7 +41,7 @@ public class NotificationService {
 
         // Set To: header field of the header.
         message.setRecipients(Message.RecipientType.TO,
-                InternetAddress.parse("eliaslamanna@gmail.com"));
+                InternetAddress.parse(email));
 
         // Set Subject: header field
         message.setSubject("Testing Subject");
