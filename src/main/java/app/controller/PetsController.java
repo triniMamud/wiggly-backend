@@ -1,8 +1,11 @@
 package app.controller;
 
 import app.exception.types.DeleteEntityException;
+import app.model.dto.ItemDTO;
 import app.model.dto.PetDTO;
+import app.model.dto.request.MyPetsSearchRequestParameters;
 import app.model.dto.request.PetDTORequest;
+import app.model.dto.request.PetsSearchRequestParameters;
 import app.model.dto.request.UpdatePetRequest;
 import app.model.dto.response.PetDTOResponse;
 import app.service.common.MyPetsService;
@@ -40,6 +43,11 @@ public class PetsController {
             return status(INTERNAL_SERVER_ERROR).build();
         }
 
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<PetDTO>> searchPet(PetsSearchRequestParameters searchRequest) {
+        return ok(petService.search(searchRequest));
     }
 
     @PutMapping("/{id}")

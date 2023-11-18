@@ -6,21 +6,30 @@ import app.exception.types.ImagesNotSavedException;
 import app.exception.types.SavePetException;
 import app.model.dto.*;
 import app.model.dto.request.PetDTORequest;
+import app.model.dto.request.PetsSearchRequestParameters;
 import app.model.dto.request.UpdatePetRequest;
 import app.model.dto.response.PetDTOResponse;
 import app.model.entity.Pet;
 import app.model.entity.PetImage;
+import app.model.enums.AgeEnum;
 import app.repository.IPetRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static app.model.enums.AgeEnum.*;
 import static app.service.Base64DecodedMultipartFile.base64ToMultipart;
+import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
+import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
+import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
 @AllArgsConstructor
 @Service
@@ -40,6 +49,7 @@ public class PetService {
     public boolean addNewPet(PetDTORequest petRequest, String email) throws Exception {
         try {
             Pet pet = modelMapper.map(petRequest.getPet(), Pet.class);
+            pet.setAgeEnum(this.getAge(pet.getAge()));
             long petId = petRepository.save(modelMapper.map(petRequest.getPet(), Pet.class)).getId();
             pet.setPetImageIds(saveImages(petRequest.getImages(), petId).stream().map(PetImage::getId).collect(Collectors.toSet()));
             myPetsService.addToMyPets(petId, email);
@@ -47,6 +57,30 @@ public class PetService {
         } catch (Exception e) {
             throw new Exception("No se pudo dar de alta la mascota");
         }
+    }
+
+    @Transactional
+    public List<PetDTO> search(PetsSearchRequestParameters searchParameters) {
+        Specification<Pet> spec = Specification.where(null);
+
+        if (nonNull(searchParameters.getType()))
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("type"), searchParameters.getType()));
+
+        if (isNotBlank(searchParameters.getSize()))
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("size"), searchParameters.getSize()));
+
+        if (nonNull(searchParameters.getAgeEnum()))
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.greaterThanOrEqualTo(root.get("ageEnum"), searchParameters.getAgeEnum()));
+
+        if (isNotBlank(searchParameters.getGender()))
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("gender"), searchParameters.getGender()));
+
+        List<Pet> pets = petRepository.findAll(spec);
+        return pets.stream().map(pet -> modelMapper.map(pet, PetDTO.class)).collect(toList());
     }
 
     @Transactional
@@ -135,6 +169,17 @@ public class PetService {
         } catch (Exception e) {
             throw new DeleteEntityException();
         }
+    }
+
+    private AgeEnum getAge(float age) {
+        if(age <= 1.5F) {
+            return PUPPY;
+        }
+        else if(age > 9) {
+            return ELDER;
+        }
+
+        return ADULT;
     }
 
 }

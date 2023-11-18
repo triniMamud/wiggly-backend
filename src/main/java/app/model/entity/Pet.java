@@ -1,5 +1,6 @@
 package app.model.entity;
 
+import app.model.enums.AgeEnum;
 import app.model.enums.BathroomEnum;
 import app.model.enums.PetTypeEnum;
 import jakarta.persistence.*;
@@ -33,6 +34,8 @@ public class Pet {
 
     @Column(nullable = false)
     private float age;
+
+    private AgeEnum ageEnum;
 
     @Column(nullable = false)
     private String gender;
