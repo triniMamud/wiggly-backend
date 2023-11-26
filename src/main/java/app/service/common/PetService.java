@@ -103,7 +103,7 @@ public class PetService {
         petRepository.findAll().forEach(pet -> {
             List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
-                    petBytesImages.add(petImage.getImagePath()));
+                    petBytesImages.add(petImage.getImageFilename()));
             petResponseList.add(new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages));
         });
         return petResponseList;
@@ -111,8 +111,7 @@ public class PetService {
 
     @Transactional
     public PetDTOResponse editPet(long idPet, PetDTORequest petRequest) throws EntityNotFoundException, ImagesNotSavedException, SavePetException {
-        Pet petDB = petRepository.findById(idPet).orElseThrow(EntityNotFoundException::new);
-
+        Pet petDB = petRepository.findById(idPet).orElseThrow(EntityNotFoundException::new
         try {
             PetDTOResponse petResponse = PetDTOResponse.builder().pet(petRequest.getPet()).build();
             /*if (safeIsNotEmpty(petRequest.getImages())) {

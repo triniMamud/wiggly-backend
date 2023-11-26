@@ -76,6 +76,5 @@ public class Pet {
 
     @Column(nullable = false, name = "pet_image_id")
     @ElementCollection
-    @Builder.Default
     private Set<Long> petImageIds = new HashSet<>();
 }

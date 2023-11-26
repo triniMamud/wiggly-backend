@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IAdoptantRepository extends JpaRepository<Adoptant, Long> {
     @Modifying
-    @Query("DELETE FROM Adoptant a WHERE a.email = :email AND :petId MEMBER OF a.petIds")
+    @Query("DELETE FROM Adoptant a WHERE a.email = :email AND a.petId = :petId")
     void deleteByEmailAndPetId(String email, Long petId);
     /*void deleteBypet(int petId);
     List<Adoptant> findBypets(int petId);*/

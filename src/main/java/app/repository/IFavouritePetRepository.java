@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface IFavouritePetRepository extends JpaRepository<FavouritePet, Long> {
 
     @Modifying
-    @Query("DELETE FROM FavouritePet fp WHERE fp.email = ?1 AND ?2 MEMBER OF fp.petIds")
+    @Query("DELETE FROM FavouritePet fp WHERE fp.email = ?1 AND fp.petId = ?2")
     void deleteByEmailAndIdPet(String email, long idPet);
 
     Optional<FavouritePet> findByEmail(String email);
