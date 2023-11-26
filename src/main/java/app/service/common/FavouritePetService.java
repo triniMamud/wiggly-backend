@@ -1,5 +1,6 @@
 package app.service.common;
 
+import app.model.dto.FavouritePetDTO;
 import app.model.entity.FavouritePet;
 import app.repository.IFavouritePetRepository;
 import app.repository.IPetRepository;
@@ -7,8 +8,6 @@ import app.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-
-import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +19,6 @@ public class FavouritePetService {
     private final ModelMapper modelMapper;
 
 
-
     /*public List<ItemDTO> getFavouriteItemsByUsername(String username) {
         List<ItemDTO> favourites = new ArrayList<>();
         favouriteRepository.findAll()
@@ -29,10 +27,14 @@ public class FavouritePetService {
         return favourites;
     }*/
 
-    public Boolean addFavouritePet(String email, long idPet) {
-        FavouritePet favouritePet = favouriteRepository.findByEmail(email).orElse(FavouritePet.builder().email(email).build());
-        favouritePet.getPetIds().add(idPet);
-        return isNotEmpty(favouriteRepository.save(favouritePet));
+    public FavouritePetDTO save(String email, Long petId) {
+        FavouritePet favouritePetToSave = FavouritePet.builder().email(email).petId(petId).build();
+
+        return modelMapper.map(favouriteRepository.save(favouritePetToSave), FavouritePetDTO.class);
+    }
+
+    public void delete(Long id) {
+        favouriteRepository.deleteById(id);
     }
 
     public void deleteFavouritePet(String email, long idPet) {
