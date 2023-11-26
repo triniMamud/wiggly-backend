@@ -16,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +52,9 @@ public class PetService {
     public List<PetDTOResponse> getListPets() {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
         petRepository.findAll().forEach(pet -> {
-            List<byte[]> petBytesImages = new ArrayList<>();
+            List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
-                    petBytesImages.add(imageService.downloadImage(petImage.getImagePath(), petImage.getImageFilename())));
+                    petBytesImages.add(petImage.getImagePath()));
             petResponseList.add(new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages));
         });
         return petResponseList;
@@ -92,15 +93,12 @@ public class PetService {
     }*/
 
     public List<PetImage> saveImages(List<String> images, long petId) {
-        return images.stream().map(imgString64 -> {
-            try {
-                PetImage image  = imageService.saveImageS3(base64ToMultipart(imgString64));
-                var pet = petImageService.savePetImage(image.getImagePath(), image.getImageFilename(), petId);
-                return pet;
+        return images.stream().map(imgSrc -> {
+
+                //PetImage image  = imageService.saveImageS3(base64ToMultipart(imgString64));
+                return petImageService.savePetImage(imgSrc, imgSrc, petId);
 //                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
+
         }).toList();
     }
 

@@ -13,5 +13,5 @@ import java.util.List;
 public class MyPetResponseDTO {
 
     protected ItemDTO pet;
-    protected List<byte[]> images;
+    protected List<String> images;
 }

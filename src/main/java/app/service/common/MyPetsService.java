@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static java.util.Objects.nonNull;
@@ -96,9 +97,9 @@ public class MyPetsService {
     public List<MyPetResponseDTO> getMyPets(String email) {
         List<MyPetResponseDTO> petResponseList = new ArrayList<>();
         myPetRepository.getMyPetsByEmail(email).forEach(myPet -> {
-            List<byte[]> petBytesImages = new ArrayList<>();
+            List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(myPet.getPetId()).forEach(petImage -> {
-                petBytesImages.add(imageService.downloadImage(petImage.getImagePath(), petImage.getImageFilename()));
+                petBytesImages.add(petImage.getImageFilename());
             });
             petResponseList.add(new MyPetResponseDTO(modelMapper.map(petRepository.findById(myPet.getPetId()), ItemDTO.class), petBytesImages));
         });

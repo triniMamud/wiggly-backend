@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
 
 @Data
 @AllArgsConstructor
@@ -16,10 +17,12 @@ public class PetImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "image_path")
+    @Lob
+    @Column(nullable = false, name = "image_path", columnDefinition = "LONGTEXT")
     private String imagePath;
 
-    @Column(nullable = false, name = "image_filename")
+    @Lob
+    @Column(nullable = false, name = "image_filename", columnDefinition = "LONGTEXT")
     private String imageFilename;
 
     @Column(nullable = false, name = "pet_id")

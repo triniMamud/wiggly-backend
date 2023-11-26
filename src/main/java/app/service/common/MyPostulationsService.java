@@ -17,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static app.model.enums.PostulationStatusEnum.SENT;
@@ -90,7 +91,7 @@ public class MyPostulationsService {
             HouseTypeDTO houseType = modelMapper.map(houseTypeRepository.findByEmail(postulation.getEmail()).orElse(new HouseType()), HouseTypeDTO.class);
             List<byte[]> houseBytesImages = new ArrayList<>();
             houseImageService.getAllByEmail(postulation.getEmail()).forEach(houseImage -> {
-                houseBytesImages.add(imageService.downloadImage(houseImage.getImagePath(), houseImage.getImageFilename()));
+                houseBytesImages.add(Base64.getDecoder().decode(houseImage.getImagePath()));
             });
             houseType.setHouseImages(houseBytesImages);
             userResponse.setHouse(houseType);

@@ -29,10 +29,10 @@ public class HouseImageService {
     }
 
     public List<HouseImage> saveImages(List<String> images, String email) {
-        return images.stream().map(imgString64 -> {
+        return images.stream().map(imgSrc -> {
             try {
-                HouseImage image  = imageService.saveHouseImageS3(base64ToMultipart(imgString64));
-                return this.saveHouseImage(image.getImagePath(), image.getImageFilename(), email);
+                //HouseImage image  = imageService.saveHouseImageS3(base64ToMultipart(imgString64));
+                return this.saveHouseImage(imgSrc, imgSrc, email);
 //                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
             } catch (Exception e) {
                 throw new RuntimeException();
@@ -41,7 +41,7 @@ public class HouseImageService {
     }
 
     private HouseImage saveHouseImage(String imagePath, String imageFilename, String email) {
-        return houseImageRepository.save(HouseImage.builder().imagePath(imagePath).imageFilename(imageFilename).email(email).build());
+        return houseImageRepository.save(HouseImage.builder().imagePath("data:image;base64,"+imagePath).imageFilename(imageFilename).email(email).build());
     }
 
 }

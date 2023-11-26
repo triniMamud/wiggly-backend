@@ -18,10 +18,12 @@ public class HouseImage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, name = "image_path")
+    @Lob
+    @Column(nullable = false, name = "image_path", columnDefinition = "LONGTEXT")
     private String imagePath;
 
-    @Column(nullable = false, name = "image_filename")
+    @Lob
+    @Column(nullable = false, name = "image_filename", columnDefinition = "LONGTEXT")
     private String imageFilename;
 
     @Column(nullable = false, name = "email")

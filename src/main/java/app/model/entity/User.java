@@ -38,4 +38,7 @@ public class User {
     @Enumerated(EnumType.ORDINAL)
     @Column(nullable = false, name = "adoption_type")
     private AdoptionTypeEnum adoptionType;
+
+    @Column(name = "profile_image")
+    private String profileImage;
 }

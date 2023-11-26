@@ -22,7 +22,7 @@ public class PetImageService {
     }
 
     public PetImage savePetImage(String imagePath, String imageFilename, long petId) {
-        return petImageRepository.save(PetImage.builder().imagePath(imagePath).imageFilename(imageFilename).petId(petId).build());
+        return petImageRepository.save(PetImage.builder().imagePath("data:image;base64,"+imagePath).imageFilename(imageFilename).petId(petId).build());
     }
 
     @Transactional
