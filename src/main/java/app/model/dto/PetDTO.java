@@ -18,6 +18,9 @@ import java.util.Set;
 public class PetDTO {
 
     @NotNull
+    private int id;
+
+    @NotNull
     private float age;
 
     @NotBlank
@@ -61,4 +64,6 @@ public class PetDTO {
 
     @NotBlank
     private String vaccines;
+
+    private Boolean isFavPet;
 }

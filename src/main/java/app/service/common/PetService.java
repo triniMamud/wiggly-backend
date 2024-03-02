@@ -98,20 +98,23 @@ public class PetService {
         return modelMapper.map(petRepository.save(petToUpdate), PetDTO.class);
     }
 
-    public List<PetDTOResponse> getListPets() {
+    public List<PetDTOResponse> getListPets(String email) {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
+        List<Integer> favPetIds = favouritePetService.getFavouritePetByUser(email).stream().map(favPet -> favPet.getPet().getId()).toList();
         petRepository.findAll().forEach(pet -> {
             List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
                     petBytesImages.add(petImage.getImageFilename()));
-            petResponseList.add(new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages));
+            PetDTOResponse petResponse = new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages);
+            petResponse.getPet().setIsFavPet(favPetIds.contains(pet.getId()));
+            petResponseList.add(petResponse);
         });
-        return petResponseList;
+         return petResponseList;
     }
 
     @Transactional
     public PetDTOResponse editPet(long idPet, PetDTORequest petRequest) throws EntityNotFoundException, ImagesNotSavedException, SavePetException {
-        Pet petDB = petRepository.findById(idPet).orElseThrow(EntityNotFoundException::new
+        Pet petDB = petRepository.findById(idPet).orElseThrow(EntityNotFoundException::new);
         try {
             PetDTOResponse petResponse = PetDTOResponse.builder().pet(petRequest.getPet()).build();
             /*if (safeIsNotEmpty(petRequest.getImages())) {

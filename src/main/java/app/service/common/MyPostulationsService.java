@@ -6,12 +6,11 @@ import app.model.dto.UserFullDTO;
 import app.model.dto.request.CreateMyPostulationsRequest;
 import app.model.dto.response.MyPetResponseDTO;
 import app.model.dto.response.MyPostulationsDTO;
-import app.model.entity.HouseType;
-import app.model.entity.MyPostulations;
-import app.model.entity.User;
-import app.model.entity.UserAnswer;
+import app.model.dto.response.PetAdoptionResponseDTO;
+import app.model.entity.*;
 import app.model.enums.PostulationStatusEnum;
 import app.repository.*;
+import com.amazonaws.services.mq.model.BadRequestException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class MyPostulationsService {
     private final IUserAnswersRepository userAnswersRepository;
     private final IHouseTypeRepository houseTypeRepository;
     private final HouseImageService houseImageService;
-    private final ImageService imageService;
+    private final PetImageService petImageService;
     private final ModelMapper modelMapper;
 
 
@@ -48,11 +47,10 @@ public class MyPostulationsService {
     }*/
 
     public MyPostulationsDTO postulate(String email, CreateMyPostulationsRequest request) {
-        MyPostulations myPostulations = myPostulationsRepository.findByEmail(email).orElse(MyPostulations.builder().email(email).build());
-        myPostulations.setPetId(request.getPetId());
-        myPostulations.setStatus(SENT);
-        MyPostulations createdPostulation = myPostulationsRepository.save(myPostulations);
+        if (myPostulationsRepository.findByEmailAndPetId(email, request.getPetId()).isPresent())
+            throw new BadRequestException("El usuario ya se postuló para adoptar la mascota");
 
+        MyPostulations createdPostulation = myPostulationsRepository.save(MyPostulations.builder().email(email).petId(request.getPetId()).status(SENT).build());
         return modelMapper.map(createdPostulation, MyPostulationsDTO.class);
     }
 
@@ -98,5 +96,17 @@ public class MyPostulationsService {
 
             return userResponse;
         }).toList();
+    }
+
+    public List<PetAdoptionResponseDTO> getMyPostulations(String email) {
+        return myPostulationsRepository.findByEmail(email)
+                .map(postulation -> {
+                    ItemDTO petItem = modelMapper.map(petRepository.findById(postulation.getPetId()).get(), ItemDTO.class);
+                    List<String> petBytesImages = new ArrayList<>();
+                    petImageService.getAllByIdPet(postulation.getPetId()).forEach(petImage -> {
+                        petBytesImages.add(petImage.getImageFilename());
+                    });
+                    return new PetAdoptionResponseDTO(petItem, postulation.getStatus(), petBytesImages);
+                }).stream().toList();
     }
 }

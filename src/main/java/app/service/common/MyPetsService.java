@@ -105,45 +105,4 @@ public class MyPetsService {
         });
         return petResponseList;
     }
-
-
-//        Specification<Pet> spec = Specification.where(null);
-//
-//        spec = addConditionIfPresent(spec, Optional.ofNullable(searchParameters.getGender()), "gender", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.equal(root.get("gender"), value));
-//
-//        Optional<Integer> minAge = Optional.of(searchParameters.getMinAge());
-//        Optional<Integer> maxAge = Optional.of(searchParameters.getMaxAge());
-//
-//        spec = addConditionIfPresent(spec, minAge, "age", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.greaterThanOrEqualTo(root.get("age"), value));
-//
-//        spec = addConditionIfPresent(spec, maxAge, "age", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.lessThanOrEqualTo(root.get("age"), value));
-//
-//        spec = addConditionIfNotEmpty(spec, searchParameters.getNeighbourhood(), "neighbourhood", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.equal(root.get("neighbourhood"), value));
-//
-//        List<Pet> pets = petRepository.findAll(spec);
-//
-//        return pets;
-//    }
-//
-//    private <T> Specification<T> addConditionIfPresent(Specification<T> spec, Optional<T> value, String fieldName,
-//                                                       TriFunction<Root<Pet>, CriteriaBuilder, T, Predicate> condition) {
-//        return value.map(v -> spec.and((root, query, criteriaBuilder) -> condition.apply(root, criteriaBuilder, v)))
-//                .orElse(spec);
-//    }
-//
-//    private <T> Specification<T> addConditionIfNotEmpty(Specification<T> spec, String value, String fieldName,
-//                                                        TriFunction<Root<T>, CriteriaBuilder, String, Predicate> condition) {
-//        return StringUtils.isNotEmpty(value)
-//                ? spec.and((root, query, criteriaBuilder) -> condition.apply(root, criteriaBuilder, value))
-//                : spec;
-//    }
-//
-//    @FunctionalInterface
-//    private interface TriFunction<T, U, V, R> {
-//        R apply(T t, U u, V v);
-//    }
 }

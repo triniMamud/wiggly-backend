@@ -5,6 +5,7 @@ import app.model.dto.UserFullDTO;
 import app.model.dto.request.CreateMyPostulationsRequest;
 import app.model.dto.request.UpdateMyPostulationsRequest;
 import app.model.dto.response.MyPostulationsDTO;
+import app.model.dto.response.PetAdoptionResponseDTO;
 import app.service.common.MyPostulationsService;
 import com.amazonaws.services.globalaccelerator.model.CreateAcceleratorRequest;
 import jakarta.validation.Valid;
@@ -33,9 +34,18 @@ public class MyPostulationsController {
     }*/
 
     @GetMapping("/{petId}")
-    public ResponseEntity<List<UserFullDTO>> getMyPostulations(@PathVariable(name = "petId") Long petId) {
+    public ResponseEntity<List<UserFullDTO>> getPetMyPostulations(@PathVariable(name = "petId") Long petId) {
         try {
             return ok(myPostulationsService.getUsersPetMyPostulations(petId));
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PetAdoptionResponseDTO>> getMyPostulations(@RequestHeader("email") String email) {
+        try {
+            return ok(myPostulationsService.getMyPostulations(email));
         } catch (Exception e) {
             return status(INTERNAL_SERVER_ERROR).build();
         }

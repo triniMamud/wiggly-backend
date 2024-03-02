@@ -31,8 +31,8 @@ public class PetsController {
     private final MyPostulationsService myPostulationsService;
 
     @GetMapping
-    public ResponseEntity<List<PetDTOResponse>> getListPets() throws Exception {
-        return ok(petService.getListPets());
+    public ResponseEntity<List<PetDTOResponse>> getListPets(@RequestHeader("email") String email) throws Exception {
+        return ok(petService.getListPets(email));
     }
 
     @PostMapping("/alta")
