@@ -9,6 +9,7 @@ import app.model.entity.FavouritePet;
 import app.repository.IFavouritePetRepository;
 import app.repository.IPetRepository;
 import app.repository.IUserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -46,8 +47,9 @@ public class FavouritePetService {
         return modelMapper.map(favouriteRepository.save(favouritePetToSave), FavouritePetDTO.class);
     }
 
-    public void delete(Long id) {
-        favouriteRepository.deleteById(id);
+    @Transactional
+    public void delete(String email, long id) {
+        favouriteRepository.deleteByEmailAndIdPet(email, id);
     }
 
     public void deleteFavouritePet(String email, long idPet) {

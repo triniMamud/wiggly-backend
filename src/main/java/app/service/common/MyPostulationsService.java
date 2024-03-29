@@ -20,6 +20,7 @@ import java.util.Base64;
 import java.util.List;
 
 import static app.model.enums.PostulationStatusEnum.SENT;
+import static java.util.Base64.getDecoder;
 import static org.apache.commons.lang3.ObjectUtils.isNotEmpty;
 
 @AllArgsConstructor
@@ -87,9 +88,9 @@ public class MyPostulationsService {
             modelMapper.map(userAnswersRepository.findByEmail(postulation.getEmail()).orElse(new UserAnswer()), userResponse);
 
             HouseTypeDTO houseType = modelMapper.map(houseTypeRepository.findByEmail(postulation.getEmail()).orElse(new HouseType()), HouseTypeDTO.class);
-            List<byte[]> houseBytesImages = new ArrayList<>();
+            List<String> houseBytesImages = new ArrayList<>();
             houseImageService.getAllByEmail(postulation.getEmail()).forEach(houseImage -> {
-                houseBytesImages.add(Base64.getDecoder().decode(houseImage.getImagePath()));
+                houseBytesImages.add(houseImage.getImageFilename());
             });
             houseType.setHouseImages(houseBytesImages);
             userResponse.setHouse(houseType);

@@ -23,7 +23,7 @@ public class UserAnswer {
     @Column(nullable = false, name = "has_other_pets")
     private boolean hasOtherPets;
 
-    @Column(nullable = false, name = "other_pets_info")
+    @Column(name = "other_pets_info")
     private String otherPetsInfo;
 
     @Column(nullable = false, name = "family_members")
@@ -32,7 +32,7 @@ public class UserAnswer {
     @Column(nullable = false, name = "has_children")
     private boolean hasChildren;
 
-    @Column(nullable = false, name = "children_info")
+    @Column(name = "children_info")
     private String childrenInfo;
 
     @Column(nullable = false, name = "costs_awareness")
@@ -42,7 +42,7 @@ public class UserAnswer {
     private String jobSituation;
 
     @Column(nullable = false, name = "time_alone_pet")
-    private Float timeAlonePet;
+    private String timeAlonePet;
 
     @Column(nullable = false, name = "times_walk_pet")
     private Integer timesWalkPet;
@@ -66,15 +66,15 @@ public class UserAnswer {
     private String travelAsignee;
 
     @Enumerated(EnumType.ORDINAL)
-    @Column(nullable = false, name = "transit_preferences")
+    @Column(name = "transit_preferences")
     private TransitEnum transitPreferences;
 
-    @Column(nullable = false, name = "max_time_transit")
+    @Column(name = "max_time_transit")
     private String maxTimeTransit;
 
     @Column(nullable = false, name = "house_type_id")
     private Long houseTypeId;
 
-    @Column(nullable = false, name = "last_transits_info")
+    @Column(name = "last_transits_info")
     private String lastTransitsInfo;
 }

@@ -17,5 +17,5 @@ public class HouseTypeDTO {
     private boolean hasContentionNet;
     private boolean isOwner;
     private boolean allowsPets;
-    private List<byte[]> houseImages;
+    private List<String> houseImages;
 }

@@ -1,11 +1,13 @@
 package app.controller;
 
+import app.model.ApiResponse;
 import app.model.dto.FavouritePetDTO;
 import app.model.dto.ItemDTO;
 import app.model.dto.request.CreateFavouritePetRequest;
 import app.model.dto.response.PetAdoptionResponseDTO;
 import app.model.dto.response.PetDTOResponse;
 import app.service.common.FavouritePetService;
+import com.google.protobuf.Api;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,9 +37,9 @@ public class FavouritesController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFavouritePet(@PathVariable("id") Long id) {
-        favouritePetService.delete(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deleteFavouritePet(@RequestHeader("email") String email, @PathVariable("id") Long id) {
+        favouritePetService.delete(email, id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
