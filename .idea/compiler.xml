@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="perrosEnAdopcion" />
+        <module name="wiggly-backend" />
         <module name="wiggly" />
       </profile>
     </annotationProcessing>
@@ -16,6 +17,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="perrosEnAdopcion" options="-parameters" />
       <module name="wiggly" options="-parameters" />
+      <module name="wiggly-backend" options="-parameters" />
     </option>
   </component>
 </project>
