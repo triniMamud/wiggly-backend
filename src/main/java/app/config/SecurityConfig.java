@@ -37,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://660cecff21bb390008f1a9ab--wigglypets.netlify.app")); // Add your front-end's URL
+        configuration.setAllowedOrigins(List.of("https://master--wigglypets.netlify.app")); // Add your front-end's URL
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
