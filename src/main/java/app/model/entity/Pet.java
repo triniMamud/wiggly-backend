@@ -77,4 +77,7 @@ public class Pet {
     @Column(nullable = false, name = "pet_image_id")
     @ElementCollection
     private Set<Long> petImageIds = new HashSet<>();
+
+    @Column(nullable = false, name = "is_fav_pet")
+    private Boolean is_fav_pet;
 }

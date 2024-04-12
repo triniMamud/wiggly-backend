@@ -11,6 +11,6 @@ public interface IPetRepository extends JpaRepository<Pet, Long>, JpaSpecificati
 
     Pet getPetById(Long petId);
 
-    @Query("UPDATE Pet p SET p.isFavPet = :isFavPet WHERE p.petId = :petId")
+    @Query("UPDATE Pet p SET p.is_fav_pet = :isFavPet WHERE p.id = :petId")
     void updateFav(Long petId, boolean isFavPet);
 }
