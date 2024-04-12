@@ -28,11 +28,6 @@ public class MyPostulationsController {
 
     private final MyPostulationsService myPostulationsService;
 
-    /*@GetMapping
-    public ResponseEntity<List<ItemDTO>> getMyPostulations(@RequestHeader("username") String username) {
-        return new ResponseEntity<>(myPostulationsService.getMyPostulations(username), HttpStatus.OK);
-    }*/
-
     @GetMapping("/{petId}")
     public ResponseEntity<List<UserFullDTO>> getPetMyPostulations(@PathVariable(name = "petId") Long petId) {
         try {

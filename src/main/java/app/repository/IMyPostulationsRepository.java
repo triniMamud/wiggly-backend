@@ -14,9 +14,11 @@ public interface IMyPostulationsRepository extends JpaRepository<MyPostulations,
     /* deleteBypet(int petId);*/
     Optional<MyPostulations> findByEmail(String email);
 
-    Optional<List<MyPostulations>> findByPetId(Long petId);
+    Optional<List<MyPostulations>> findAllByEmail(String email);
 
     Optional<MyPostulations> findByEmailAndPetId(String email, Long petId);
+
+    Optional<List<MyPostulations>> findByPetId(Long petId);
 
     @Modifying
     @Query("DELETE FROM MyPostulations mp WHERE mp.email = ?1 AND ?2 = petId")

@@ -100,7 +100,7 @@ public class MyPostulationsService {
     }
 
     public List<PetAdoptionResponseDTO> getMyPostulations(String email) {
-        return myPostulationsRepository.findByEmail(email)
+        return myPostulationsRepository.findAllByEmail(email).get().stream()
                 .map(postulation -> {
                     ItemDTO petItem = modelMapper.map(petRepository.findById(postulation.getPetId()).get(), ItemDTO.class);
                     List<String> petBytesImages = new ArrayList<>();
@@ -108,6 +108,6 @@ public class MyPostulationsService {
                         petBytesImages.add(petImage.getImageFilename());
                     });
                     return new PetAdoptionResponseDTO(petItem, postulation.getStatus(), petBytesImages);
-                }).stream().toList();
+                }).toList();
     }
 }

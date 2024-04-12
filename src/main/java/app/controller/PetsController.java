@@ -55,6 +55,12 @@ public class PetsController {
         return ok(petService.update(id, updatePetRequest));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, Boolean isFavPet) {
+        petService.updateFav(id, isFavPet);
+        return noContent().build();
+    }
+
     /*@GetMapping("/list/{idPerro}")
     public ResponseEntity<PetDTOResponse> getPet(@PathVariable int idDog) {
         return ok(petService.getPet(idDog));

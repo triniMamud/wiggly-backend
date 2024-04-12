@@ -100,7 +100,7 @@ public class PetService {
 
     public List<PetDTOResponse> getListPets(String email) {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
-        List<Integer> favPetIds = favouritePetService.getFavouritePetByUser(email).stream().map(favPet -> favPet.getPet().getId()).toList();
+        List<Long> favPetIds = favouritePetService.getFavouritePetByUser(email).stream().map(favPet -> (long) favPet.getPet().getId()).toList();
         petRepository.findAll().forEach(pet -> {
             List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
@@ -136,13 +136,6 @@ public class PetService {
         }
     }
 
-    /*public PetDTOResponse getPet(int idPet) {
-        List<byte[]> petBytesImages = petImageService.findAllByidPet(idPet).stream()
-                .map(petImage -> imageService.downloadImage(petImage.getIdImage())).collect(toList());
-
-        return PetDTOResponse.builder().pet(mapper.map(petRepository.findById(idPet), PetDTO.class)).images(petBytesImages).build();
-    }*/
-
     public List<PetImage> saveImages(List<String> images, long petId) {
         return images.stream().map(imgSrc -> {
 
@@ -172,14 +165,12 @@ public class PetService {
     }
 
     private AgeEnum getAge(float age) {
-        if(age <= 1.5F) {
-            return PUPPY;
-        }
-        else if(age > 9) {
-            return ELDER;
-        }
-
+        if(age <= 1.5F) return PUPPY;
+        else if(age > 9) return ELDER;
         return ADULT;
     }
 
+    public void updateFav(Long id, Boolean isFavPet) {
+        petRepository.updateFav(id, isFavPet);
+    }
 }
