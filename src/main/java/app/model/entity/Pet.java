@@ -79,5 +79,5 @@ public class Pet {
     private Set<Long> petImageIds = new HashSet<>();
 
     @Column(nullable = false, name = "is_fav_pet")
-    private Boolean is_fav_pet;
+    private Boolean isFavPet;
 }

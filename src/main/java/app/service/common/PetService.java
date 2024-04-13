@@ -60,7 +60,7 @@ public class PetService {
         }
     }
 
-    @Transactional
+    /*@Transactional
     public List<PetDTO> search(PetsSearchRequestParameters searchParameters) {
         Specification<Pet> spec = Specification.where(null);
 
@@ -82,7 +82,7 @@ public class PetService {
 
         List<Pet> pets = petRepository.findAll(spec);
         return pets.stream().map(pet -> modelMapper.map(pet, PetDTO.class)).collect(toList());
-    }
+    }*/
 
     @Transactional
     public PetDTO update(Long id, UpdatePetRequest updatePetRequest) {
@@ -170,7 +170,7 @@ public class PetService {
         return ADULT;
     }
 
-    public void updateFav(Long id, Boolean isFavPet) {
+    public void updateFav(Long id, boolean isFavPet) {
         petRepository.updateFav(id, isFavPet);
     }
 }

@@ -45,10 +45,10 @@ public class PetsController {
 
     }
 
-    @GetMapping("/search")
+    /*@GetMapping("/search")
     public ResponseEntity<List<PetDTO>> searchPet(PetsSearchRequestParameters searchRequest) {
         return ok(petService.search(searchRequest));
-    }
+    }*/
 
     @PutMapping("/{id}")
     public ResponseEntity<PetDTO> update(@PathVariable("id") Long id, @RequestBody @Valid UpdatePetRequest updatePetRequest) {
@@ -56,7 +56,7 @@ public class PetsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, Boolean isFavPet) {
+    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, @RequestBody boolean isFavPet) {
         petService.updateFav(id, isFavPet);
         return noContent().build();
     }
