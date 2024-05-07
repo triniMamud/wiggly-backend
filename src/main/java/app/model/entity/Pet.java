@@ -35,8 +35,6 @@ public class Pet {
     @Column(nullable = false)
     private float age;
 
-    private AgeEnum ageEnum;
-
     @Column(nullable = false)
     private String gender;
 

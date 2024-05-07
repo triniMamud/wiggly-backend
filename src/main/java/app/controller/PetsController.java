@@ -1,12 +1,8 @@
 package app.controller;
 
 import app.exception.types.DeleteEntityException;
-import app.model.dto.ItemDTO;
 import app.model.dto.PetDTO;
-import app.model.dto.request.MyPetsSearchRequestParameters;
-import app.model.dto.request.PetDTORequest;
-import app.model.dto.request.PetsSearchRequestParameters;
-import app.model.dto.request.UpdatePetRequest;
+import app.model.dto.request.*;
 import app.model.dto.response.PetDTOResponse;
 import app.service.common.MyPetsService;
 import app.service.common.MyPostulationsService;
@@ -56,8 +52,8 @@ public class PetsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, @RequestBody boolean isFavPet) {
-        petService.updateFav(id, isFavPet);
+    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, @RequestBody @Valid IsFavPetRequest request) {
+        petService.updateFav(id, request);
         return noContent().build();
     }
 

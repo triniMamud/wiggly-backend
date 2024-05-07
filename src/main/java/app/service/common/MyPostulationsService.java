@@ -49,7 +49,7 @@ public class MyPostulationsService {
 
     public MyPostulationsDTO postulate(String email, CreateMyPostulationsRequest request) {
         if (myPostulationsRepository.findByEmailAndPetId(email, request.getPetId()).isPresent())
-            throw new BadRequestException("El usuario ya se postuló para adoptar la mascota");
+            throw new BadRequestException("Ya enviaste una postulación para esta mascota");
 
         MyPostulations createdPostulation = myPostulationsRepository.save(MyPostulations.builder().email(email).petId(request.getPetId()).status(SENT).build());
         return modelMapper.map(createdPostulation, MyPostulationsDTO.class);
