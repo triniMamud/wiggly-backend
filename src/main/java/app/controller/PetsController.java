@@ -51,7 +51,7 @@ public class PetsController {
         return ok(petService.update(id, updatePetRequest));
     }
 
-    @PatchMapping("/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, @RequestBody @Valid IsFavPetRequest request) {
         petService.updateFav(id, request);
         return noContent().build();
