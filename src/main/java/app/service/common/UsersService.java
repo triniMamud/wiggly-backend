@@ -49,6 +49,7 @@ public class UsersService {
         if (userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserAlreadyTakenException();
 
+        user.setIsFormAnswered(false);
         userRepository.save(user);
         accountRepository.save(Account.builder().email(user.getEmail()).encryptedPassword(encryptPssw(password)).build());
         return new UserDTO(user.getName(), user.getEmail(), user.getIsFormAnswered(), user.getAdoptionType().name());
