@@ -37,7 +37,7 @@ public class CreateUserAnswerRequest {
     private String timeAlonePet;
 
     @NonNull
-    private String timesWalkPet;
+    private Integer timesWalkPet;
 
     @NotBlank
     private String sleepingPlace;

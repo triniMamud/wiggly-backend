@@ -30,7 +30,7 @@ public class UserAnswerDTO {
 
     private String timeAlonePet;
 
-    private String timesWalkPet;
+    private Integer timesWalkPet;
 
     private String sleepingPlace;
 

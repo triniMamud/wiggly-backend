@@ -23,7 +23,7 @@ public class UserFullDTO extends UserDTO {
     private boolean costsAwareness;
     private String jobSituation;
     private String timeAlonePet;
-    private String timesWalkPet;
+    private Integer timesWalkPet;
     private String sleepingPlace;
     private boolean canAffordTrainee;
     private boolean canAffordWalker;
