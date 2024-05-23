@@ -34,10 +34,10 @@ public class CreateUserAnswerRequest {
     private String jobSituation;
 
     @NonNull
-    private Float timeAlonePet;
+    private String timeAlonePet;
 
     @NonNull
-    private Integer timesWalkPet;
+    private String timesWalkPet;
 
     @NotBlank
     private String sleepingPlace;
@@ -57,16 +57,10 @@ public class CreateUserAnswerRequest {
     @NonNull
     private String travelAsignee;
 
-    @NonNull
     private TransitEnum transitPreferences;
 
-    @NotBlank
     private String maxTimeTransit;
 
-    @NonNull
-    private Long houseTypeId;
-
-    @NotBlank
     private String lastTransitsInfo;
 
     @NonNull

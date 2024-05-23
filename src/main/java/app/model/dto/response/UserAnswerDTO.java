@@ -28,9 +28,9 @@ public class UserAnswerDTO {
 
     private String jobSituation;
 
-    private Float timeAlonePet;
+    private String timeAlonePet;
 
-    private Integer timesWalkPet;
+    private String timesWalkPet;
 
     private String sleepingPlace;
 

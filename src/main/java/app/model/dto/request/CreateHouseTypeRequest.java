@@ -36,6 +36,6 @@ public class CreateHouseTypeRequest {
     private boolean allowsPets;
 
     @NotNull
-    private List<CreateHouseImageRequest> houseImagesRequest;
+    private List<String> houseImages;
 
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import static app.model.Encryption.encryptPssw;
 import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Service
@@ -50,6 +51,11 @@ public class UsersService {
 
         userRepository.save(user);
         accountRepository.save(Account.builder().email(user.getEmail()).encryptedPassword(encryptPssw(password)).build());
-        return new UserDTO(user.getName(), user.getEmail());
+        return new UserDTO(user.getName(), user.getEmail(), user.getIsFormAnswered(), user.getAdoptionType().name());
+    }
+
+    public boolean getIsFormAnswered(String email) {
+        Boolean result = userRepository.getIsFormAnswered(email);
+        return nonNull(result) && result;
     }
 }

@@ -47,4 +47,9 @@ public class UsersController {
         }
     }
 
+    @GetMapping("/isFormAnswered")
+    public ResponseEntity<Boolean> getIsFormAnswered(@RequestHeader("email") String email) {
+        return ok(usersService.getIsFormAnswered(email));
+    }
+
 }

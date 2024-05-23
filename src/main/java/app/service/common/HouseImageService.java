@@ -28,16 +28,8 @@ public class HouseImageService {
         return houseImageRepository.findByEmail(email);
     }
 
-    public List<HouseImage> saveImages(List<String> images, String email) {
-        return images.stream().map(imgSrc -> {
-            try {
-                //HouseImage image  = imageService.saveHouseImageS3(base64ToMultipart(imgString64));
-                return this.saveHouseImage(imgSrc, imgSrc, email);
-//                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-        }).toList();
+    public HouseImage saveImages(String imagePath, String imageFilename, String email) {
+        return houseImageRepository.save(HouseImage.builder().imagePath("data:image;base64,"+imagePath).imageFilename(imageFilename).email(email).build());
     }
 
     private HouseImage saveHouseImage(String imagePath, String imageFilename, String email) {

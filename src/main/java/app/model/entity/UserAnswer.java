@@ -45,7 +45,7 @@ public class UserAnswer {
     private String timeAlonePet;
 
     @Column(nullable = false, name = "times_walk_pet")
-    private Integer timesWalkPet;
+    private String timesWalkPet;
 
     @Column(nullable = false, name = "sleeping_place")
     private String sleepingPlace;
