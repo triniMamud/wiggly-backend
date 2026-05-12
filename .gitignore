@@ -1,0 +1,29 @@
+# Default ignored files
+/shelf/
+.idea/workspace.xml
+
+# Compiled
+target/
+*.jar
+*.war
+*.class
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+
+# Environment — nunca subir credenciales
+application.properties
+application-*.properties
+*.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
