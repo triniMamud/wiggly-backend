@@ -21,5 +21,5 @@ public interface IMyPetRepository extends JpaRepository<MyPet, Long>, JpaSpecifi
 
     List<MyPet> getMyPetsByEmail(String email);
 
-    /* void deleteBypet(int petId);*/
+    Optional<MyPet> findFirstByPetId(Long petId);
 }

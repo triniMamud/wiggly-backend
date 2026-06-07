@@ -8,9 +8,8 @@ import lombok.NonNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateMyPostulationsRequest {
+public class AbmMyPostulationReq {
 
     @NonNull
     private Long petId;
-
 }

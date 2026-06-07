@@ -2,12 +2,13 @@ package app.model.dto.request;
 
 import app.model.enums.AdoptionTypeEnum;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -27,9 +28,8 @@ public class RegisterRequest {
     @NotBlank(message = "El apellido es requerido")
     private String lastName;
 
-    @NotNull(message = "La edad es requerida")
-    @Min(value = 18, message = "Debe ser mayor de 18 años")
-    private Integer age;
+    @NotNull(message = "La fecha de nacimiento es requerida")
+    private LocalDate birthDate;
 
     @NotNull(message = "El celular es requerido")
     private Long phone;
@@ -42,4 +42,6 @@ public class RegisterRequest {
 
     // opcional
     private String shelterName;
+
+    private String profilePhoto;
 }

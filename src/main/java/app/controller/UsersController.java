@@ -41,10 +41,18 @@ public class UsersController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody RegisterRequest user, @RequestHeader("password") String password) {
+    public ResponseEntity<CloackUserResponse> register(@RequestBody RegisterRequest user, @RequestHeader("password") String password) {
         try {
-            return ok(usersService.registerUser(user, password));
-        } catch (UserAlreadyTakenException uatE) {
+            User savedUser = usersService.registerUser(user, password);
+            CloackUserResponse response = new CloackUserResponse();
+            response.setName(savedUser.getName());
+            response.setEmail(savedUser.getEmail());
+            response.setFormAnswered(savedUser.getIsFormAnswered());
+            response.setAdoptionType(savedUser.getAdoptionType());
+            return ok(response);
+        } catch (UserAlreadyTakenException e) {
+            return status(BAD_REQUEST).build();
+        } catch (UnderAgeException uae) {
             return status(BAD_REQUEST).build();
         } catch (Exception e) {
             return status(INTERNAL_SERVER_ERROR).build();

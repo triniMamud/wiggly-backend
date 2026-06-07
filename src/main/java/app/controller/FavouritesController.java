@@ -4,6 +4,7 @@ import app.model.ApiResponse;
 import app.model.dto.FavouritePetDTO;
 import app.model.dto.ItemDTO;
 import app.model.dto.request.CreateFavouritePetRequest;
+import app.model.dto.response.MyFavPetResponse;
 import app.model.dto.response.PetAdoptionResponseDTO;
 import app.model.dto.response.PetDTOResponse;
 import app.service.common.FavouritePetService;
@@ -38,12 +39,12 @@ public class FavouritesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFavouritePet(@RequestHeader("email") String email, @PathVariable("id") Long id) {
-        favouritePetService.delete(email, id);
+        favouritePetService.deleteFavPet(email, id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<PetDTOResponse>> getFavouritePetByUser(@RequestHeader("email") String email) {
+    public ResponseEntity<List<MyFavPetResponse>> getFavouritePetByUser(@RequestHeader("email") String email) {
         try {
             return ok(favouritePetService.getFavouritePetByUser(email));
         } catch (Exception e) {

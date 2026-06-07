@@ -12,6 +12,9 @@ import lombok.NonNull;
 public class UpdateMyPostulationsRequest {
 
     @NonNull
+    private Long petId;
+
+    @NonNull
     private PostulationStatusEnum status;
 
 }

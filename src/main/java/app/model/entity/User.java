@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,8 +30,8 @@ public class User {
     @Column(nullable = false, name = "last_name")
     private String lastName;
 
-    @Column(nullable = false)
-    private int age;
+    @Column(nullable = false, name = "birth_date")
+    private LocalDate birthDate;
 
     @Column(nullable = false)
     private long phone;
@@ -41,12 +43,13 @@ public class User {
     @Column(nullable = false, name = "adoption_type")
     private AdoptionTypeEnum adoptionType;
 
-    @Column(name = "profile_photo")
+    @Lob
+    @Column(name = "profile_photo", columnDefinition = "LONGTEXT")
     private String profilePhoto;
 
     @Column(name = "form_answered", nullable = false)
     private Boolean isFormAnswered;
 
-    @Column(name = "shelter_name", nullable = true)
+    @Column(name = "shelter_name")
     private String shelterName;
 }

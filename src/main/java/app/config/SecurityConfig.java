@@ -12,6 +12,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+import static java.util.List.of;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -37,9 +38,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://master--wigglypets.netlify.app", "http://localhost:4200", "http://192.168.1.14:8080", "http://localhost:8080"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedOrigins(of(
+                "https://master--wigglypets.netlify.app",
+                "http://localhost:4200",
+                "http://192.168.1.14:8080",
+                "http://localhost:8080",
+                "http://10.0.2.2:8080"));
+        configuration.setAllowedMethods(of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        configuration.setAllowedHeaders(of("*"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

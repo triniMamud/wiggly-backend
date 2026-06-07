@@ -1,24 +1,21 @@
 package app.controller;
 
-import app.model.dto.ItemDTO;
+import app.exception.types.AlreadyPostulatedException;
+import app.exception.types.EntityNotFoundException;
 import app.model.dto.UserFullDTO;
-import app.model.dto.request.CreateMyPostulationsRequest;
+import app.model.dto.request.AbmMyPostulationReq;
 import app.model.dto.request.UpdateMyPostulationsRequest;
 import app.model.dto.response.MyPostulationsDTO;
 import app.model.dto.response.PetAdoptionResponseDTO;
 import app.service.common.MyPostulationsService;
-import com.amazonaws.services.globalaccelerator.model.CreateAcceleratorRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
@@ -47,20 +44,18 @@ public class MyPostulationsController {
     }
 
     @PostMapping
-    public ResponseEntity<MyPostulationsDTO> addPostulation(@RequestHeader("email") String email, @RequestBody @Valid CreateMyPostulationsRequest request) {
+    public ResponseEntity<MyPostulationsDTO> addPostulation(@RequestHeader("email") String email, @RequestBody @Valid AbmMyPostulationReq request) throws AlreadyPostulatedException {
         return ok(myPostulationsService.postulate(email, request));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<MyPostulationsDTO> updatePostulationStatus(@PathVariable("id") Long id, @RequestBody @Valid UpdateMyPostulationsRequest request) {
-        return ok(myPostulationsService.updateStatus(id, request.getStatus()));
+    @PutMapping
+    public ResponseEntity<MyPostulationsDTO> updatePostulationStatus(@RequestHeader("email") String email, @RequestBody @Valid UpdateMyPostulationsRequest request) {
+        return ok(myPostulationsService.updateStatus(email, request.getPetId(), request.getStatus()));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
-        myPostulationsService.delete(id);
-
+    @DeleteMapping
+    public ResponseEntity<Void> cancelPostulation(@RequestHeader("email") String email, @RequestBody AbmMyPostulationReq request) throws EntityNotFoundException {
+        myPostulationsService.deletePetFromPostulations(email, request.getPetId());
         return noContent().build();
     }
-
 }

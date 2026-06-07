@@ -23,4 +23,6 @@ public interface IMyPostulationsRepository extends JpaRepository<MyPostulations,
     @Modifying
     @Query("DELETE FROM MyPostulations mp WHERE mp.email = ?1 AND ?2 = petId")
     void deleteByEmailAndIdPet(String email, long petId);
+
+    int countByPetId(Long petId);
 }

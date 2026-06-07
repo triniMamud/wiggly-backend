@@ -27,8 +27,8 @@ public class PetsController {
     private final MyPostulationsService myPostulationsService;
 
     @GetMapping
-    public ResponseEntity<List<PetDTOResponse>> getListPets(@RequestHeader("email") String email) throws Exception {
-        return ok(petService.getListPets(email));
+    public ResponseEntity<List<PetDTOResponse>> getListPets() throws Exception {
+        return ok(petService.getListPets());
     }
 
     @PostMapping("/alta")
@@ -38,7 +38,6 @@ public class PetsController {
         } catch (Exception e) {
             return status(INTERNAL_SERVER_ERROR).build();
         }
-
     }
 
     /*@GetMapping("/search")

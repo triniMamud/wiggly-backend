@@ -1,6 +1,7 @@
 package app.model.dto.request;
 
 import app.model.enums.TransitEnum;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,38 +16,36 @@ public class CreateUserAnswerRequest {
     @NonNull
     private boolean hasOtherPets;
 
-    @NotBlank
     private String otherPetsInfo;
 
     @NonNull
-    private Integer familyMembers;
+    private String familyMembers;
 
     @NonNull
     private boolean hasChildren;
 
-    @NotBlank
     private String childrenInfo;
 
     @NonNull
     private boolean costsAwareness;
-
-    @NotBlank
-    private String jobSituation;
-
-    @NonNull
-    private String timeAlonePet;
-
-    @NonNull
-    private Integer timesWalkPet;
-
-    @NotBlank
-    private String sleepingPlace;
 
     @NonNull
     private boolean canAffordTrainee;
 
     @NonNull
     private boolean canAffordWalker;
+
+    @NonNull
+    private String jobSituation;
+
+    @NonNull
+    private String timeAlonePet;
+
+    @NonNull
+    private String timesWalkPet;
+
+    @NonNull
+    private String sleepingPlace;
 
     @NonNull
     private boolean castrationCompromise;
@@ -57,13 +56,12 @@ public class CreateUserAnswerRequest {
     @NonNull
     private String travelAsignee;
 
-    private TransitEnum transitPreferences;
+    @NonNull
+    private CreateHouseTypeRequest houseTypeRequest;
+
+    private String transitPreferences;
 
     private String maxTimeTransit;
 
     private String lastTransitsInfo;
-
-    @NonNull
-    private CreateHouseTypeRequest houseTypeRequest;
-
 }

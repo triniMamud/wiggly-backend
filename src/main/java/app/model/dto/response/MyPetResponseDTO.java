@@ -1,6 +1,6 @@
 package app.model.dto.response;
 
-import app.model.dto.ItemDTO;
+import app.model.dto.MyPetItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class MyPetResponseDTO {
 
-    protected ItemDTO pet;
+    protected MyPetItemDTO pet;
     protected List<String> images;
 }

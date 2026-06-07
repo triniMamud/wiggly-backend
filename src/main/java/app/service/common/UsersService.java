@@ -1,5 +1,6 @@
 package app.service.common;
 
+import app.exception.types.UnderAgeException;
 import app.exception.types.UserAlreadyTakenException;
 import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongPasswordException;
@@ -17,6 +18,9 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 import static app.model.Encryption.encryptPssw;
 import static java.util.Objects.nonNull;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
@@ -31,16 +35,20 @@ public class UsersService {
 
 
     public CloackUserResponse logIn(AccountDTO accountDTO) throws WrongPasswordException, UserDoesntExistException {
+        String emailLower = accountDTO.getEmail().toLowerCase();
         Account accountDB = accountRepository.findByEmail(accountDTO.getEmail());
-        if (isEmpty(accountDB)) throw new UserDoesntExistException();
-        else if (!BCrypt.checkpw(accountDTO.getPassword(), accountDB.getEncryptedPassword()))
-            throw new WrongPasswordException();
-        else {
-            CloackUserResponse cloackUser = mapper.map(userRepository.findByEmail(accountDTO.getEmail()), CloackUserResponse.class);
-            cloackUser.setFormAnswered(getIsFormAnswered(cloackUser.getEmail()));
-            return cloackUser;
 
-        }
+        if (isEmpty(accountDB)) throw new UserDoesntExistException();
+        if (!BCrypt.checkpw(accountDTO.getPassword(), accountDB.getEncryptedPassword()))
+            throw new WrongPasswordException();
+
+        CloackUserResponse response = mapper.map(
+                userRepository.findByEmail(emailLower).orElseThrow(UserDoesntExistException::new),
+                CloackUserResponse.class
+        );
+        response.setFormAnswered(getIsFormAnswered(emailLower));
+
+        return response;
     }
 
     public boolean resetPassword(String email) throws UserDoesntExistException {
@@ -49,16 +57,32 @@ public class UsersService {
         return true; //HACER LOGICA
     }
 
-    public User registerUser(RegisterRequest user, String password) throws UserAlreadyTakenException {
-        if (userRepository.findByEmail(user.getEmail()).isPresent())
+    public User registerUser(RegisterRequest request, String password) throws UserAlreadyTakenException, UnderAgeException {
+        String emailLower = request.getEmail().toLowerCase();
+
+        if (userRepository.findByEmail(emailLower).isPresent())
             throw new UserAlreadyTakenException();
 
-        User userEntity = mapper.map(user, User.class);
-        userEntity.setEmail(user.getEmail().toLowerCase());
+        if (request.getBirthDate().plusYears(18).isAfter(LocalDate.now()))
+            throw new UnderAgeException();
+
+        User userEntity = mapper.map(request, User.class);
+        userEntity.setEmail(emailLower);
         userEntity.setIsFormAnswered(false);
+
+        if (request.getProfilePhoto() != null && !request.getProfilePhoto().isEmpty()) {
+            userEntity.setProfilePhoto("data:image;base64," + request.getProfilePhoto());
+        }
+
         userRepository.save(userEntity);
 
-        accountRepository.save(Account.builder().email(user.getEmail()).encryptedPassword(encryptPssw(password)).build());
+        accountRepository.save(
+                Account.builder()
+                        .email(emailLower)
+                        .encryptedPassword(encryptPssw(password))
+                        .build()
+        );
+
         return userEntity;
     }
 
@@ -73,5 +97,11 @@ public class UsersService {
         userRepository.updateProfilePhoto(email, profilePhoto);
 
         return new UserDTO();
+    }
+
+    public Optional<String> getShelterNameByEmail(String email) {
+        return userRepository
+                .findByEmail(email)
+                .map(User::getShelterName);
     }
 }

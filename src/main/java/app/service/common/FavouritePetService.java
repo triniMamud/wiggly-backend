@@ -3,9 +3,11 @@ package app.service.common;
 import app.model.dto.FavouritePetDTO;
 import app.model.dto.ItemDTO;
 import app.model.dto.PetDTO;
+import app.model.dto.response.MyFavPetResponse;
 import app.model.dto.response.PetAdoptionResponseDTO;
 import app.model.dto.response.PetDTOResponse;
 import app.model.entity.FavouritePet;
+import app.model.entity.Pet;
 import app.repository.IFavouritePetRepository;
 import app.repository.IPetRepository;
 import app.repository.IUserRepository;
@@ -14,10 +16,7 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
@@ -42,35 +41,51 @@ public class FavouritePetService {
     }*/
 
     public FavouritePetDTO save(String email, Long petId) {
-        FavouritePet favouritePetToSave = FavouritePet.builder().email(email).petId(petId).build();
+        FavouritePet favouritePetToSave = FavouritePet.builder()
+                .email(email)
+                .petId(petId)
+                .build();
+
+        petRepository.updateFav(petId, true);
 
         return modelMapper.map(favouriteRepository.save(favouritePetToSave), FavouritePetDTO.class);
+
     }
 
     @Transactional
-    public void delete(String email, long id) {
+    public void deleteFavPet(String email, long id) {
         favouriteRepository.deleteByEmailAndIdPet(email, id);
+
+        boolean stillFavoured = favouriteRepository.existsByPetId(id);
+        if (!stillFavoured) {
+            petRepository.updateFav(id, false);
+        }
     }
 
-    public void deleteFavouritePet(String email, long idPet) {
-        favouriteRepository.deleteByEmailAndIdPet(email, idPet);
-    }
-
-    public List<PetDTOResponse> getFavouritePetByUser(String email) {
+    public List<MyFavPetResponse> getFavouritePetByUser(String email) {
         Optional<List<FavouritePet>> favoritesOptional = favouriteRepository.findByEmail(email);
 
         if (favoritesOptional.isPresent()) {
             return favoritesOptional.get().stream().map(favPet -> {
-                PetDTO petItem = modelMapper.map(petRepository.findById(favPet.getPetId()).orElse(null), PetDTO.class);
-                List<String> petBytesImages = new ArrayList<>();
+                Pet pet = petRepository.findById(favPet.getPetId()).orElse(null);
+                if (pet == null) return null;
 
+                List<String> images = new ArrayList<>();
                 petImageService.getAllByIdPet(favPet.getPetId()).forEach(petImage ->
-                        petBytesImages.add(petImage.getImageFilename())
+                        images.add(petImage.getImageFilename())
                 );
-                return new PetDTOResponse(petItem, petBytesImages);
-            }).toList();
-        } else {
-            return emptyList();
+
+                return MyFavPetResponse.builder()
+                        .idPet(pet.getId())
+                        .name(pet.getName())
+                        .gender(pet.getGender())
+                        .location(pet.getLocation())
+                        .age(pet.getAge())
+                        .images(images)
+                        .shelterName(null)
+                        .build();
+            }).filter(Objects::nonNull).toList();
         }
+        return emptyList();
     }
 }

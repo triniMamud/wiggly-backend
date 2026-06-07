@@ -45,7 +45,7 @@ public class UserAnswer {
     private String timeAlonePet;
 
     @Column(nullable = false, name = "times_walk_pet")
-    private Integer timesWalkPet;
+    private String timesWalkPet;
 
     @Column(nullable = false, name = "sleeping_place")
     private String sleepingPlace;
@@ -65,9 +65,8 @@ public class UserAnswer {
     @Column(nullable = false, name = "travel_asignee")
     private String travelAsignee;
 
-    @Enumerated(EnumType.ORDINAL)
     @Column(name = "transit_preferences")
-    private TransitEnum transitPreferences;
+    private String transitPreferences;
 
     @Column(name = "max_time_transit")
     private String maxTimeTransit;

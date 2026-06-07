@@ -11,6 +11,7 @@ import app.model.dto.request.UpdatePetRequest;
 import app.model.dto.response.PetDTOResponse;
 import app.model.entity.Pet;
 import app.model.entity.PetImage;
+import app.model.entity.User;
 import app.model.enums.AgeEnum;
 import app.repository.IPetRepository;
 import jakarta.transaction.Transactional;
@@ -34,6 +35,7 @@ public class PetService {
     private final FavouritePetService favouritePetService;
     private final AdoptantService adoptantService;
     private final MyPostulationsService myPostulationsService;
+    private final UsersService usersService;
     private final ModelMapper modelMapper;
 
 
@@ -64,18 +66,28 @@ public class PetService {
         return modelMapper.map(petRepository.save(petToUpdate), PetDTO.class);
     }
 
-    public List<PetDTOResponse> getListPets(String email) {
+    public List<PetDTOResponse> getListPets() {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
-        List<Long> favPetIds = favouritePetService.getFavouritePetByUser(email).stream().map(favPet -> (long) favPet.getPet().getId()).toList();
+
         petRepository.findAll().forEach(pet -> {
             List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
                     petBytesImages.add(petImage.getImageFilename()));
-            PetDTOResponse petResponse = new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages);
-            petResponse.getPet().setIsFavPet(favPetIds.contains(pet.getId()));
+
+            String shelterName = myPetsService
+                    .findSheltarNameByPetId(pet.getId())
+                    .flatMap(usersService::getShelterNameByEmail)
+                    .orElse(null);
+
+            PetDTOResponse petResponse = PetDTOResponse.builder()
+                    .pet(modelMapper.map(pet, PetDTO.class))
+                    .images(petBytesImages)
+                    .shelterName(shelterName)
+                    .build();
+
             petResponseList.add(petResponse);
         });
-         return petResponseList;
+        return petResponseList;
     }
 
     @Transactional
@@ -120,7 +132,7 @@ public class PetService {
     public void deletePet(String email, long petId) throws DeleteEntityException {
         try {
             petImageService.deletePetImage(petId);
-            favouritePetService.deleteFavouritePet(email, petId);
+            favouritePetService.deleteFavPet(email, petId);
             adoptantService.deletePetFromAdoptant(email, petId);
             myPostulationsService.deletePetFromPostulations(email, petId);
             myPetsService.deleteFromMyPets(email, petId);

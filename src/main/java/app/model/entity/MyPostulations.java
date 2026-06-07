@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -30,4 +31,13 @@ public class MyPostulations {
     @Column(nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private PostulationStatusEnum status;
+
+    @Column(name = "sent_at")
+    private LocalDateTime sentAt;
+
+    @Column(name = "received_at")
+    private LocalDateTime receivedAt;
+
+    @Column(name = "reviewed_at")
+    private LocalDateTime reviewedAt;
 }

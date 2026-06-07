@@ -28,7 +28,7 @@ public class UpdateUserAnswerRequest {
 
     private String timeAlonePet;
 
-    private Integer timesWalkPet;
+    private String timesWalkPet;
 
     private String sleepingPlace;
 
@@ -42,7 +42,7 @@ public class UpdateUserAnswerRequest {
 
     private String travelAsignee;
 
-    private TransitEnum transitPreferences;
+    private String transitPreferences;
 
     private String maxTimeTransit;
 

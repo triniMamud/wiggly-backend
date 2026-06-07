@@ -32,29 +32,23 @@ public class UserAnswerService {
 
     @Transactional
     public UserAnswerDTO create(String email, CreateUserAnswerRequest request) {
-        // guardo las imagenes
-        List<HouseImage> houseImagesToSave = request.getHouseTypeRequest().getHouseImages().stream().map(houseImage -> {
-            HouseImage houseImageToSave = modelMapper.map(houseImage, HouseImage.class);
-            houseImageToSave.setEmail(email);
-            return houseImageToSave;
-        }).toList();
+
+        if (userRepository.getIsFormAnswered(email))
+            throw new RuntimeException("El usuario ya completó el formulario");
 
         List<HouseImage> houseImagesSaved = saveImages(request.getHouseTypeRequest().getHouseImages(), email).stream().toList();
         List<Long> houseImagesSavedIds = houseImagesSaved.stream().map(HouseImage::getId).toList();
 
-        // guardo HouseType
         HouseType houseTypeToSave = modelMapper.map(request.getHouseTypeRequest(), HouseType.class);
         houseTypeToSave.setEmail(email);
         houseTypeToSave.setHouseImageIds(houseImagesSavedIds);
-
         HouseTypeDTO houseTypeSaved = houseTypeService.save(houseTypeToSave);
 
-        // guardo las answers
         UserAnswer userAnswerToCreate = modelMapper.map(request, UserAnswer.class);
         userAnswerToCreate.setEmail(email);
         userAnswerToCreate.setHouseTypeId(houseTypeSaved.getId());
-
         UserAnswer userSaved = userAnswersRepository.save(userAnswerToCreate);
+
         if (nonNull(userSaved))
             userRepository.updateIsFormAnswered(userSaved.getEmail(), true);
 

@@ -18,4 +18,7 @@ public interface IFavouritePetRepository extends JpaRepository<FavouritePet, Lon
 
     Optional<List<FavouritePet>> findByEmail(String email);
 
+    boolean existsByPetId(long petId);
+
+    int countByPetId(Long petId);
 }
