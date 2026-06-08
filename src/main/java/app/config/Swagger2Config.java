@@ -15,8 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableWebMvc
 public class Swagger2Config implements WebMvcConfigurer {
 
-    @Value("${app.cors.allowedOrigins}")
-    private String[] allowedOrigins;
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -54,12 +52,5 @@ public class Swagger2Config implements WebMvcConfigurer {
                 .description("More description about the API")
                 .version("1.0.0")
                 .build();
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins(allowedOrigins)
-                .allowedMethods("HEAD", "OPTIONS", "GET", "POST", "PUT", "PATCH", "DELETE");
     }
 }

@@ -5,8 +5,14 @@ import app.exception.types.EntityNotFoundException;
 import app.exception.types.ImagesNotSavedException;
 import app.exception.types.SavePetException;
 import app.model.dto.*;
+import app.model.dto.request.IsFavPetRequest;
+import app.model.dto.request.PetDTORequest;
+import app.model.dto.request.UpdatePetRequest;
+import app.model.dto.response.PetDTOResponse;
 import app.model.entity.Pet;
 import app.model.entity.PetImage;
+import app.model.entity.User;
+import app.model.enums.AgeEnum;
 import app.repository.IPetRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -15,9 +21,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static app.config.Utils.safeIsNotEmpty;
-import static java.util.stream.Collectors.toList;
+import static app.model.enums.AgeEnum.*;
 
 @AllArgsConstructor
 @Service
@@ -25,28 +31,61 @@ public class PetService {
 
     private final IPetRepository petRepository;
     private final PetImageService petImageService;
-    private final ImageService imageService;
     private final MyPetsService myPetsService;
     private final FavouritePetService favouritePetService;
     private final AdoptantService adoptantService;
     private final MyPostulationsService myPostulationsService;
+    private final UsersService usersService;
     private final ModelMapper modelMapper;
 
 
     @Transactional
-    public PetDTOResponse addNewPet(PetDTORequest petRequest, String email) {
-        petRepository.save(modelMapper.map(petRequest.getPet(), Pet.class));
-        myPetsService.addToMyPets(petRequest.getPet().getId(), email);
-        return PetDTOResponse.builder().pet(petRequest.getPet()).images(saveImages(petRequest)).build();
+    public boolean addNewPet(PetDTORequest petRequest, String email) throws Exception {
+        try {
+            Pet pet = modelMapper.map(petRequest.getPet(), Pet.class);
+            long petId = petRepository.save(pet).getId();
+            pet.setPetImageIds(saveImages(petRequest.getImages(), petId).stream().map(PetImage::getId).collect(Collectors.toSet()));
+            myPetsService.addToMyPets(petId, email);
+            return true;
+        } catch (Exception e) {
+            throw new Exception("No se pudo dar de alta la mascota");
+        }
+    }
+
+    @Transactional
+    public PetDTO update(Long id, UpdatePetRequest updatePetRequest) {
+        Pet petToUpdate = petRepository.findById(id).orElseThrow(RuntimeException::new);
+        modelMapper.map(updatePetRequest, petToUpdate);
+
+        if(!updatePetRequest.getImages().isEmpty()) {
+            List<PetImage> newPetImages = saveImages(updatePetRequest.getImages(), id);
+            petToUpdate.getPetImageIds().addAll(newPetImages.stream().map(PetImage::getId).toList());
+        }
+
+        // TODO mappear correctamente a la response que quieras, igual se guarda
+        return modelMapper.map(petRepository.save(petToUpdate), PetDTO.class);
     }
 
     public List<PetDTOResponse> getListPets() {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
+
         petRepository.findAll().forEach(pet -> {
-            List<byte[]> petBytesImages = new ArrayList<>();
+            List<String> petBytesImages = new ArrayList<>();
             petImageService.getAllByIdPet(pet.getId()).forEach(petImage ->
-                    petBytesImages.add(imageService.downloadImage(petImage.getImagePath(), petImage.getImageFilename())));
-            petResponseList.add(new PetDTOResponse(modelMapper.map(pet, PetDTO.class), petBytesImages));
+                    petBytesImages.add(petImage.getImageFilename()));
+
+            String shelterName = myPetsService
+                    .findSheltarNameByPetId(pet.getId())
+                    .flatMap(usersService::getShelterNameByEmail)
+                    .orElse(null);
+
+            PetDTOResponse petResponse = PetDTOResponse.builder()
+                    .pet(modelMapper.map(pet, PetDTO.class))
+                    .images(petBytesImages)
+                    .shelterName(shelterName)
+                    .build();
+
+            petResponseList.add(petResponse);
         });
         return petResponseList;
     }
@@ -54,7 +93,6 @@ public class PetService {
     @Transactional
     public PetDTOResponse editPet(long idPet, PetDTORequest petRequest) throws EntityNotFoundException, ImagesNotSavedException, SavePetException {
         Pet petDB = petRepository.findById(idPet).orElseThrow(EntityNotFoundException::new);
-
         try {
             PetDTOResponse petResponse = PetDTOResponse.builder().pet(petRequest.getPet()).build();
             /*if (safeIsNotEmpty(petRequest.getImages())) {
@@ -76,22 +114,13 @@ public class PetService {
         }
     }
 
-    /*public PetDTOResponse getPet(int idPet) {
-        List<byte[]> petBytesImages = petImageService.findAllByidPet(idPet).stream()
-                .map(petImage -> imageService.downloadImage(petImage.getIdImage())).collect(toList());
+    public List<PetImage> saveImages(List<String> images, long petId) {
+        return images.stream().map(imgSrc -> {
 
-        return PetDTOResponse.builder().pet(mapper.map(petRepository.findById(idPet), PetDTO.class)).images(petBytesImages).build();
-    }*/
+                //PetImage image  = imageService.saveImageS3(base64ToMultipart(imgString64));
+                return petImageService.savePetImage(imgSrc, imgSrc, petId);
+//                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
 
-    public List<byte[]> saveImages(PetDTORequest petRequest) {
-        return petRequest.getImages().stream().map(multiparFileImg -> {
-            try {
-                PetImage image  = imageService.saveImageS3(multiparFileImg);
-                petImageService.savePetImage(image.getImagePath(), image.getImageFilename());
-                return imageService.downloadImage(image.getImagePath(), image.getImageFilename());
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
         }).toList();
     }
 
@@ -103,7 +132,7 @@ public class PetService {
     public void deletePet(String email, long petId) throws DeleteEntityException {
         try {
             petImageService.deletePetImage(petId);
-            favouritePetService.deleteFavouritePet(email, petId);
+            favouritePetService.deleteFavPet(email, petId);
             adoptantService.deletePetFromAdoptant(email, petId);
             myPostulationsService.deletePetFromPostulations(email, petId);
             myPetsService.deleteFromMyPets(email, petId);
@@ -113,4 +142,13 @@ public class PetService {
         }
     }
 
+    private AgeEnum getAge(float age) {
+        if(age <= 1.5F) return PUPPY;
+        else if(age > 9) return ELDER;
+        return ADULT;
+    }
+
+    public void updateFav(Long id, IsFavPetRequest request) {
+        petRepository.updateFav(id, request.getIsFavPet());
+    }
 }

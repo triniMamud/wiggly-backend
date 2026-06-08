@@ -1,0 +1,24 @@
+package app.model.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class HouseTypeDTO {
+
+    private Long id;
+    private String type;
+    private String openSpaces;
+    private boolean hasContentionNet;
+
+    @JsonProperty("isOwner")
+    private boolean isOwner;
+    private boolean allowsPets;
+    private List<String> houseImages;
+}

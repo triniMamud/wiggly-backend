@@ -20,12 +20,10 @@ public class MyPet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @OneToOne
-    @JoinColumn(name = "email", nullable = false)
-    private String userEmail;
+    @Column(nullable = false)
+    private String email;
 
-    @OneToMany
-    @JoinColumn(name = "myPetId", nullable = false)
-    private Set<Long> petIds;
+    @Column(nullable = false, name = "pet_id")
+    private Long petId;
 
 }

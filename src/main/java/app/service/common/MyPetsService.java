@@ -1,22 +1,24 @@
 package app.service.common;
 
 import app.exception.types.DeleteEntityException;
-import app.model.dto.MyPetsSearchRequestParameters;
-import app.model.dto.ItemDTO;
-import app.model.entity.FavouritePet;
+import app.exception.types.EntityNotFoundException;
+import app.model.dto.*;
+import app.model.dto.request.MyPetsSearchRequestParameters;
+import app.model.dto.response.MyPetResponseDTO;
+import app.model.dto.response.PetDTOResponse;
 import app.model.entity.MyPet;
 import app.model.entity.Pet;
-import app.repository.IAdoptantRepository;
-import app.repository.IMyPetRepository;
-import app.repository.IPetRepository;
-import app.repository.IUserRepository;
+import app.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
@@ -31,39 +33,18 @@ public class MyPetsService {
     private final IPetRepository petRepository;
     private final IAdoptantRepository adoptantRepository;
     private final IUserRepository usersRepository;
+    private final PetImageService petImageService;
+    private final ImageService imageService;
     private final ModelMapper modelMapper;
-
-
-
-    /*public List<ItemDTO> getMyPets(String username) {
-        List<ItemDTO> itemPetList = new ArrayList<>();
-
-        myPetRepository.findAll().stream()
-                .filter(myPet -> username.equalsIgnoreCase(myPet.getUsername()))
-                .forEach(pet -> itemPetList.add(mapper.map(petRepository.findById(pet.getPetId()).get(), ItemDTO.class)));
-        return itemPetList;
-    }*/
+    private final IFavouritePetRepository favouritePetRepository;
+    private final IMyPostulationsRepository myPostulationsRepository;
 
     public boolean addToMyPets(long idPet, String email) {
-        MyPet myPet = myPetRepository.findByEmail(email).orElse(MyPet.builder().userEmail(email).build());
-        myPet.getPetIds().add(idPet);
-        return isNotEmpty(myPetRepository.save(myPet));
+        return isNotEmpty(myPetRepository.save(MyPet.builder().petId(idPet).email(email).build()));
     }
-
-    /*public List<AdoptantDTO> getAdoptantsPet(int idPet) {
-        List<AdoptantDTO> adoptantDTOS = new ArrayList<>();
-        adoptantRepository.findAll().stream()
-                //.filter(adoptant -> adoptant.getPet() == idPet)
-                .forEach(adoptant -> {
-                    User user = usersRepository.findById(adoptant.getUser()).get();
-                    adoptantDTOS.add(new AdoptantDTO(user.getName(), user.getLastName(), user.getNeighbourhood(), user.getHouseType()));
-                });
-        return adoptantDTOS;
-    }*/
 
     @Transactional
     public List<ItemDTO> searchMyPets(MyPetsSearchRequestParameters searchParameters) {
-
         Specification<Pet> spec = Specification.where(null);
 
         if (isNotEmpty(searchParameters.getType()))
@@ -94,44 +75,42 @@ public class MyPetsService {
         myPetRepository.deleteByEmailAndIdPet(email, petId);
     }
 
+    public List<MyPetResponseDTO> getMyPets(String email) {
+        List<MyPetResponseDTO> petResponseList = new ArrayList<>();
 
-//        Specification<Pet> spec = Specification.where(null);
-//
-//        spec = addConditionIfPresent(spec, Optional.ofNullable(searchParameters.getGender()), "gender", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.equal(root.get("gender"), value));
-//
-//        Optional<Integer> minAge = Optional.of(searchParameters.getMinAge());
-//        Optional<Integer> maxAge = Optional.of(searchParameters.getMaxAge());
-//
-//        spec = addConditionIfPresent(spec, minAge, "age", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.greaterThanOrEqualTo(root.get("age"), value));
-//
-//        spec = addConditionIfPresent(spec, maxAge, "age", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.lessThanOrEqualTo(root.get("age"), value));
-//
-//        spec = addConditionIfNotEmpty(spec, searchParameters.getNeighbourhood(), "neighbourhood", (root, criteriaBuilder, value) ->
-//                criteriaBuilder.equal(root.get("neighbourhood"), value));
-//
-//        List<Pet> pets = petRepository.findAll(spec);
-//
-//        return pets;
-//    }
-//
-//    private <T> Specification<T> addConditionIfPresent(Specification<T> spec, Optional<T> value, String fieldName,
-//                                                       TriFunction<Root<Pet>, CriteriaBuilder, T, Predicate> condition) {
-//        return value.map(v -> spec.and((root, query, criteriaBuilder) -> condition.apply(root, criteriaBuilder, v)))
-//                .orElse(spec);
-//    }
-//
-//    private <T> Specification<T> addConditionIfNotEmpty(Specification<T> spec, String value, String fieldName,
-//                                                        TriFunction<Root<T>, CriteriaBuilder, String, Predicate> condition) {
-//        return StringUtils.isNotEmpty(value)
-//                ? spec.and((root, query, criteriaBuilder) -> condition.apply(root, criteriaBuilder, value))
-//                : spec;
-//    }
-//
-//    @FunctionalInterface
-//    private interface TriFunction<T, U, V, R> {
-//        R apply(T t, U u, V v);
-//    }
+        myPetRepository.getMyPetsByEmail(email).forEach(myPet -> {
+            Long petId = myPet.getPetId();
+
+            // Imágenes
+            List<String> images = new ArrayList<>();
+            petImageService.getAllByIdPet(petId)
+                    .forEach(petImage -> images.add(petImage.getImageFilename()));
+
+            // Conteos
+            int favCount = favouritePetRepository.countByPetId(petId);
+            int postulationsCount = myPostulationsRepository.countByPetId(petId);
+
+            // Mapeo manual al nuevo DTO
+            petRepository.findById(petId).ifPresent(pet -> {
+                MyPetItemDTO itemDTO = new MyPetItemDTO(
+                        Math.toIntExact(pet.getId()),
+                        pet.getName(),
+                        pet.getLocation(),
+                        pet.getGender(),
+                        pet.getAge(),
+                        favCount,
+                        postulationsCount
+                );
+                petResponseList.add(new MyPetResponseDTO(itemDTO, images));
+            });
+        });
+
+        return petResponseList;
+    }
+
+    public Optional<String> findSheltarNameByPetId(Long petId) {
+        return myPetRepository
+                .findFirstByPetId(petId)
+                .map(MyPet::getEmail);
+    }
 }

@@ -1,5 +1,9 @@
 package app.model.dto;
 
+import app.model.enums.AdoptionTypeEnum;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,18 +13,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDTO {
 
-    private String username;
     private String name;
     private String lastName;
+    private String email;
     private int age;
-    private String neighbourhood;
-    private String mail;
+    private String dni;
     private long phone;
-    private Boolean adopts;
-    private String houseType;
-    private Boolean hasGardenOrBalcony;
-    private Boolean hasContentionNet;
-    private Boolean hasAnotherPets;
-    private String otherPetsInfo;
-    private int accountId;
+    private String location;
+    private AdoptionTypeEnum adoptionType;
+    private String shelterName;
 }

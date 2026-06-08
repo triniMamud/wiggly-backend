@@ -1,7 +1,9 @@
 package app.model.enums;
 
-public enum AdoptionTypeEnum {
+public enum  AdoptionTypeEnum {
     ADOPTION,
     TRANSIT,
-    BOTH
+    BOTH,
+    ALL,
+    SHELTER
 }

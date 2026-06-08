@@ -1,5 +1,7 @@
 package app.model.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,22 +9,24 @@ import jakarta.persistence.*;
 
 import java.util.Set;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @Data
 @Entity
 @Table(name = "adoptant")
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Adoptant {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "email", nullable = false)
-    private String userEmail;
+    @Column(nullable = false)
+    private String email;
 
-    @OneToMany
-    @JoinColumn(name = "adoptantPetId")
-    private Set<Long> petIds;
+    @Column(nullable = false, name = "pet_id")
+    private Long petId;
 
 }

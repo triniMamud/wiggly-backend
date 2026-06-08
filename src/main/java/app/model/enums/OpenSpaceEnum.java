@@ -1,9 +1,8 @@
 package app.model.enums;
 
 public enum OpenSpaceEnum {
-    YARD,
+    YARD_GARDEN,
     TERRACE,
     BALCONY,
-    GARDEN,
     NONE
 }

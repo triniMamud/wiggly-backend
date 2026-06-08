@@ -6,29 +6,66 @@ import app.exception.types.UserDoesntExistException;
 import app.exception.types.WrongPasswordException;
 import app.model.dto.AccountDTO;
 import app.model.dto.UserDTO;
+import app.model.dto.request.EmailUserRequest;
+import app.model.dto.request.RegisterRequest;
+import app.model.dto.request.UpdateProfilePhotoRequestDTO;
+import app.model.dto.response.CloackUserResponse;
+import app.model.entity.User;
 import app.service.common.UsersService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.http.protocol.HTTP;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.ResponseEntity.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/usuarios")
+@RequestMapping("/users")
 public class UsersController {
 
     private final UsersService usersService;
 
-    @PostMapping("/log_in")
-    public ResponseEntity<Void> login(@RequestBody AccountDTO account) throws WrongPasswordException, UserDoesntExistException {
-        return ResponseEntity.ok(usersService.logIn(account));
+    @PostMapping("/login")
+    public ResponseEntity<CloackUserResponse> login(@RequestBody EmailUserRequest emailRequest, @RequestHeader("password") String password) throws WrongPasswordException, UserDoesntExistException {
+        return ok(usersService.logIn(new AccountDTO(emailRequest.getEmail(), password)));
     }
 
-    @PostMapping("/sing_up")
-    public ResponseEntity<UserDTO> addNewUser(@RequestBody UserDTO user, @RequestHeader("password") String password) throws UserAlreadyTakenException, UnderAgeException {
-        return ResponseEntity.ok(usersService.signUpUser(user, password));
+    @PostMapping("/reset-password")
+    public ResponseEntity<Boolean> resetPassword(@RequestHeader("email") String email) throws UserDoesntExistException {
+        return ok(usersService.resetPassword(email));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<CloackUserResponse> register(@RequestBody RegisterRequest user, @RequestHeader("password") String password) {
+        try {
+            User savedUser = usersService.registerUser(user, password);
+            CloackUserResponse response = new CloackUserResponse();
+            response.setName(savedUser.getName());
+            response.setEmail(savedUser.getEmail());
+            response.setFormAnswered(savedUser.getIsFormAnswered());
+            response.setAdoptionType(savedUser.getAdoptionType());
+            return ok(response);
+        } catch (UserAlreadyTakenException e) {
+            return status(BAD_REQUEST).build();
+        } catch (UnderAgeException uae) {
+            return status(BAD_REQUEST).build();
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/isFormAnswered")
+    public ResponseEntity<Boolean> getIsFormAnswered(@RequestHeader("email") String email) {
+        return ok(usersService.getIsFormAnswered(email));
+    }
+
+    @PutMapping("/profile-photo")
+    public ResponseEntity<UserDTO> updateProfilePhoto(@RequestHeader("email") String email, @RequestBody @Valid UpdateProfilePhotoRequestDTO request) throws UserDoesntExistException {
+        return ok(usersService.updateProfilePhoto(email, request));
     }
 }

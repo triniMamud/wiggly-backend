@@ -1,17 +1,20 @@
 package app.controller;
 
 import app.exception.types.DeleteEntityException;
-import app.model.dto.PetDTORequest;
-import app.model.dto.PetDTOResponse;
+import app.model.dto.PetDTO;
+import app.model.dto.request.*;
+import app.model.dto.response.PetDTOResponse;
 import app.service.common.MyPetsService;
 import app.service.common.MyPostulationsService;
 import app.service.common.PetService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.ResponseEntity.*;
 
 @RestController
@@ -29,8 +32,28 @@ public class PetsController {
     }
 
     @PostMapping("/alta")
-    public ResponseEntity<PetDTOResponse> postNewPet(@RequestBody PetDTORequest pet, @RequestHeader("email") String email) {
-        return ok(petService.addNewPet(pet, email));
+    public ResponseEntity<Boolean> postNewPet(@RequestBody PetDTORequest pet, @RequestHeader("email") String email) {
+        try {
+            return ok(petService.addNewPet(pet, email));
+        } catch (Exception e) {
+            return status(INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /*@GetMapping("/search")
+    public ResponseEntity<List<PetDTO>> searchPet(PetsSearchRequestParameters searchRequest) {
+        return ok(petService.search(searchRequest));
+    }*/
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PetDTO> update(@PathVariable("id") Long id, @RequestBody @Valid UpdatePetRequest updatePetRequest) {
+        return ok(petService.update(id, updatePetRequest));
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Void> updateFav(@PathVariable("id") Long id, @RequestBody @Valid IsFavPetRequest request) {
+        petService.updateFav(id, request);
+        return noContent().build();
     }
 
     /*@GetMapping("/list/{idPerro}")
@@ -41,6 +64,6 @@ public class PetsController {
     @DeleteMapping("/eliminar")
     public ResponseEntity<Void> deletePet(@RequestHeader("email") String email, @RequestBody long petId) throws DeleteEntityException {
         petService.deletePet(email, petId);
-        return ok().build();
+        return noContent().build();
     }
 }
