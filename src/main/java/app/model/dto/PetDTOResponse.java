@@ -13,6 +13,6 @@ import java.util.List;
 public class PetDTOResponse {
 
     protected PetDTO pet;
-    protected List<byte[]> images;
-
+    protected List<String> images;
+    protected String shelterName;
 }

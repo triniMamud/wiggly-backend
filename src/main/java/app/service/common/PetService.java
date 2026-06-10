@@ -66,7 +66,7 @@ public class PetService {
         return modelMapper.map(petRepository.save(petToUpdate), PetDTO.class);
     }
 
-    public List<PetDTOResponse> getListPets() {
+    public List<PetDTOResponse> getListPets(String email) {
         List<PetDTOResponse> petResponseList = new ArrayList<>();
 
         petRepository.findAll().forEach(pet -> {

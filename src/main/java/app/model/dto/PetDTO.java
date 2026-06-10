@@ -24,7 +24,7 @@ public class PetDTO {
     private float age;
 
     @NotBlank
-    private String bathroomOutside;
+    private BathroomEnum bathroomOutside;
 
     @NotNull
     private boolean beOnItsOwn;
@@ -60,7 +60,7 @@ public class PetDTO {
     private String size;
 
     @NotBlank
-    private String type;
+    private PetTypeEnum type;
 
     @NotBlank
     private String vaccines;
